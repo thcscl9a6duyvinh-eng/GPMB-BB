@@ -1,0 +1,5274 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Giải phóng mặt bằng Bắc Bình</title>
+    <style>
+:root {
+  --bg: #f4f6f8;
+  --panel: #ffffff;
+  --panel-2: #f9fafb;
+  --ink: #18202a;
+  --muted: #5f6b7a;
+  --line: #d9e0e7;
+  --line-strong: #b9c4cf;
+  --blue: #2563eb;
+  --green: #087f5b;
+  --amber: #b7791f;
+  --red: #c2413b;
+  --teal: #0f766e;
+  --shadow: 0 10px 30px rgba(20, 31, 43, 0.08);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  color: var(--ink);
+  background: var(--bg);
+  font-family: Arial, "Helvetica Neue", sans-serif;
+  letter-spacing: 0;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+button {
+  border: 0;
+}
+
+.boot {
+  display: grid;
+  min-height: 100vh;
+  place-items: center;
+  color: var(--muted);
+}
+
+.shell {
+  display: grid;
+  grid-template-columns: 286px minmax(0, 1fr);
+  min-height: 100vh;
+}
+
+.sidebar {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: auto;
+  border-right: 1px solid var(--line);
+  background: #111827;
+  color: #e5e7eb;
+}
+
+.brand {
+  padding: 18px 18px 16px;
+  border-bottom: 1px solid rgba(255,255,255,0.12);
+}
+
+.brand-asset {
+  display: block;
+  width: 100%;
+  height: 88px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.18);
+  margin-bottom: 14px;
+}
+
+.brand h1 {
+  margin: 0 0 6px;
+  font-size: 18px;
+  line-height: 1.25;
+}
+
+.brand p {
+  margin: 0;
+  color: #b8c2d0;
+  font-size: 13px;
+  line-height: 1.35;
+}
+
+.nav {
+  display: grid;
+  gap: 4px;
+  padding: 14px 10px;
+}
+
+.nav button,
+.commune-list button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 38px;
+  padding: 9px 10px;
+  color: #cbd5e1;
+  border-radius: 8px;
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+}
+
+.nav button:hover,
+.commune-list button:hover {
+  background: rgba(255,255,255,0.08);
+  color: #ffffff;
+}
+
+.nav button.active,
+.commune-list button.active {
+  color: #ffffff;
+  background: #1f3b62;
+}
+
+.sidebar-section {
+  padding: 10px;
+  border-top: 1px solid rgba(255,255,255,0.12);
+}
+
+.project-section {
+  display: grid;
+  gap: 8px;
+}
+
+.sidebar-label {
+  margin: 3px 8px 8px;
+  color: #9ca3af;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.project-select {
+  width: 100%;
+  min-height: 38px;
+  padding: 8px 10px;
+  border: 1px solid rgba(255,255,255,0.18);
+  border-radius: 8px;
+  color: #f8fafc;
+  background: #0f172a;
+}
+
+.project-tools {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 38px;
+  gap: 6px;
+}
+
+.project-tools .btn {
+  min-width: 0;
+  min-height: 34px;
+  padding: 7px 8px;
+  border-color: rgba(255,255,255,0.18);
+  color: #e5e7eb;
+  background: rgba(255,255,255,0.06);
+}
+
+.project-tools .btn:hover {
+  border-color: rgba(255,255,255,0.32);
+  background: rgba(255,255,255,0.1);
+}
+
+.project-tools .btn.danger {
+  color: #fecaca;
+  border-color: rgba(248,113,113,0.45);
+}
+
+.commune-list {
+  display: grid;
+  gap: 4px;
+}
+
+.main {
+  min-width: 0;
+}
+
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 76px;
+  padding: 12px 24px;
+  border-bottom: 1px solid var(--line);
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: blur(10px);
+}
+
+.title-block h2 {
+  margin: 0;
+  font-size: 22px;
+  line-height: 1.25;
+}
+
+.title-block p {
+  margin: 4px 0 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 36px;
+  padding: 8px 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: var(--ink);
+  background: #ffffff;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.btn:hover {
+  border-color: var(--line-strong);
+  background: #f8fafc;
+}
+
+.btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+.btn.primary {
+  border-color: var(--green);
+  color: #ffffff;
+  background: var(--green);
+}
+
+.btn.primary:hover {
+  background: #066b4d;
+}
+
+.btn.danger {
+  color: var(--red);
+  border-color: #f1b8b4;
+}
+
+.btn.icon {
+  width: 36px;
+  padding: 0;
+}
+
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.content {
+  display: grid;
+  gap: 18px;
+  padding: 20px 24px 36px;
+}
+
+.auth-screen {
+  display: grid;
+  min-height: 100vh;
+  place-items: center;
+  padding: 24px;
+  background: linear-gradient(135deg, #eef6f4, #f8fafc 48%, #eef2ff);
+}
+
+.auth-panel {
+  display: grid;
+  gap: 18px;
+  width: min(460px, 100%);
+  padding: 26px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #ffffff;
+  box-shadow: var(--shadow);
+}
+
+.auth-panel h1 {
+  margin: 0 0 8px;
+  font-size: 24px;
+}
+
+.auth-panel p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.auth-tabs {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px;
+  padding: 4px;
+  border-radius: 8px;
+  background: var(--panel-2);
+}
+
+.auth-tabs button {
+  min-height: 36px;
+  border-radius: 6px;
+  color: var(--muted);
+  background: transparent;
+  cursor: pointer;
+}
+
+.auth-tabs button.active {
+  color: var(--ink);
+  background: #ffffff;
+  box-shadow: 0 1px 6px rgba(15, 23, 42, 0.08);
+}
+
+.auth-fields {
+  display: grid;
+  gap: 12px;
+}
+
+.auth-fields label {
+  display: grid;
+  gap: 6px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.auth-fields input {
+  min-height: 40px;
+  padding: 9px 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: var(--ink);
+  background: #ffffff;
+}
+
+.auth-error {
+  color: var(--red);
+  font-weight: 700;
+}
+
+.auth-message {
+  color: var(--green);
+  font-weight: 700;
+}
+
+.auth-submit {
+  width: 100%;
+}
+
+.auth-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.panel {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel);
+  box-shadow: var(--shadow);
+}
+
+.panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--line);
+}
+
+.panel-header h3 {
+  margin: 0;
+  font-size: 16px;
+}
+
+.panel-header p {
+  margin: 4px 0 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.panel-body {
+  padding: 16px;
+}
+
+.project-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 12px;
+}
+
+.project-card {
+  display: grid;
+  gap: 14px;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.project-card.active {
+  border-color: #8fb7aa;
+  background: #f4fbf8;
+}
+
+.project-card-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.project-card h4 {
+  margin: 0 0 5px;
+  font-size: 16px;
+}
+
+.project-card p,
+.member-row small {
+  display: block;
+  margin: 0;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.project-card-stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.project-card-stats span {
+  padding: 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel-2);
+  color: var(--muted);
+}
+
+.project-card-stats strong {
+  display: block;
+  color: var(--ink);
+  font-size: 20px;
+}
+
+.project-card-actions,
+.access-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.access-form {
+  align-items: end;
+  margin-bottom: 14px;
+}
+
+.access-form .field {
+  flex: 1 1 230px;
+}
+
+.member-list {
+  display: grid;
+  gap: 8px;
+}
+
+.member-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel-2);
+}
+
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(160px, 1fr));
+  gap: 12px;
+}
+
+.metric {
+  min-height: 112px;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel);
+}
+
+.metric label {
+  display: block;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.metric strong {
+  display: block;
+  margin-top: 10px;
+  font-size: 28px;
+  line-height: 1;
+}
+
+.metric span {
+  display: block;
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+.field,
+.textarea-field {
+  display: grid;
+  gap: 6px;
+}
+
+.field label,
+.textarea-field label {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.field input,
+.field select,
+.textarea-field textarea {
+  width: 100%;
+  min-height: 36px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 7px 9px;
+  color: var(--ink);
+  background: #ffffff;
+}
+
+.textarea-field textarea {
+  min-height: 116px;
+  resize: vertical;
+  line-height: 1.45;
+}
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.tabs {
+  display: flex;
+  gap: 6px;
+  overflow: auto;
+  padding-bottom: 2px;
+}
+
+.tab {
+  flex: 0 0 auto;
+  min-height: 34px;
+  padding: 7px 11px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: var(--muted);
+  background: #ffffff;
+  cursor: pointer;
+}
+
+.tab.active {
+  color: #ffffff;
+  border-color: var(--blue);
+  background: var(--blue);
+}
+
+.table-wrap {
+  width: 100%;
+  overflow: auto;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #ffffff;
+}
+
+th,
+td {
+  min-width: 96px;
+  border-bottom: 1px solid var(--line);
+  border-right: 1px solid var(--line);
+  padding: 8px;
+  text-align: left;
+  vertical-align: top;
+  font-size: 13px;
+}
+
+th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  color: #334155;
+  background: #eef3f8;
+  font-weight: 700;
+}
+
+tr:last-child td {
+  border-bottom: 0;
+}
+
+td:last-child,
+th:last-child {
+  border-right: 0;
+}
+
+.sticky-col {
+  position: sticky;
+  left: 0;
+  z-index: 2;
+  min-width: 180px;
+  background: inherit;
+}
+
+th.sticky-col {
+  z-index: 3;
+  background: #e4edf6;
+}
+
+td input,
+td select,
+td textarea {
+  width: 100%;
+  min-height: 32px;
+  border: 1px solid #cfd8e3;
+  border-radius: 6px;
+  padding: 5px 7px;
+  background: #ffffff;
+}
+
+td textarea {
+  min-width: 220px;
+  resize: vertical;
+}
+
+.stage-grid th.group {
+  min-width: 180px;
+  text-align: center;
+  background: #e8f3ef;
+}
+
+.round-head {
+  display: grid;
+  gap: 6px;
+  min-width: 190px;
+}
+
+.round-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.round-head input {
+  width: 100%;
+  min-height: 32px;
+  border: 1px solid #b9c8d8;
+  border-radius: 6px;
+  padding: 5px 7px;
+  font-weight: 400;
+  background: #ffffff;
+}
+
+.stage-grid td.small,
+.stage-grid th.small {
+  min-width: 88px;
+}
+
+.round-parcel-list {
+  display: grid;
+  gap: 6px;
+  min-width: 190px;
+}
+
+.round-parcel-list label {
+  display: grid;
+  gap: 3px;
+}
+
+.round-parcel-list label span {
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.25;
+}
+
+.round-parcel-total {
+  padding-top: 4px;
+  border-top: 1px dashed var(--line);
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.case-row td {
+  background: #f8fafc;
+}
+
+.case-editor {
+  display: grid;
+  gap: 6px;
+}
+
+.case-editor label {
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.row-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.parcel-detail-row td {
+  padding: 0;
+  background: #ffffff;
+}
+
+.parcel-box {
+  display: grid;
+  gap: 10px;
+  padding: 12px;
+  border-left: 4px solid #c7d7e8;
+  background: #ffffff;
+}
+
+.parcel-box-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.parcel-table-wrap {
+  border-radius: 6px;
+}
+
+.parcel-table th,
+.parcel-table td {
+  min-width: 112px;
+}
+
+.progress-list {
+  display: grid;
+  gap: 10px;
+}
+
+.progress-row {
+  display: grid;
+  grid-template-columns: minmax(220px, 1.2fr) minmax(180px, 2fr) 150px;
+  gap: 12px;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.progress-row:last-child {
+  border-bottom: 0;
+}
+
+.bar {
+  height: 10px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: #e5e7eb;
+}
+
+.bar span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--green), var(--blue));
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 24px;
+  padding: 3px 8px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--muted);
+  background: var(--panel-2);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.pill.green {
+  color: #075f45;
+  border-color: #a5d6c5;
+  background: #e8f7f1;
+}
+
+.pill.amber {
+  color: #83520e;
+  border-color: #f0cf91;
+  background: #fff8e8;
+}
+
+.pill.red {
+  color: #9f2f2a;
+  border-color: #e7aaa6;
+  background: #fff1f0;
+}
+
+.muted {
+  margin-top: 3px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.print-note {
+  display: none;
+  min-height: 42px;
+  white-space: pre-wrap;
+}
+
+.report-title {
+  margin: 0 0 12px;
+  font-size: 22px;
+  text-transform: uppercase;
+}
+
+.report-section-title {
+  margin: 22px 0 10px;
+  font-size: 16px;
+  text-transform: uppercase;
+}
+
+.report-switcher-panel .panel-body {
+  padding-top: 12px;
+}
+
+.report-switcher {
+  display: grid;
+  grid-template-columns: minmax(240px, 0.7fr) minmax(0, 1.5fr);
+  gap: 12px;
+}
+
+.report-commune-picker {
+  display: grid;
+  gap: 8px;
+}
+
+.report-picker-label {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.report-commune-options {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 8px;
+}
+
+.report-choice {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  width: 100%;
+  min-height: 70px;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: var(--ink);
+  background: #ffffff;
+  cursor: pointer;
+  text-align: left;
+}
+
+.report-choice:hover {
+  border-color: var(--line-strong);
+  background: #f8fafc;
+}
+
+.report-choice.active {
+  border-color: var(--green);
+  background: #edf8f3;
+  box-shadow: inset 4px 0 0 var(--green);
+}
+
+.report-choice i {
+  flex: 0 0 auto;
+  margin-top: 2px;
+}
+
+.report-choice span {
+  display: grid;
+  gap: 4px;
+}
+
+.report-choice strong {
+  line-height: 1.25;
+}
+
+.report-choice small {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.report-choice-summary {
+  height: 100%;
+}
+
+.report-page {
+  overflow: hidden;
+}
+
+.report-page-header {
+  background: #f8fafc;
+}
+
+.report-scope-dashboard {
+  display: grid;
+  gap: 14px;
+  margin: 10px 0 18px;
+}
+
+.report-scope-heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.report-scope-heading h4,
+.commune-report > h4,
+.report-block-heading h4 {
+  margin: 0;
+  font-size: 15px;
+}
+
+.report-scope-heading span {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.report-metrics .metric strong {
+  font-size: 22px;
+}
+
+.dashboard-grid,
+.block-dashboard {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 10px;
+}
+
+.progress-card,
+.report-stat {
+  min-height: 118px;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.progress-card {
+  display: grid;
+  gap: 10px;
+}
+
+.progress-card strong,
+.report-stat strong {
+  display: block;
+  line-height: 1.25;
+}
+
+.progress-card span,
+.report-stat span,
+.report-stat em {
+  display: block;
+  color: var(--muted);
+  font-size: 12px;
+  font-style: normal;
+  line-height: 1.35;
+}
+
+.progress-meter {
+  display: grid;
+  gap: 5px;
+}
+
+.progress-meter label {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.progress-card-foot {
+  display: grid;
+  gap: 3px;
+}
+
+.report-stat {
+  min-height: 92px;
+}
+
+.report-stat strong {
+  margin: 8px 0 5px;
+  font-size: 18px;
+}
+
+.commune-report {
+  margin-top: 22px;
+  padding-top: 18px;
+  border-top: 2px solid var(--line);
+}
+
+.report-block {
+  margin: 18px 0 24px;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+}
+
+.report-block-heading {
+  margin-bottom: 10px;
+}
+
+.report-table-wrap {
+  margin-top: 10px;
+}
+
+.report-detail-table th,
+.report-detail-table td {
+  min-width: 110px;
+}
+
+.report-detail-table .report-commune {
+  min-width: 150px;
+  background: #f8fafc;
+  font-weight: 700;
+}
+
+.report-detail-table .summary-row td {
+  background: #f4fbf7;
+}
+
+.report-detail-table .sub-row td {
+  background: #ffffff;
+}
+
+.report-detail-table .ongoing-row td {
+  background: #eef7ff;
+}
+
+.report-detail-table .pending-row td {
+  background: #fff8e8;
+}
+
+.empty {
+  padding: 18px;
+  color: var(--muted);
+  text-align: center;
+}
+
+.formula-list {
+  display: grid;
+  gap: 10px;
+}
+
+.formula-item {
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.formula-item strong {
+  display: block;
+  margin-bottom: 4px;
+}
+
+.formula-item code {
+  display: block;
+  white-space: pre-wrap;
+  color: #0f5132;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (max-width: 1080px) {
+  .shell {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    position: static;
+    height: auto;
+  }
+
+  .brand-asset {
+    height: 72px;
+  }
+
+  .metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 720px) {
+  .topbar {
+    align-items: flex-start;
+    flex-direction: column;
+    padding: 12px 14px;
+  }
+
+  .actions {
+    width: 100%;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    overflow-x: auto;
+    padding-bottom: 4px;
+  }
+
+  .actions .btn,
+  .actions .status {
+    flex: 0 0 auto;
+  }
+
+  .content {
+    padding: 14px;
+  }
+
+  .metrics,
+  .grid-2,
+  .grid-3,
+  .report-switcher,
+  .dashboard-grid,
+  .block-dashboard {
+    grid-template-columns: 1fr;
+  }
+
+  .progress-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media print {
+  .sidebar,
+  .topbar,
+  .no-print {
+    display: none !important;
+  }
+
+  .shell {
+    display: block;
+  }
+
+  .content {
+    padding: 0;
+  }
+
+  .panel {
+    box-shadow: none;
+    border: 0;
+  }
+
+  .print-note {
+    display: block;
+  }
+
+  body {
+    background: #ffffff;
+  }
+}
+
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <div class="boot">Đang tải dữ liệu...</div>
+    </div>
+    <input id="jsonImport" type="file" accept="application/json" hidden>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+window.GPMB_SUPABASE_CONFIG = {
+  url: "https://easmhkdbpalqdihmqqtj.supabase.co/rest/v1/",
+  anonKey: "sb_publishable_o1kHgvu2A95Qe5ArXvuF1w_MWtmN5Jt"
+};
+
+    </script>
+    <script>
+const app = document.getElementById("app");
+const importInput = document.getElementById("jsonImport");
+
+const WORKBOOK_URL = "https://docs.google.com/spreadsheets/d/1QCq_ghbZRRCQhuzLrr0yn1qivlw-Tk4aufxVkGP_94U/edit?usp=sharing";
+
+const COMMUNE_NAMES = {
+  SLUY: "Xã Sông Lũy",
+  LSON: "Xã Lương Sơn",
+  HTHAI: "Xã Hồng Thái",
+  BBINH: "Xã Bắc Bình",
+  HNINH: "Xã Hải Ninh"
+};
+
+const STAGES = [
+  {
+    id: "inventory",
+    no: "2",
+    name: "Kiểm đếm",
+    shortName: "Kiểm đếm",
+    unit: "Đợt",
+    workbook: "P:X",
+    countColumns: "P, R, T, V, ...",
+    areaColumns: "Q, S, U, W, ...",
+    noteColumn: "X",
+    base: "adjusted",
+    hasCost: false,
+    defaultRounds: 4
+  },
+  {
+    id: "transfer",
+    no: "3",
+    name: "Chuyển địa phương họp xét nguồn gốc đất",
+    shortName: "Chuyển địa phương xét nguồn gốc đất",
+    unit: "Lần",
+    workbook: "Z:AH",
+    countColumns: "Z, AB, AD, AF, ...",
+    areaColumns: "AA, AC, AE, AG, ...",
+    noteColumn: "AH",
+    base: "inventory",
+    hasCost: false,
+    defaultRounds: 4
+  },
+  {
+    id: "legal",
+    no: "4",
+    name: "Kết quả họp xét pháp lý và Hội đồng bồi thường",
+    shortName: "Họp xét pháp lý và Hội đồng bồi thường",
+    unit: "Lần",
+    workbook: "AJ:AR",
+    countColumns: "AJ, AL, AN, AP, ...",
+    areaColumns: "AK, AM, AO, AQ, ...",
+    noteColumn: "AR",
+    base: "transfer",
+    hasCost: false,
+    defaultRounds: 4
+  },
+  {
+    id: "draftPlan",
+    no: "5",
+    name: "Dự thảo và niêm yết công khai dự thảo phương án bồi thường, hỗ trợ, tái định cư",
+    shortName: "Niêm yết dự thảo phương án bồi thường, hỗ trợ, tái định cư",
+    unit: "Lần",
+    workbook: "AT:BB",
+    countColumns: "AT, AV, AX, AZ, ...",
+    areaColumns: "AU, AW, AY, BA, ...",
+    noteColumn: "BB",
+    base: "legal",
+    hasCost: false,
+    defaultRounds: 4
+  },
+  {
+    id: "appraisal",
+    no: "6",
+    name: "Trình thẩm định phương án bồi thường, hỗ trợ, tái định cư",
+    shortName: "Trình thẩm định phương án bồi thường, hỗ trợ, tái định cư",
+    unit: "Lần",
+    workbook: "BD:BN",
+    countColumns: "BD, BF, BH, BJ, BL, ...",
+    areaColumns: "BE, BG, BI, BK, BM, ...",
+    noteColumn: "BN",
+    base: "draftPlan",
+    hasCost: false,
+    defaultRounds: 5
+  },
+  {
+    id: "planDecision",
+    no: "7",
+    name: "Quyết định phương án bồi thường, hỗ trợ, tái định cư",
+    shortName: "Quyết định phương án bồi thường, hỗ trợ, tái định cư",
+    unit: "Lần",
+    workbook: "BP:CG",
+    countColumns: "BP, BS, BV, BY, CB, ...",
+    areaColumns: "BQ, BT, BW, BZ, CC, ...",
+    costColumns: "BR, BU, BX, CA, CD, ...",
+    totalColumns: "CF, CG",
+    noteColumn: "CE",
+    base: "appraisal",
+    hasCost: true,
+    defaultRounds: 5
+  },
+  {
+    id: "payment",
+    no: "8",
+    name: "Kết quả chi trả tiền bồi thường, hỗ trợ",
+    shortName: "Chi trả tiền bồi thường, hỗ trợ",
+    unit: "Lần",
+    workbook: "CI:CZ",
+    countColumns: "CI, CL, CO, CR, CU, ...",
+    areaColumns: "CJ, CM, CP, CS, CV, ...",
+    costColumns: "CK, CN, CQ, CT, CW, ...",
+    totalColumns: "CY, CZ",
+    noteColumn: "CX",
+    base: "planDecision",
+    hasCost: true,
+    defaultRounds: 5
+  }
+];
+
+const SPECIAL_ITEMS = [
+  { id: "recoveryDecision", no: "9", name: "Tổng quyết định thu hồi đất", shortName: "Quyết định thu hồi đất", workbook: "DB:DD", base: "planDecision" },
+  { id: "handover", no: "10", name: "Bàn giao mặt bằng", shortName: "Bàn giao mặt bằng", workbook: "DF:DJ", base: "adjusted" },
+  { id: "notHandover", no: "11", name: "Chưa giao mặt bằng", shortName: "Chưa giao mặt bằng", workbook: "DL:DO", base: "adjusted" },
+  { id: "remarks", no: "12", name: "Ghi chú", shortName: "Ghi chú", workbook: "DQ", base: "adjusted" }
+];
+
+const FORMULAS = [
+  {
+    title: "Tổng dự án sau kiểm đếm",
+    sheet: "GPMB!F3/H3",
+    rule: "Tổng trường hợp = đếm các ô tên/người hoặc ký hiệu có dữ liệu; tổng diện tích = cộng diện tích của 5 xã."
+  },
+  {
+    title: "Tổng hộ và tổ chức theo xã",
+    sheet: "SLUY!D9/G9, SLUY!D349/G349",
+    rule: "Trường hợp dùng nguyên tắc SUBTOTAL(3): đếm ô có dữ liệu trong cột tên/người sử dụng đất; diện tích dùng SUBTOTAL(9): cộng m2. App tách loại hồ sơ Hộ/Tổ chức bằng trường Loại."
+  },
+  {
+    title: "Kiểm đếm theo đợt",
+    sheet: "P:X",
+    rule: "Mỗi xã có thể thêm không giới hạn đợt. Văn bản, ngày tháng năm được nhập một lần cho từng đợt. Cột Trường hợp nhập tên/người hoặc ký hiệu; tổng kiểm đếm = đếm ô Trường hợp có dữ liệu và cộng diện tích của toàn bộ đợt hiện có."
+  },
+  {
+    title: "Chuyển địa phương, họp xét pháp lý, niêm yết, trình thẩm định",
+    sheet: "Z:BN",
+    rule: "Mỗi nghiệp vụ có thể thêm không giới hạn lần. Văn bản, ngày tháng năm được nhập một lần cho từng lần. Tổng lũy kế = đếm ô Trường hợp có dữ liệu và cộng diện tích của toàn bộ lần hiện có."
+  },
+  {
+    title: "Quyết định phương án bồi thường, hỗ trợ, tái định cư và chi trả tiền",
+    sheet: "BP:CZ",
+    rule: "Mỗi lần gồm Trường hợp, diện tích và chi phí; văn bản, ngày tháng năm được nhập một lần cho từng lần. Trường hợp được đếm theo ô có dữ liệu, còn diện tích và chi phí được cộng theo toàn bộ lần hiện có trong app."
+  },
+  {
+    title: "Quyết định thu hồi đất, bàn giao mặt bằng, chưa giao mặt bằng và ghi chú",
+    sheet: "DB:DQ",
+    rule: "Quyết định thu hồi đất, đã nhận tiền và giao mặt bằng trước được nhập theo hồ sơ. Chưa giao mặt bằng = đã phê duyệt phương án bồi thường, hỗ trợ, tái định cư nhưng chưa giao + chưa phê duyệt phương án bồi thường, hỗ trợ, tái định cư. Ghi chú là đầu mục số 12 riêng."
+  }
+];
+
+let db = null;
+let store = {
+  mode: "local",
+  client: null,
+  session: null,
+  user: null,
+  profile: null,
+  authSubscribed: false,
+  projectRoles: {},
+  projectMembers: {},
+  authMessage: "",
+  authError: ""
+};
+
+let ui = {
+  view: "dashboard",
+  projectId: "",
+  communeId: "SLUY",
+  reportScope: "summary",
+  stageId: "measurement",
+  search: "",
+  type: "all",
+  saveText: "Chưa lưu thay đổi",
+  authMode: "login"
+};
+
+let saveTimer = null;
+
+init();
+
+async function init() {
+  try {
+    if (initSupabaseClient()) {
+      store.mode = "supabase";
+      const { data, error } = await store.client.auth.getSession();
+      if (error) throw error;
+      store.session = data.session;
+      store.user = data.session?.user || null;
+      if (!store.authSubscribed) {
+        store.authSubscribed = true;
+        store.client.auth.onAuthStateChange((_event, session) => {
+          store.session = session;
+          store.user = session?.user || null;
+          init();
+        });
+      }
+      if (!store.user) {
+        renderAuthShell();
+        return;
+      }
+      await loadSupabaseState();
+    } else {
+      await loadLocalState();
+    }
+  } catch (error) {
+    app.innerHTML = `<div class="boot">Không tải được app: ${escapeHtml(error.message)}</div>`;
+  }
+}
+
+async function loadLocalState() {
+  store.mode = "local";
+  const response = await fetch("/api/state");
+  if (!response.ok) throw new Error("Không đọc được dữ liệu local. Nếu chạy trên GitHub Pages, hãy cấu hình Supabase trước.");
+  db = normalizeDb(await response.json());
+  ui.projectId = db.activeProjectId;
+  ui.communeId = projectCommunes()[0]?.id || "SLUY";
+  applyUrlState();
+  syncUiToProject();
+  render();
+}
+
+function initSupabaseClient() {
+  const config = window.GPMB_SUPABASE_CONFIG || {};
+  const url = String(config.url || "").trim();
+  const anonKey = String(config.anonKey || config.publishableKey || "").trim();
+  if (!url || !anonKey || !window.supabase?.createClient) return false;
+  if (!store.client) {
+    store.client = window.supabase.createClient(url, anonKey);
+  }
+  return true;
+}
+
+async function loadSupabaseState() {
+  await loadCurrentProfile();
+  const { data: projectRows, error } = await store.client
+    .from("projects")
+    .select("id,name,state,created_by,updated_at")
+    .order("updated_at", { ascending: false });
+  if (error) throw error;
+
+  const projectIds = (projectRows || []).map(row => row.id);
+  if (!projectIds.length) {
+    db = { schemaVersion: 2, activeProjectId: "", projects: [] };
+    ui.projectId = "";
+    ui.communeId = "";
+    ui.reportScope = "summary";
+    render();
+    return;
+  }
+  await loadProjectMembers(projectIds);
+  store.projectRoles = Object.fromEntries((projectRows || []).map(row => [row.id, projectRoleFromRow(row)]));
+  const preferredProjectId = localStorage.getItem("gpmb.activeProjectId");
+  db = normalizeDb({
+    schemaVersion: 2,
+    activeProjectId: projectIds.includes(preferredProjectId) ? preferredProjectId : projectIds[0],
+    projects: (projectRows || []).map(row => ({
+      ...(row.state || {}),
+      id: row.id,
+      name: row.name || row.state?.name || row.state?.meta?.projectName || "Dự án chưa đặt tên",
+      updatedAt: row.updated_at,
+      createdBy: row.created_by
+    }))
+  });
+  ui.projectId = db.activeProjectId;
+  ui.communeId = projectCommunes()[0]?.id || "";
+  applyUrlState();
+  syncUiToProject();
+  render();
+}
+
+async function signIn() {
+  const email = document.getElementById("authEmail")?.value.trim();
+  const password = document.getElementById("authPassword")?.value;
+  store.authError = "";
+  store.authMessage = "";
+  if (!email || !password) {
+    store.authError = "Nhập email và mật khẩu.";
+    renderAuthShell();
+    return;
+  }
+  const { error } = await store.client.auth.signInWithPassword({ email, password });
+  if (error) {
+    store.authError = error.message;
+    renderAuthShell();
+    return;
+  }
+  await init();
+}
+
+async function signUp() {
+  const email = document.getElementById("authEmail")?.value.trim();
+  const password = document.getElementById("authPassword")?.value;
+  const name = document.getElementById("authName")?.value.trim();
+  store.authError = "";
+  store.authMessage = "";
+  if (!email || !password) {
+    store.authError = "Nhập email và mật khẩu.";
+    renderAuthShell();
+    return;
+  }
+  const { error } = await store.client.auth.signUp({
+    email,
+    password,
+    options: { data: { display_name: name || email } }
+  });
+  if (error) {
+    store.authError = error.message;
+    renderAuthShell();
+    return;
+  }
+  store.authMessage = "Tài khoản đã được tạo. Nếu Supabase bật xác nhận email, hãy xác nhận email trước khi đăng nhập.";
+  ui.authMode = "login";
+  renderAuthShell();
+}
+
+async function signOut() {
+  if (store.client) await store.client.auth.signOut();
+  store.session = null;
+  store.user = null;
+  store.profile = null;
+  store.projectRoles = {};
+  store.projectMembers = {};
+  db = null;
+  renderAuthShell();
+}
+
+async function loadCurrentProfile() {
+  const { data, error } = await store.client
+    .from("profiles")
+    .select("id,email,display_name,is_app_admin")
+    .eq("id", store.user.id)
+    .maybeSingle();
+  if (error) throw error;
+  store.profile = data || {
+    id: store.user.id,
+    email: store.user.email,
+    display_name: "",
+    is_app_admin: false
+  };
+}
+
+async function loadProjectMembers(projectIds = []) {
+  store.projectMembers = {};
+  if (!projectIds.length) return;
+  const { data, error } = await store.client
+    .from("project_members")
+    .select("project_id,user_id,role,profiles(email,display_name)")
+    .in("project_id", projectIds);
+  if (error) throw error;
+  (data || []).forEach(member => {
+    store.projectMembers[member.project_id] ||= [];
+    store.projectMembers[member.project_id].push(member);
+  });
+}
+
+function projectRoleFromRow(row) {
+  if (store.profile?.is_app_admin) return "admin";
+  if (row.created_by === store.user?.id) return "owner";
+  const member = (store.projectMembers[row.id] || []).find(item => item.user_id === store.user?.id);
+  return member?.role || "";
+}
+
+function applyUrlState() {
+  const params = new URLSearchParams(window.location.search);
+  const project = params.get("project");
+  const view = params.get("view");
+  const commune = params.get("commune");
+  const stage = params.get("stage");
+  const report = params.get("report");
+  if (db.projects.some(item => item.id === project)) {
+    db.activeProjectId = project;
+    ui.projectId = project;
+  }
+  const communes = projectCommunes();
+  if (["dashboard", "update", "report", "formulas"].includes(view)) ui.view = view;
+  if (communes.some(item => item.id === commune)) ui.communeId = commune;
+  if (report === "summary") ui.reportScope = "summary";
+  if (communes.some(item => item.id === report)) {
+    ui.reportScope = report;
+    ui.communeId = report;
+  }
+  const stageIds = ["measurement", "recoveryDecision", "handover", "notHandover", "remarks", ...STAGES.map(item => item.id)];
+  if (stageIds.includes(stage)) ui.stageId = stage;
+  syncUiToProject();
+}
+
+function normalizeDb(input) {
+  const base = input || {};
+  const projectSources = Array.isArray(base.projects) && base.projects.length
+    ? base.projects
+    : [{
+      id: base.projectId || base.activeProjectId || "DUAN1",
+      name: base.meta?.projectName || "Dự án 1",
+      meta: base.meta,
+      notes: base.notes,
+      communes: base.communes,
+      audit: base.audit
+    }];
+  const usedIds = new Set();
+  const projects = projectSources.map((project, index) => {
+    const normalized = normalizeProject(project, index);
+    normalized.id = uniqueProjectId(normalized.id, normalized.name, usedIds, index);
+    return normalized;
+  });
+  const activeProjectId = projects.some(project => project.id === base.activeProjectId)
+    ? base.activeProjectId
+    : projects[0]?.id;
+  return {
+    schemaVersion: 2,
+    activeProjectId,
+    projects
+  };
+}
+
+function normalizeProject(project, index = 0) {
+  project ||= {};
+  const meta = defaultMeta(project.meta || {});
+  const name = project.name || meta.projectName || `Dự án ${index + 1}`;
+  if (!meta.projectName) meta.projectName = name;
+  const communes = Array.isArray(project.communes) ? project.communes : [];
+  const normalizedCommunes = communes.length
+    ? communes.map(normalizeCommune)
+    : [createBlankCommune("Xã/Khu vực 1", "KV1")];
+  return {
+    id: project.id || projectIdFromName(name, index),
+    name,
+    meta,
+    notes: defaultNotes(project.notes || {}),
+    communes: normalizedCommunes,
+    audit: Array.isArray(project.audit) ? project.audit : [],
+    updatedAt: project.updatedAt || project.updated_at || meta.lastSaved || "",
+    createdBy: project.createdBy || project.created_by || ""
+  };
+}
+
+function defaultMeta(overrides = {}) {
+  return {
+    agency: "Trung tâm phát triển quỹ đất khu vực Bắc Bình",
+    projectName: "Báo cáo kết quả thực hiện dự án",
+    reportPeriod: { from: "2026-07-01", to: "2026-07-30" },
+    sourceUrl: WORKBOOK_URL,
+    ...overrides,
+    reportPeriod: {
+      from: "2026-07-01",
+      to: "2026-07-30",
+      ...(overrides.reportPeriod || {})
+    }
+  };
+}
+
+function defaultNotes(overrides = {}) {
+  return {
+    difficulties: "",
+    recommendations: "",
+    nextPlan: "",
+    ...overrides
+  };
+}
+
+function syncUiToProject() {
+  if (!db?.projects?.length) return;
+  const project = currentProject();
+  db.activeProjectId = project.id;
+  ui.projectId = project.id;
+  if (!project.communes.length) project.communes.push(createBlankCommune("Xã/Khu vực 1", "KV1"));
+  if (!project.communes.some(commune => commune.id === ui.communeId)) {
+    ui.communeId = project.communes[0]?.id || "";
+  }
+  if (ui.reportScope !== "summary" && !project.communes.some(commune => commune.id === ui.reportScope)) {
+    ui.reportScope = "summary";
+  }
+}
+
+function currentProject() {
+  if (!db?.projects?.length) return null;
+  return db.projects.find(project => project.id === ui.projectId)
+    || db.projects.find(project => project.id === db.activeProjectId)
+    || db.projects[0];
+}
+
+function projectMeta() {
+  const project = currentProject();
+  if (!project) return defaultMeta();
+  project.meta = defaultMeta(project.meta || {});
+  return project.meta;
+}
+
+function projectNotes() {
+  const project = currentProject();
+  if (!project) return defaultNotes();
+  project.notes = defaultNotes(project.notes || {});
+  return project.notes;
+}
+
+function projectCommunes() {
+  const project = currentProject();
+  return project?.communes || [];
+}
+
+function projectDisplayName(project) {
+  return project?.name || project?.meta?.projectName || "Dự án chưa đặt tên";
+}
+
+function createBlankCommune(name = "Xã/Khu vực 1", id = "KV1") {
+  return normalizeCommune({
+    id,
+    name,
+    positionNote: "",
+    stageRounds: {},
+    records: []
+  });
+}
+
+function nextProjectId(name) {
+  const base = projectIdFromName(name, db.projects.length);
+  let id = base;
+  let index = 1;
+  const used = new Set(db.projects.map(project => project.id));
+  while (used.has(id)) {
+    index += 1;
+    id = `${base}${index}`;
+  }
+  return id;
+}
+
+function projectIdFromName(value, index = 0) {
+  return String(value || `DUAN${index + 1}`)
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/đ/g, "d")
+    .replace(/Đ/g, "D")
+    .toUpperCase()
+    .replace(/[^A-Z0-9]+/g, "")
+    .slice(0, 14) || `DUAN${index + 1}`;
+}
+
+function uniqueProjectId(id, name, usedIds, index = 0) {
+  const base = String(id || "").trim() || projectIdFromName(name, index);
+  let candidate = base;
+  let suffix = 1;
+  while (usedIds.has(candidate)) {
+    suffix += 1;
+    candidate = `${base}${suffix}`;
+  }
+  usedIds.add(candidate);
+  return candidate;
+}
+
+function normalizeCommune(commune) {
+  const rawRecords = Array.isArray(commune.records) ? commune.records : [];
+  const stageRounds = {};
+
+  STAGES.forEach(stage => {
+    const importedRounds = normalizeRoundMetaList(commune.stageRounds?.[stage.id]);
+    const recordRoundCount = rawRecords.reduce((max, record) => {
+      const rounds = record.stages?.[stage.id]?.rounds;
+      return Math.max(max, Array.isArray(rounds) ? rounds.length : 0);
+    }, 0);
+    const roundCount = Math.max(stage.defaultRounds || 1, importedRounds.length, recordRoundCount);
+    stageRounds[stage.id] = {
+      rounds: Array.from({ length: roundCount }, (_, index) => ({
+        document: importedRounds[index]?.document || firstRecordRoundDocument(rawRecords, stage.id, index) || ""
+      }))
+    };
+  });
+
+  const stageRoundCounts = Object.fromEntries(
+    STAGES.map(stage => [stage.id, stageRounds[stage.id].rounds.length])
+  );
+
+  return {
+    id: commune.id,
+    name: commune.name || COMMUNE_NAMES[commune.id] || commune.id,
+    positionNote: commune.positionNote || "",
+    stageRounds,
+    records: rawRecords.map(record => normalizeRecord(record, stageRoundCounts))
+  };
+}
+
+function normalizeRoundMetaList(stageRoundData) {
+  const rounds = Array.isArray(stageRoundData?.rounds)
+    ? stageRoundData.rounds
+    : Array.isArray(stageRoundData)
+      ? stageRoundData
+      : [];
+  return rounds.map(round => ({
+    document: round?.document || ""
+  }));
+}
+
+function firstRecordRoundDocument(records, stageId, roundIndex) {
+  for (const record of records) {
+    const documentText = record.stages?.[stageId]?.rounds?.[roundIndex]?.document;
+    if (documentText) return documentText;
+  }
+  return "";
+}
+
+function normalizeRecord(record, stageRoundCounts = {}) {
+  const original = {
+    mapSheet: "",
+    parcelNo: "",
+    landUser: "",
+    address: "",
+    recoveryNotice: "",
+    area: "",
+    landType: "",
+    ...(record.original || {})
+  };
+  const adjusted = {
+    landUser: "",
+    address: "",
+    adjustedNotice: "",
+    area: "",
+    landType: "",
+    ...(record.adjusted || {})
+  };
+  const rawParcels = Array.isArray(record.parcels) && record.parcels.length
+    ? record.parcels
+    : [{
+      original: {
+        mapSheet: original.mapSheet,
+        parcelNo: original.parcelNo,
+        recoveryNotice: original.recoveryNotice,
+        area: original.area,
+        landType: original.landType
+      },
+      adjusted: {
+        adjustedNotice: adjusted.adjustedNotice,
+        area: adjusted.area,
+        landType: adjusted.landType
+      }
+    }];
+  const normalizedParcels = rawParcels.map(normalizeParcel);
+
+  const next = {
+    id: record.id || crypto.randomUUID(),
+    type: record.type === "organization" ? "organization" : "household",
+    original,
+    adjusted,
+    parcels: normalizedParcels,
+    stages: {},
+    recoveryDecision: {
+      cases: "",
+      document: "",
+      area: "",
+      ...(record.recoveryDecision || {}),
+      parcels: normalizeAreaParcelList(record.recoveryDecision, normalizedParcels)
+    },
+    handoverPaid: {
+      cases: "",
+      area: "",
+      time: "",
+      ...(record.handoverPaid || {}),
+      parcels: normalizeAreaParcelList(record.handoverPaid, normalizedParcels)
+    },
+    handoverEarly: {
+      cases: "",
+      area: "",
+      time: "",
+      ...(record.handoverEarly || {}),
+      parcels: normalizeAreaParcelList(record.handoverEarly, normalizedParcels)
+    },
+    remarks: record.remarks || ""
+  };
+
+  STAGES.forEach(stage => {
+    const existing = record.stages?.[stage.id] || {};
+    const roundCount = Math.max(stageRoundCounts[stage.id] || 0, Array.isArray(existing.rounds) ? existing.rounds.length : 0, stage.defaultRounds || 1);
+    const rounds = Array.from({ length: roundCount }, (_, index) => normalizeStageRound(existing.rounds?.[index], normalizedParcels));
+    next.stages[stage.id] = {
+      rounds,
+      note: existing.note || ""
+    };
+  });
+
+  return next;
+}
+
+function normalizeParcel(parcel) {
+  return {
+    id: parcel.id || crypto.randomUUID(),
+    original: {
+      mapSheet: "",
+      parcelNo: "",
+      recoveryNotice: "",
+      area: "",
+      landType: "",
+      ...(parcel.original || {})
+    },
+    adjusted: {
+      adjustedNotice: "",
+      area: "",
+      landType: "",
+      ...(parcel.adjusted || {})
+    }
+  };
+}
+
+function normalizeStageRound(round, recordParcels = []) {
+  const existing = round || {};
+  const existingParcels = Array.isArray(existing.parcels) ? existing.parcels : [];
+  const parcelList = parcelSlots(recordParcels);
+  const splitArea = shouldSplitAggregateParcelValue(existing.area, existingParcels, "area", parcelList);
+  const splitCost = (splitArea || !existingParcels.length) && shouldSplitAggregateParcelValue(existing.cost, existingParcels, "cost", parcelList, false);
+  const splitAreaValues = splitArea ? splitTotalByParcels(existing.area, parcelList) : null;
+  const splitCostValues = splitCost ? splitTotalByParcels(existing.cost, parcelList) : null;
+  const parcels = Array.from({ length: parcelList.length }, (_, index) => ({
+    area: splitAreaValues?.[index] ?? existingParcels[index]?.area ?? (index === 0 ? existing.area ?? "" : ""),
+    cost: splitCostValues?.[index] ?? existingParcels[index]?.cost ?? (index === 0 ? existing.cost ?? "" : "")
+  }));
+  return {
+    cases: existing.cases || "",
+    area: existing.area || "",
+    cost: existing.cost || "",
+    document: existing.document || "",
+    parcels
+  };
+}
+
+function normalizeAreaParcelList(section, recordParcels = []) {
+  const existing = section || {};
+  const existingParcels = Array.isArray(existing.parcels) ? existing.parcels : [];
+  const parcelList = parcelSlots(recordParcels);
+  const splitArea = shouldSplitAggregateParcelValue(existing.area, existingParcels, "area", parcelList);
+  const splitAreaValues = splitArea ? splitTotalByParcels(existing.area, parcelList) : null;
+  return Array.from({ length: parcelList.length }, (_, index) => ({
+    area: splitAreaValues?.[index] ?? existingParcels[index]?.area ?? (index === 0 ? existing.area ?? "" : "")
+  }));
+}
+
+function parcelSlots(recordParcels = []) {
+  if (Array.isArray(recordParcels)) return recordParcels;
+  const count = Math.max(0, Number(recordParcels) || 0);
+  return Array.from({ length: count }, () => ({}));
+}
+
+function shouldSplitAggregateParcelValue(total, existingParcels, field, recordParcels, compareFirstParcelArea = true) {
+  const parcelList = parcelSlots(recordParcels);
+  if (parcelList.length <= 1 || !hasText(total) || !safeNum(total)) return false;
+  const filled = existingParcels
+    .map((parcel, index) => ({ index, value: parcel?.[field] }))
+    .filter(item => hasText(item.value) || safeNum(item.value));
+  if (!filled.length) return true;
+  if (filled.length !== 1 || filled[0].index !== 0 || !nearlyEqual(filled[0].value, total)) return false;
+  if (!compareFirstParcelArea) return true;
+  const firstParcelArea = parcelBaseArea(parcelList[0]);
+  const allParcelArea = parcelList.reduce((sum, parcel) => sum + parcelBaseArea(parcel), 0);
+  const totalNumber = safeNum(total);
+  return totalNumber > firstParcelArea + 0.01 || nearlyEqual(totalNumber, allParcelArea);
+}
+
+function splitTotalByParcels(total, recordParcels = []) {
+  const parcelList = parcelSlots(recordParcels);
+  const totalNumber = safeNum(total);
+  if (!parcelList.length || !totalNumber) return parcelList.map(() => "");
+  const weights = parcelList.map(parcelBaseArea);
+  const weightTotal = weights.reduce((sum, value) => sum + value, 0);
+  if (!weightTotal) return parcelList.map((_, index) => (index === 0 ? total : ""));
+  let runningTotal = 0;
+  return weights.map((weight, index) => {
+    if (index === weights.length - 1) {
+      const lastValue = roundToTwoDecimals(totalNumber - runningTotal);
+      return lastValue || "";
+    }
+    const value = roundToTwoDecimals(totalNumber * weight / weightTotal);
+    runningTotal += value;
+    return value || "";
+  });
+}
+
+function parcelBaseArea(parcel) {
+  return safeNum(parcel.adjusted?.area) || safeNum(parcel.original?.area);
+}
+
+function roundToTwoDecimals(value) {
+  return Math.round((value + Number.EPSILON) * 100) / 100;
+}
+
+function nearlyEqual(a, b) {
+  return Math.abs(safeNum(a) - safeNum(b)) < 0.01;
+}
+
+function blankParcel() {
+  return normalizeParcel({});
+}
+
+function newRecord(type = "household", commune = currentCommune()) {
+  const stageRoundCounts = Object.fromEntries(
+    STAGES.map(stage => [stage.id, ensureCommuneStage(commune, stage.id).rounds.length])
+  );
+  return normalizeRecord({
+    id: crypto.randomUUID(),
+    type,
+    original: {},
+    adjusted: {},
+    stages: {}
+  }, stageRoundCounts);
+}
+
+function render() {
+  if (!db) return;
+  syncUiToProject();
+  const project = currentProject();
+  if (!project) {
+    renderNoProjectShell();
+    return;
+  }
+  const meta = projectMeta();
+  const communes = projectCommunes();
+  app.innerHTML = `
+    <div class="shell">
+      <aside class="sidebar">
+        <div class="brand">
+          <img class="brand-asset" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAA8AAAAFACAIAAAD8m4I9AAAltklEQVR4nO3dX8ifd33/8Ss/IgjzYEfzZNnukxxsbGMdmKE3ZaggbB3kXndQpFRDY21kUDTaxjTmN7YYXdItjkBpNLaoQcSDdQ1MB4XqQclKI0xxUg9y4D3jicLAAweCB454pZdXv3+u7/W9/n7+PB4n3k3v2Ht3svrsq+/v9T2wc8+fFUzrq1/+wro/9cCDx5o/Adb9thlQ8+/Awf9yQCBa/q9Ph78J+N81EnNw7i8gcdv+LcPfYkjgnwCBMPmfGBjKAQv09H9v+uDJ0ws/8rlLn274/A+cf6Lf10WyPn/m4hjlWv1OPnHm0vKfvXL+5Lb/hcIaYunjj5w/0fBnP3PmSv8R+pFTZ7t+dRCEqxfOWaBH//vUci6v/JyGhv78mYsamnCsrOrmsDZaQxR9DLQkoMedltvT0KQa1t3a2mhNbqLo44+cP1GO0F/98hf8Pyk5E9DjTstb0dBs6wPnnyivOAL/HzOjNUTRx0BLud9ATzAtb8s9NLOfQTffQE/DpTVxyaqPO19CO4MmDXndQM84LQ+4Q0MmjNYEJas+BvJdoAOclrfS0NBeUMjYI3QIC3QHRms608fTjNAWaNKQyAIdy7Q81A7toRywktGadfQxkPsCHfu0vBU7NG1YoDszWqdBH8/CCE22Ql+gk5yWt2KHJqVncQTIaB0FfQyEJqCAzmpabk9Dw/Q803pK+hiIzjwnHKblbbnlYMorjkhfRBjdNUgm7xejjxPmioM8TXTCYVruzw5NM1ccs8t2tNbHQIYGDmjT8ng0NEQq4Uvrln/P9/zjVHlnb7LVK6BNyxPT0JCSlEZriQxkpe0NtGk5HO6hGfsS2g10sIK6tK5+n6jnzHW4hPaOKqR5A21aDpkdGrKV0mgNEK+DpuUYaWggn0trAucSmgytXqBze9ZyjDQ0yzyLgwFHaw0NsM6BV1/7gWKOl3toxjiDdgOds6qqm38LOYCm5yW0M2jidfXCuf8399dALw3/rqAKKQAABiSgo+fehroPnH9iwLe3AACWCeiUG9oIDYxxvwHLqqcZtvyn9+r32NUL53w/iY6AToSGBibjABrInIBOh4am5IoDiGKEhngJ6KRoaACAsQno1GhoAKIYoZ1BEy8BnSANjSsOxuMAGkBAp0lDAzALl9DkQEAnS0MD3XiGHUAzAZ0yDZ0zVxx0fgg0TDZCO4MmUgI6cRoaGJADaAABnQUNDQAwIAt0FjR0nlxxAHNxxUHaBHQuNHRLrzz25lcee/O4vxgAQMwEdEY0NNCHA2i24nl2JExA50VD58YVBwAMTkBnZ11DAzmrnmHnIdBMP0J7mB3REdA5WtnQnz9zcY6vBYiD+w2AioDOlIbOhysOYEYuoUmSgM6XhgYA6EBAZ01DAxDCCO0MmrgI6Nxp6By44qAnB9AAdQIaDQ0AsAUBzR12aMiZZ9gxNlccJEZAc5eGTpsrDgAYioDm1zJv6B+99N0fvfTd6uO5vxwIhQNoBuF5dqREQPMG2Tb0j1767u3rR25fP1L+4e3rRzQ0ALCSgGZRhg1d1vPCD6bX0K44gMBHaA+zIxYCmtwbemU9p9rQAEB/ApqsG7qhnksamsw5gGZYLqFJg4Am94bOiisOGlT/9hyAZgc3/Hny9sGTpz936dMLP/j5MxerDgvZK4+9efMnPdY0P5eaJ+rK2y//vNWXBaE+BBqm8ZHzJz5z5kr57zeW/7HtgQePlf/e4+qFc4+cOusXZSj/8YkDRVG845O/9C0dhAWaLjs0AEC2LNB02aGjGKHbTMIbb6CLojh09OZvv/uPilR84PwT5R3Oyu0H6hxAF0Xx4mO/VRTFey7/xO8NoGKBpuMOncYx9G+/+48OHb2ZTz0DhP9SQg+zI3wCmrYybGj1nIaXP/7Tlz/+07m/CgDSIaDZQlYNnXA9exYHMDvPsyNqAprtpN3QVUYnXM/QkgNogHUENFtLuKGraFbP5PYMO68oJagR2hk0gRPQdJFqQ+fDFQcAdCag6UhDQ8LcbzANl9BESkDTnYYGADIkoOlFQ8fLFQcQ8gjtDJqQCWj60tAAEKzb3/rW7W99q/p47i8nEQKaAWhoSIkDaEiqnq8fuX39yN0/vH5EQw9CQDMMDR0jVxyZ8wy7Zt9/af/7L+1XH0/xS5IrVxyj1vPiD2roIQhoBqOhgWR8/6X9hd1OQ5NAPd/9Uxq6NwHNkDQ0Qdl/5cX9V16sPp77yyGyel74QQ09Ks+zm6ye736Chu5HQDN6QxOyhK849l95cWFB1NBtOIBeWc/V7yI7NFAUxUHfBQb3wZOnP3fp09Uffv7MxarSYMp6XvjB29ePHDr64s7b3+NXgQ71XPtddPP33r3jezi4j5w/8ZkzV8p/iqueYffAg8fKf6i7euHcI6fO+rYXRfEfnzjQ4vvQ9Nu41PxbvfKOT/7St32ZBZopduiI3uj77Zd//vbLP5/7q2D4ei7ZoQHozwLNWOzQsfjA+SfKf8Kprz5J1nPJDp2tFx/7rc2f1OJzWu5277n8k1ZfFptGaDpMwhtvoIuiOHT05qG3vc23txsLNCOKd4eGfNQzxQE0pOHQ29526OjNpk9Qz/1YoDe48XdvKopi929/0fMbnS07NAN6+eM/He7yb/N/1b3/8JtFBg+BzkebSXjjDXRZHm6gpxyhnUH3aeiVv5/Vc38WaEZnhw5fws/igK383rt3Nu526pmod2j1PAgLNFOwQzOINpPwxhvo8n8/PIuD5oZet9upZyJt6PK3tHoeigWaidihmcbO29+zcUFUzys5gG7eodXzjG+qUl3qX71wbrqvI6WGfv3Fgl41OBQLNHPu0G1+lmdIT/8sjiKFhl69Q6tntm3oarezPQMVAc1E6um8lfbP7pDaNDe0emYr9WJWzxPzPDsCJ6CZp56fvNTqHb8/dXKL7JbaLDd0fUF0uQHAIAQ0gabztp8stQe84kjG68V854l16nnlM+yq01IH0AQ+QnuYHUER0IRbz1uR2gDANAQ00afztqQ2QBRcQhMsAU1e9byVDFM7vSsO2nC/AbAVAc249RxpOm8rw9QGmH6ELv9h7+qFc4+cOuv7z4wE9Fo//M63f/Wfd16//8PvfPt3/vie6X5Z4pTM8DwqqQ0AsRPQq/3wO9+uP0H29vUjh47e1NAN1HN6qQ0ArCSgN9dzSUOvI51TTe36w85OnLm0/ddFHM+wcwBN4FxxECAB3aqeSxp6mXqOS+f3r6mSS0wDxOgdn/zl3F9CUgR023ouaeiKdE5VVc8nTt899rjy6Te8QlFMAzOO0L75hEBA04V6zkpV0g0x7caDVL3n8k/m/hKA4GQU0Df+7k0tPqtpfi41T9SV3b/9RZGoPB9Ul+383DKmzdKRcgBNdCN0xcPsmFFGAU1/hmdijOl7/+E35/4SAEhKRgHdZhLeeANdFEW2z7NTz/lYNz+3+SkOpoHJRmiYS0YB3cbv/PE9h47ebGjoPOtZOmdi24fcdT6YDmSZzlz5DDsAOjh4Y/9Wl5+XZUOr55KjZ1oS0wGq/2OMA2hiH6GdQTOLG/u3Du7uHL7z4WMPlz/0xcvPzfO1BN/QGdaz4TkrG18+2JOYBiBqxz70vvKD3Z3DBxe6+f1KutbQ1TM31LPhmQGJaQCi6+YvPPOl8oPdC+cWb6CVdKW+N2e+PbvZSN7Y83MDD5kGtuKKg7m6udWLCJV0npxtMKNYnouXBgfQANt28xZP4VDS+VDPhENMA+t4nh1zdXOXx9gtl7QXHSZDOudsxvuNljxkGoDxorl9N/d6DnT9SR1edJgA9UwsvPqwp+oY5oEHj1UnHBD7CO1hdow6No/yRioOPKImnQl/fl5HTPfhABrIzbEhunn4dyJ04BEd9UwyxDRkyCU0ox5pTP1W3g48ouBBddRFNz83ENMAmTs26Ng8UUDXmaUDZHhm+X4jVR4y3ewj509M9CsBI4/QzqA5NtrYPENAV8zSgVDPZMtz8SBG1SsFN7p64dy6P/XIqbPDfUWEZYKxec6ArjNLz0I6k8zLB/sT0xBXHPfU0NYlhR2XY9OOzaEEdPMs7dnSY1DPsE4+D5mu/18EEZXxxacfbfizT/zNZ8sPHj93Yd3nPHX2VJ/CltchOBZANNcdePW1HxRF8cGTp4tgiOkBSWdWynl+bmMhpuvijemFgHYAzexx3FzGbbSp54025vVGCjuTaK5cvXBuzgV6Hcv0UNQzdONRHuQpqDiezMb4NmBP6Vio0bwgxICuE9OdeVAdDEJMk4Y843iCwu6Z1wbsIp5ojimg68R0S4Znmrnf6ExMk/nBMcsM2PlEc6wBXSem11HPMI2oHzLtADoWZuM2+hxAT8CAnUw0pxDQbWI6twd6SGfaMD+PwXPx6EAcD/UKwqilPWAfqxVzAtGcWkA3FHM+D/RQzxAIMY04JucB+1hCM/Pmx9hVgnqe3bBSHaelMx0WaE+vy+25eJ5hNxQHx+EY5Bl2yev5kL42eX0s3Zl5nasXzi0GdA4lnVJPq2e24n4j25iuB7QD6HXcVMRFQM+V1zf2b+VWzCsCeueeP6v++Ktf/kKeMR3psYcH1bEtAZ1tTAtocZwY9TxxYdejeXfncOZvMbMY0BtLOsOYDrOnDc90oJ5zjum0A1ocZ0hAj23vofvrf/jCteeXP+epXN/E8e4JxwMPHmv4pJxn6TB7Wj3TjYDOOaYjDWgHx6wjoGcp5gAvsEO5gRbTIfe0dKYz9ZxeTG9V0lVAh1PPZmP6ENBhFvNW4h2wm15E2NzTmd94NPT0eEmtnulDQGce0xMHtDhmbAK6Zy7PUszJDNi/DugTj935e+uVy5cGjOncSnq8iVo605+Azjmmh73fEMfMTj1HMTAnPGAvBvSCDj0tpgefqNUz/annzA+mWwa0g2NiIaDTGJjjHbA3BHSfmHbjMchE7UF1DEJA56Mhpody8elHx/5LQDMBncPAHHhetw3o9j3dPqazvfFoM1EbnhmKes5Wh5gWx0Qhw4A2MIdW2B0DuvM4Laa7JfXXng/uWdTEQkBTlbQ+JqWATrie5XLgnjp76mD//5Z6fC/HdL2YH3jwWNXTCyVdH1xzXqbXDc/33b+Y1KqarZw4fdF3LE/qmVTn51Rb2T1GFAYI6LqFJXuhpxeieWNM51bSDWcbKxfo5ao2VLNufgZgdqblZAwc0H3G6eUfzGeW7nbxvJzLhmoACIFpOW3jBnS3cbqM6XxuPAZ8vaChmjrXz7jfgGmYlnMzXUC3H6eXLz0SvvGY4EF1LYdqFyAABG7252+s3JVdLWdotoDufOmRzI3HjA+qW3cq7QIkJeZngD7cYBB6QHd+GWJdXDEd5mOeW16A2KohCu43oCWtTPQBvdU4vU7INx5hpvMgVS2sAQiZAwxyCej243QUs3R09TzIEYiwnp77DSBnQpmxxRTQPcfpeWM6mXQeNqy1NYzE/QbJv4JwXSV7SR8TiDigB4npaUo6k3pu0PAOL0brwZmfgZTs3vex8oMb+7fKD8p0fuHa87N+XWQtkYDufOkxwSw9wYPqchut7dbQ0sWnH/W9IqJEXunG1/4xkGfYQcoB3XmcHjymDc99NL8tuZuQjU6cvtjrF4Ak7jcgikquEhlikX5Adxun+994qOfQbkI2/sTE7jcAwhySezI/E4K8ArrDON1hlpbOkU7XbX46hM/LB5mlj8cekqv7DQhB1gE9Rkyr58Bt7OONhR1yZHv5IDBSHDu0gDoB3fHSY/nGQzqnoU0cRx3ZQG7EMQxOQPcdp5e7ueRpGwkbKrKH7WzzM+43ctOmjC3HMIaD1VMVGWqcls60L+OWnW3Shny0zOKsytgD7AjKjf1bB3d3Dt/58OSHyh+6dumZmb+opN/ABTov0BtTu/qH4Yce/as7/7/82X/13Ya4gji3LIa4VG9+ubtz+OBCNz+kpCHC1F6+3ygzeiuaO3aevxFgDQtiSKabqze/3D17avEGWkl3duKxk+UI/amTn3bFwew61HCH5u75V4QoCrjOPAzZdnOrFxEqaYjFUC8f7FnAPft7wK+E9PSs3joFDHTu5i2ewqGk2zNCk7MBq3fAFs+n1ye+3xiwaNtQvTnzCkLC6eYuj7FbLmkvOoRw9JyfgzJx0U7c6yOpXkU6TdoqWiCZaG7fzb2eA11/UocXHS4wQjPX/QadWaAB8rG35dg8yhupOPAAmJ3nbwBM0M3DvxOhA4+KEZrJePdBIBOPn7sw95dAXkcaU7+VtwMPInX9kTcVRXH06i/m/kLYwstP/qwoins/9RbfNUj7FYQw19g8UUDXZTtLG6GZgPmZkvsNgL3RxuYZArpilgYAILqxec6AznCWNkIDAMQ+NocS0M2zdEoxraEZj/sNSu43SJi3UCGoaA4loLOKaQAA4o3mEAM61Zg2QjMG8zMASdoLOJpDD+hUYxpgWO43gATsRRLNMQV0AjFthGas31qnL/reAhCjvQijOdaATiCmYcD7DShdfPpR3wrS4xWE6dmLPJpTCOg2MR1OTxuhgfHuN5jRF9/31qIo3v+lH/tVgOZiTiCaUwvohmI2TpMYLx8EIGR7Cc3MGQV0sOO0ETpk//lv377zH48cKT/+k7+8Z+6viM32X/3Gr/7zzq/a/qvf2PnTd2X1XfPyQSAQe+nOzPkGdMtxOpxjD6b3n//27dvX70RY6fb1I4eO3gyzoc3Plf1Xv7H0q5ZdQ0MOHj93Ye4vgUV7WRZzvgE9+7GHETr8eg6/oVmu55KGhiRfQUggMjnMaC/fgA722IN567mkoeOq59wa2v0GMDYzczMBPemxhxE6inoOs6HdbzTXc24NDTAsxbwVAT11T2toAGB2irkPAT1wTzv5CMH1R960+ZN+9cyNZs1jZ+Xo1V8UI8thfn75yZ+1+KyWv2qb/6vu/dRbiji53yB53kJlglx2ytyTgO5reYHeOFEboQGAURmYRyWgh2einl2bSXjjDXRRFEHdQKc9P7echDfeQJe/am6ggdwYmCcmoOeZqG/s3yo/vu/+h7/2/HPjfxUs+pO/vOfQ0ZsNNRZOPVf3G+z86bsOHW1q6OTr2f0GUDIwz0tAz5bUVy5fuvvH9z+88AmSevaGDqeead/QydczQfnGv/z3nf9431vLj9/1178791dEygzMoRHQs6kuoXd3Dj956XT9T90nqWdt6KDqOYeXDw7S0OqZKX3jX/57+R1MNfQgvIJQLkdBQIdoeYFeTmpD9bANXT1zI6h6prmh679qOWzP7jfCrOeShmaoadnzMaIgoOfU/nEcK486DNVDqRdzUPVsfm7wejHfeWJdDvVMyPVc0tBs5BIjGQI6YoZqgEDquaShqZiW0yagZzbsM6EN1ZAq9xtk5fFzF4qomJZzI6DT13KodlQdGvcbMKUv/up5Ghu0+JyW72D6/i/9uNWXlesrCOPalV0tZ0hAz2/6NyZc95g8L1UEgJIbDBoI6CAE8ubeLS9AbNUTMD9T535jAm0m4Y030OUzYTzPLjpamW0JaAaramENpO1df/27G9/BVD2HzAEGQxHQoQhkhB7jCERYd+bNUyCihlbP4byFilBmbAKaOcNaWzffb4D7jVgaWj1Pb10le0kfExDQAYlrhB4krI3WQLwNXX8vTJcb4zEnEyABTXyjddq7tZcPstLFpx/1nQlKvZjVc0+7932sKIob+7dWFvML157v+xeAoQnosCQ8Qm+rOZHdhJDb8zcgjUpe6cbX/nHYG2gYm4Aml5uQjT/x6NVfFHMzP2/r3k+9ZZRfCWDQRK4qeR31TFwEdHCM0HNN121+OkzJ45+JqI83JjKkRECTl419vLGwRTaQYRzrY6gT0CEyQs+ozQI9UmS73wDGII5hcAIaZotsYzYN3G8wSBnHtRx7+SCxOFg9NYagGKFj13KBrnd29f+MDz36V8ufee2z/zrcVwdEn8VxlXGz6hWEdPD1D/9vURR/8c+/4bs3mRv7tw7u7hy+8+HJD5U/dO3SM9P99WmkobPq7I33GyuruoHghuiCOLEshsRUTyjf3Tl8cKGbH1LSMJ919dwhiLcNbs0dFPcbwVqo4c/9T/mDTT9FEEMa3Vy9p8/u2VOLN9BKOihG6ExU8/OAOizQHZq7518Rwt+Dm2v4i+97a1EU7//Sj3t/XUDo3dzqRYRKGnLTs4B79veAXwnp6Vm9dfbg0HgLFSLq5i2ewqGk52WETl4yT68bsHoHbPEYez2K+40Bizbq6rU9Q1bd3OUxdssl7UWHQAJFO3Gvb1Q9j2XiSE2jaAG2jeb23dzrOdD1J3V40eEEjNAJS2Z+jpoFGiAfe1uOzaO8kYoDDxjkhYPlv7WX0URxvwGQZzcP/06EDjxGZYTO5LEbVTwpaSAHXkFIsEcaU7+VtwMP2CqdP3Hho+UHnzz1T8slLaYBYMaxeaKArjNLD8gIneTqXNXzupI2S2fF/QZAaGPzDAFdMUuTs43p3PCnVs7SDjwA+K9vfvPON+HDR4rizsd/+M53Zvg92Rt/bF7pwKuv/aBcN4vJeRxeB1cuXyo/ePLS6YF/PZj8ZmMrC7N0SUknxgJNnjfQj5+7MPcXEp//+uY3b1+/k86VQ0dvZtLQe9OOzcueOntqzoCuE9Ptaejc0nmBkk6VeiY3XkE4YD0n39B7c0dz3VNnT010wtHtxsMbtZDJzcZWvOgQIGfr6rkoitvXjxw6ms4tx15I0bwglIAOLaZfPv+WoijuPfOzIjxeTZjn8LzMiw4BctNQz2k09F7A0Rx6QIcW0xBaOjf8VbzoMFLuN4Bs7UUSzXWh3EBva+yYDnmBLrmEzudmoxun0nER0OTGAfSyr3/4f6f8JfiLf/6NYj57EUZziDfQ27JME4gA03nha7BJR8TbdwMJ24s5mhfEGtBtYjrtSw+X0DnfbGzFiw7DV3/jSSBbbSbhjTfQQT2LY69WzAlEc2oB3VDMzqbJOZ0XeNEhQOz+8J3vPHS0qaFnr+e9hGbmjAI6q3HaCD2LYG822vOiw6C4fgaGauhZ6nkv3Zk534BuOU6n0dNMIMbhuZlTaWB6XkE4RkNPVs97WRZzvgGd5LGHEXoy6aXzAiUNEF1Dlw9+nqCeMznMaC/fgG4+9vjc/5QfLP4pMpTAzcZWvOhwSu43gM5eL+Y7D78bvJ7NzM0E9ArXLj1Tfw504MceRujx5JbOC7zoECAfinkrAjqF42kNPYbkbzba86JDYAyPn7vgGzsjxdyHgF60/73XfvWfdy6K9r/32s4f/P5WPR1IUtOHdG7gVHpA7jfI/BWEzJjLTpl7EtBvsP+91+qvab19/cihozeXG7o5l2eZqI3Qg8j8ZmMrShogZAbmUQnotfXcvqEXmKgjZXjuxosOAWZnYJ7YgVdf+0G5XxZ5W1nPlW0butl4E/WVy5fKD568dHqo/84cSOdhffLUP6388ROnLw78V4qZ+w2y5SHQgzAwz+ips6cs0JvrudsO3cBEHQ43G2PwokNgHfU8+MD89Q/feYzdC8Vv+F03JQE9v41X1O1XapfQ7UnnaTiVBtiWe4zwpR/Q5ROdN2man0vNE3WlfHT0BEntcR99uNmYnpKuc78BrGtlz8eIQvoBnYaVC/TKodoI3Uw6z86LDoFsmZaTkX5At5mEN95AD/46wkGsG6pv7N8q//C++x8uiuJrzz83x1cXHDcbofFOh0DCTMtp8xSOGZ7CMYH64zjKjK7LMKkNz1E/wSOxx3e43yBbCb+C0LScFU/h+LWdP/j9Q0dvrmzo6Op5Yy4vJ/W6z0yAdI6LU2kgul3Z1XKG0j/h6NnQkdZz8yX0ulBeGdbxVrWbjagpaWBebjBo4IRj0f73XqueuRFpPQ/7vioxVrV0TlIa78/ifoOcBXvCoZXZihOOFerFHHU9D2VlK4d8BOJmI1VedAhpmLGeHWAwFCccKRvvkXZbHYFMFtbSORPe6RCinp8nIJQZm4CmmDGsh2prNxvZiutU2v0GTFDJXtLHBAR04gJ5X5WGSu4/Whueia6kgfbMyQRIQBPfaF39LOlMjO90ePHpR+f9AiCiLdmcTJg8hWO1l8+/peW7GObzOI6gNOT1v3/1yrRfC6EL5PEd7jfI2RN/89nqXXKXvXDt+Wm/HOjFUziIz8Zz5z9/4ETDT5fXGfKiQ5jG7n0fW/enbuzf2t05HOAD7KAbC3QWC3QyI3T/m43mvFbY+Zj4PcPNzyTw3IyGCblUJnIbMpqoWaCJxlDnzhsX6I2FLbLT4EWHJKnzo+JWxvHCD7bv442eOnuq+lhMEyMLdC4LdLwjdICPqBPZSRr1VNoCzYxPR964HDfE8fGzfz/41/Psuf+/8seVNLGwQBO6MJ+z0eaQuk1kG7MzeadD9ZyYKd8QpH8ZF0Xx3LNf2fw5xXTqUV6PabM0ETlw6esvFkVx7dIzc38lYUlygY5rhA4znQfXsrOldtSn0gJ6duEkb5uV9+Hj7235E9uUcSzM0kRk76H7755wVP8Uq6STF35DB3izEVdqlzxvJJySFtDJJ2+z9kGcXhZ3I6YJ/IHluzuHF2+gHzr5ofIDJZ2qkANaOs8Y3Jp7pJLOp55TSt4Ba1gQ96GkCaqbqweWP3X21NoXESrphIXZ0JncbCTW3Dlv3i1fdBhyQGeSvP0LuM48HFRMe90hU3ZzqxcRVgu0kmZs0jkQPQu4Z38P+JXE/qLDBnkmb//qrVPAkap+d3ndIXN1c8fH2CnplAQyQrvZYOwWn7jX183S6SXvgEXbhuplmQMPpu/mzSccbUraqXS8QghowzN59noaFC1BEdP0ieaW3dw3oOvM0vGasaGlM5koB+nxDhuABUqaYcfmsd5Ixak0W3GzQT6iO+eABHiXFsbr5nHfytuBR0SmHKGlM7kxP0MgzNLZ2ut6pDHDW3nXHyDtwIOSmw1yY36GiGZpj8NLzN6gY/NEC/RKZulsR2jpTJ7MzxA4s3Ri9sYZm6dboFcyS2fIzQbZMj9DpA+WNktHZ2/8sXnOBXols3TCI7ThmZyZnyFSZuko7E04No/1GLuhiOlkGlo6k7lqfvb0OoiXkg7N3tzRPM8JR7cbD2/UEhc3G1BRzxA1j8MLwV5I0bwglAV6HTEdxQgtnaFkfoaEmaUzj+YQF+h1LNPhc7MBC8zPkCSPw8s5miNboNexTIcwQktnqDM/Q4bM0vlEc0wL9DqW6Xm52YB1zM+QFY/DyySaE1mg2yzTXoM40ghteIZl5megYpZeLuYEojmFBbrNMu3SY3DSGZqZn4HMZ+m9hGbmjBboBsbpPiO0mw1oYH4Gsp2l9xKdmfNaoLuN0449GkhnaMn8DOQwS+/lV8xZL9DNPNZj5Qi97BMXPjrFrwfEw/wMDDtLB1jSmRxmtJTXAt3tsR7G6Yp0hgbmZ2CoWbrapGeMaTNzMwG9Qs7HHuu2Z/UMzfMzQNQHHop5KwI6955uuNYoSWfYyPwMTPZ+h0PFtGLuQ0AP3NNRJLUTZxiE+RmIZZZeyGWnzD0J6L6WcznAibp5ZrYxQx/mZyDAWdrAPCoBnexEbWaGUZmfgXBm6Rv7txTzlAR0OhO1mRmmZ34GZvHw8ffe2L9V/eHuzuGFT9g9eyrAx+ElQ0DHPVGbmWEW5mdgSg8ff+/Cjzz37Ffe8IevfxDa4/BSJaAjmKjrn2NmhnCYn4FZcjnkx+FlwjsRRuDK5Uv1f01T2d057PV/MD1vPQiM18pb5XKf9zsU0515J8JALc/M9dumX0fzAyf+/IET9U/7969emeLrA8zPwLTTch9m6cE54QhFh2vm5Vxe6Ol1nwZ05voZCGdaDvZdWpInoGczxjXzylZermpJDT25fgZCmJb7MEv3IaAnNctDM1oO1cIaNjI/Q+ZW7spR5HKfWdomvUxAjyvMh2asW6BdgEAb5mfIQZg3GLPM0g48lgno4cX7bOaWFyC2avJkfoZU5dnKzRx4NBPQyc7M01e1sCYH5meIV5IHGGPzusOVBHR2M/P0RyDCmgSYnyEiQnkkZumKgG4r7Zl5rrDW1sTF/AzhV7JFeQLHs38cnoBukvnMPKCGB+cZrQmf+RlmZE4O3PEs3zxcQL+BmTmK0dpuzSzMzzD9lmxOjsjxnB6HJ6DNzIFqfrcXNyFMxvwMg3BxkZXjqT8OL8eANjPneROy8SdCA/MzbGRIJp8Dj1wC2jVzPjpP121+OrkxP0PLPnZrQVavO0w2oM3MdOvjjYUtsjNkfiZ5G+NYHzOg4/HP0kkFtJmZ/tos0CI7E+Zn0iCOCdbxaGfpuAPazEzUkW3MjoL5majL2HJMLI5HNUsfuPT1F4uiuHbpmSISZmZS0rKzpfaM87OAJswsVsbk4Nk3xnQgJb330P0HXn3tB0VR3Ni/Vf5QgCVtZoatUrvk1ZCDBLR6ZsogLj337Fd826FNSU8c03sP3V9+sLtz+G5An3jsZPlDD538UAglbWaGiYNbc9eZnxmqhgUxxF7SVTe/cO358oOnzp5aDOjKxCVtZoYYmzvVzdv8nLAOBVxnHoZMYnq5mytNAT1BSZuZISU9+zucFjc/p1e9dQoY0vPscCXd0M3bBfSAJW1mBiZu8Q69bn6euGjbUL3AqDHdpps7BvRySbeJaTMzELiJez0NihaIvaSraG7ZzX0DunmWNjMD8TI/A6Qd0zdef/TcVtFc99TZU33fSKXs5jvRXJul6z5x4aM9/xIA0/DWgwBJOn7276vDs92dw3c/6PF+hx0Denlmrr6aqutnfyUQQAee/QyQ3qs1nnv9CevPDfF+h1sEdIdr5uqyUEkDgTM/AyTWzc+tf1ui+lZSj+mqpJtjuimg+18zV91cf42OmAaCZX4GSGZs3vbv/O1n6YPTPDSjHs1maSA05meAVMfm9trP0nefwjGL+rV0dUINAABFwAH5fxiD89vqDPy0AAAAAElFTkSuQmCC" alt="Bản đồ địa chính">
+          <h1>Giải phóng mặt bằng Bắc Bình</h1>
+          <p>${escapeHtml(meta.agency || "")}</p>
+        </div>
+        <div class="sidebar-section project-section">
+          <div class="sidebar-label">Dự án</div>
+          <select class="project-select" data-action="project-select" title="Chọn dự án">
+            ${db.projects.map(item => `<option value="${escapeAttr(item.id)}" ${item.id === project.id ? "selected" : ""}>${escapeHtml(projectDisplayName(item))}</option>`).join("")}
+          </select>
+          <div class="project-tools">
+            <button class="btn" data-action="add-project" title="Thêm dự án" ${canCreateProjects() ? "" : "disabled"}><i data-lucide="folder-plus"></i><span>Thêm</span></button>
+            <button class="btn" data-action="rename-project" title="Đổi tên dự án" ${canManageProject(project.id) ? "" : "disabled"}><i data-lucide="pencil"></i><span>Đổi tên</span></button>
+            <button class="btn danger" data-action="delete-project" title="Xóa dự án" ${canManageProject(project.id) ? "" : "disabled"}><i data-lucide="trash-2"></i></button>
+          </div>
+        </div>
+        <nav class="nav">
+          ${navButton("dashboard", "layout-dashboard", "Tổng quan")}
+          ${navButton("update", "clipboard-pen-line", "Cập nhật số liệu")}
+          ${navButton("report", "file-text", "Báo cáo giải phóng mặt bằng")}
+          ${navButton("formulas", "square-function", "Đầu mục & công thức")}
+        </nav>
+        <div class="sidebar-section">
+          <div class="sidebar-label">Xã/khu vực</div>
+          <div class="commune-list">
+            ${communes.map(commune => `
+              <button class="${ui.communeId === commune.id ? "active" : ""}" data-commune-button="${commune.id}">
+                <i data-lucide="map-pin"></i>
+                <span>${escapeHtml(commune.name)}</span>
+              </button>
+            `).join("")}
+            <button class="commune-add" data-action="add-commune">
+              <i data-lucide="plus"></i>
+              <span>Thêm xã/khu vực</span>
+            </button>
+          </div>
+        </div>
+      </aside>
+      <main class="main">
+        <header class="topbar">
+          <div class="title-block">
+            <h2>${escapeHtml(viewTitle())}</h2>
+            <p>${escapeHtml(periodText())}</p>
+          </div>
+          <div class="actions no-print">
+            ${authStatus()}
+            <span class="status save-status"><i data-lucide="cloud"></i><span>${escapeHtml(ui.saveText)}</span></span>
+            <button class="btn" data-action="save"><i data-lucide="save"></i><span>Lưu</span></button>
+            <button class="btn" data-action="import-json"><i data-lucide="upload"></i><span>Nhập JSON</span></button>
+            <button class="btn" data-action="export-json"><i data-lucide="download"></i><span>Xuất JSON</span></button>
+            <button class="btn" data-action="export-csv"><i data-lucide="table"></i><span>Xuất CSV</span></button>
+            <button class="btn" data-action="print"><i data-lucide="printer"></i><span>In báo cáo</span></button>
+          </div>
+        </header>
+        <div class="content">
+          ${renderContent()}
+        </div>
+      </main>
+    </div>
+  `;
+  refreshIcons();
+}
+
+function renderAuthShell() {
+  const isSignup = ui.authMode === "signup";
+  app.innerHTML = `
+    <main class="auth-screen">
+      <section class="auth-panel">
+        <div>
+          <h1>Giải phóng mặt bằng Bắc Bình</h1>
+          <p>Đăng nhập nội bộ để làm việc trên các dự án được phân quyền.</p>
+        </div>
+        <div class="auth-tabs">
+          <button class="${!isSignup ? "active" : ""}" data-action="auth-mode" data-mode="login">Đăng nhập</button>
+          <button class="${isSignup ? "active" : ""}" data-action="auth-mode" data-mode="signup">Tạo tài khoản</button>
+        </div>
+        <div class="auth-fields">
+          <label>
+            <span>Email</span>
+            <input id="authEmail" type="email" autocomplete="email">
+          </label>
+          <label>
+            <span>Mật khẩu</span>
+            <input id="authPassword" type="password" autocomplete="${isSignup ? "new-password" : "current-password"}">
+          </label>
+          ${isSignup ? `
+            <label>
+              <span>Họ tên</span>
+              <input id="authName" autocomplete="name">
+            </label>
+          ` : ""}
+        </div>
+        ${store.authError ? `<p class="auth-error">${escapeHtml(store.authError)}</p>` : ""}
+        ${store.authMessage ? `<p class="auth-message">${escapeHtml(store.authMessage)}</p>` : ""}
+        <button class="btn primary auth-submit" data-action="${isSignup ? "auth-signup" : "auth-login"}">
+          <i data-lucide="${isSignup ? "user-plus" : "log-in"}"></i>
+          <span>${isSignup ? "Tạo tài khoản" : "Đăng nhập"}</span>
+        </button>
+      </section>
+    </main>
+  `;
+  refreshIcons();
+}
+
+function renderNoProjectShell() {
+  app.innerHTML = `
+    <main class="auth-screen">
+      <section class="auth-panel">
+        <div>
+          <h1>Chưa có dự án được phân quyền</h1>
+          <p>${canCreateProjects() ? "Tài khoản này có quyền tạo dự án đầu tiên." : "Tài khoản này cần được tài khoản chủ thêm vào một dự án trước khi nhập liệu."}</p>
+        </div>
+        <div class="auth-actions">
+          ${canCreateProjects() ? `<button class="btn primary" data-action="add-project"><i data-lucide="folder-plus"></i><span>Tạo dự án</span></button>` : ""}
+          <button class="btn" data-action="auth-logout"><i data-lucide="log-out"></i><span>Đăng xuất</span></button>
+        </div>
+      </section>
+    </main>
+  `;
+  refreshIcons();
+}
+
+function authStatus() {
+  if (store.mode !== "supabase") {
+    return `<span class="status auth-status"><i data-lucide="hard-drive"></i><span>Lưu local</span></span>`;
+  }
+  const role = currentProjectRole();
+  return `
+    <span class="status auth-status"><i data-lucide="user-round"></i><span>${escapeHtml(store.user?.email || "")}${role ? ` - ${roleLabel(role)}` : ""}</span></span>
+    <button class="btn" data-action="auth-logout"><i data-lucide="log-out"></i><span>Đăng xuất</span></button>
+  `;
+}
+
+function canCreateProjects() {
+  return store.mode !== "supabase" || Boolean(store.profile?.is_app_admin);
+}
+
+function currentProjectRole() {
+  return projectRole(currentProject()?.id);
+}
+
+function projectRole(projectId) {
+  if (store.mode !== "supabase") return "local";
+  if (!projectId) return "";
+  return store.projectRoles[projectId] || "";
+}
+
+function canManageProject(projectId) {
+  if (store.mode !== "supabase") return true;
+  const role = projectRole(projectId);
+  return store.profile?.is_app_admin || role === "owner" || role === "admin";
+}
+
+function canEditCurrentProject() {
+  if (store.mode !== "supabase") return true;
+  return ["admin", "owner", "editor"].includes(currentProjectRole());
+}
+
+function roleLabel(role) {
+  if (role === "admin") return "Tài khoản chủ";
+  if (role === "owner") return "Chủ dự án";
+  if (role === "editor") return "Nhập liệu";
+  if (role === "local") return "Local";
+  return "Chưa phân quyền";
+}
+
+function requireProjectEdit() {
+  if (canEditCurrentProject()) return true;
+  alert("Tài khoản này chưa có quyền nhập liệu/chỉnh sửa dự án hiện tại.");
+  return false;
+}
+
+function exportProjectState(project) {
+  return {
+    id: project.id,
+    name: project.name,
+    meta: project.meta,
+    notes: project.notes,
+    communes: project.communes,
+    audit: project.audit || []
+  };
+}
+
+function navButton(view, icon, label) {
+  return `
+    <button class="${ui.view === view ? "active" : ""}" data-view="${view}">
+      <i data-lucide="${icon}"></i>
+      <span>${label}</span>
+    </button>
+  `;
+}
+
+function viewTitle() {
+  if (ui.view === "update") return `Cập nhật số liệu - ${currentCommune()?.name || ""}`;
+  if (ui.view === "report") return "Báo cáo kết quả thực hiện dự án";
+  if (ui.view === "formulas") return "Đầu mục công việc và công thức";
+  return projectMeta().projectName || "Báo cáo giải phóng mặt bằng";
+}
+
+function periodText() {
+  const meta = projectMeta();
+  const from = formatDate(meta.reportPeriod?.from);
+  const to = formatDate(meta.reportPeriod?.to);
+  return `Kỳ báo cáo: ${from} đến ${to}`;
+}
+
+function renderContent() {
+  if (ui.view === "update") return renderUpdateView();
+  if (ui.view === "report") return renderReportView();
+  if (ui.view === "formulas") return renderFormulaView();
+  return renderDashboard();
+}
+
+function renderDashboard() {
+  const totals = aggregateAll();
+  const progress = buildProgressRows(totals);
+  const communes = projectCommunes();
+  return `
+    ${renderProjectOverview()}
+    <section class="metrics">
+      ${metric("Tổng sau kiểm đếm", formatNumber(totals.adjusted.cases), `${formatArea(totals.adjusted.area)} m2`)}
+      ${metric("Quyết định phương án bồi thường, hỗ trợ, tái định cư", formatNumber(totals.stages.planDecision.cases), `${formatMoney(totals.stages.planDecision.cost)} đồng`)}
+      ${metric("Đã chi trả tiền bồi thường, hỗ trợ", formatNumber(totals.stages.payment.cases), `${formatMoney(totals.stages.payment.cost)} đồng`)}
+      ${metric("Đã bàn giao mặt bằng", formatNumber(totals.handover.total.cases), `${formatArea(totals.handover.total.area)} m2`)}
+    </section>
+    <section class="panel">
+      <div class="panel-header">
+        <div>
+          <h3>Tiến độ lũy kế</h3>
+        </div>
+      </div>
+      <div class="panel-body">
+        <div class="progress-list">
+          ${progress.map(row => progressRow(row)).join("")}
+        </div>
+      </div>
+    </section>
+    <section class="panel">
+      <div class="panel-header">
+        <div>
+          <h3>Tổng hợp theo xã</h3>
+        </div>
+      </div>
+      <div class="panel-body">
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Xã/khu vực</th>
+                <th>Tổng sau kiểm đếm</th>
+                <th>Diện tích sau kiểm đếm</th>
+                <th>Kiểm đếm</th>
+                <th>Quyết định phương án bồi thường, hỗ trợ, tái định cư</th>
+                <th>Chi trả tiền bồi thường, hỗ trợ</th>
+                <th>Quyết định thu hồi đất</th>
+                <th>Bàn giao mặt bằng</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${communes.map(commune => {
+                const t = communeTotals(commune);
+                return `
+                  <tr>
+                    <td><strong>${escapeHtml(commune.name)}</strong></td>
+                    <td>${formatNumber(t.adjusted.cases)}</td>
+                    <td>${formatArea(t.adjusted.area)}</td>
+                    <td>${formatNumber(t.stages.inventory.cases)} / ${formatArea(t.stages.inventory.area)}</td>
+                    <td>${formatNumber(t.stages.planDecision.cases)} / ${formatArea(t.stages.planDecision.area)}</td>
+                    <td>${formatNumber(t.stages.payment.cases)} / ${formatMoney(t.stages.payment.cost)}</td>
+                    <td>${formatNumber(t.recoveryDecision.cases)} / ${formatArea(t.recoveryDecision.area)}</td>
+                    <td>${formatNumber(t.handover.total.cases)} / ${formatArea(t.handover.total.area)}</td>
+                  </tr>
+                `;
+              }).join("")}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  `;
+}
+
+function renderProjectOverview() {
+  const projects = db.projects || [];
+  return `
+    <section class="panel project-overview no-print">
+      <div class="panel-header">
+        <div>
+          <h3>Tất cả dự án</h3>
+          <p>${formatNumber(projects.length)} dự án đang quản lý</p>
+        </div>
+        <div class="toolbar">
+          <button class="btn primary" data-action="add-project" ${canCreateProjects() ? "" : "disabled"}><i data-lucide="folder-plus"></i><span>Thêm dự án</span></button>
+        </div>
+      </div>
+      <div class="panel-body">
+        <div class="project-grid">
+          ${projects.map(project => renderProjectCard(project)).join("")}
+        </div>
+      </div>
+    </section>
+    ${renderProjectAccessPanel()}
+  `;
+}
+
+function renderProjectCard(project) {
+  const isActive = project.id === currentProject()?.id;
+  const communeCount = project.communes?.length || 0;
+  const recordCount = (project.communes || []).reduce((sum, commune) => sum + commune.records.length, 0);
+  const role = projectRole(project.id);
+  const updated = project.updatedAt ? `Cập nhật ${new Date(project.updatedAt).toLocaleString("vi-VN")}` : "Dữ liệu local";
+  return `
+    <article class="project-card ${isActive ? "active" : ""}">
+      <div class="project-card-head">
+        <div>
+          <h4>${escapeHtml(projectDisplayName(project))}</h4>
+          <p>${escapeHtml(updated)}</p>
+        </div>
+        <span class="pill ${isActive ? "green" : ""}">${isActive ? "Đang mở" : roleLabel(role)}</span>
+      </div>
+      <div class="project-card-stats">
+        <span><strong>${formatNumber(communeCount)}</strong> xã/khu vực</span>
+        <span><strong>${formatNumber(recordCount)}</strong> hồ sơ</span>
+      </div>
+      <div class="project-card-actions">
+        <button class="btn" data-action="open-project" data-project="${escapeAttr(project.id)}"><i data-lucide="folder-open"></i><span>Mở</span></button>
+        <button class="btn" data-action="rename-project" data-project="${escapeAttr(project.id)}" ${canManageProject(project.id) ? "" : "disabled"}><i data-lucide="pencil"></i><span>Đổi tên</span></button>
+        <button class="btn danger" data-action="delete-project" data-project="${escapeAttr(project.id)}" ${canManageProject(project.id) ? "" : "disabled"}><i data-lucide="trash-2"></i></button>
+      </div>
+    </article>
+  `;
+}
+
+function renderProjectAccessPanel() {
+  if (store.mode !== "supabase") return "";
+  const project = currentProject();
+  if (!project) return "";
+  const canManage = canManageProject(project.id);
+  const members = store.projectMembers[project.id] || [];
+  return `
+    <section class="panel project-access-panel no-print">
+      <div class="panel-header">
+        <div>
+          <h3>Phân quyền dự án hiện tại</h3>
+          <p>${canManage ? "Thêm tài khoản nội bộ vào dự án để cùng nhập liệu." : "Chỉ chủ dự án mới phân quyền tài khoản khác."}</p>
+        </div>
+      </div>
+      <div class="panel-body">
+        ${canManage ? `
+          <div class="access-form">
+            <div class="field">
+              <label>Email tài khoản nội bộ</label>
+              <input data-access-email placeholder="email@coquan.gov.vn">
+            </div>
+            <div class="field">
+              <label>Quyền</label>
+              <select data-access-role>
+                <option value="editor">Nhập liệu và chỉnh sửa</option>
+                <option value="owner">Chủ dự án phụ</option>
+              </select>
+            </div>
+            <button class="btn primary" data-action="grant-project-access"><i data-lucide="user-plus"></i><span>Thêm vào dự án</span></button>
+          </div>
+        ` : ""}
+        <div class="member-list">
+          ${members.length ? members.map(member => `
+            <div class="member-row">
+              <span>
+                <strong>${escapeHtml(member.profiles?.display_name || member.profiles?.email || member.user_id)}</strong>
+                <small>${escapeHtml(member.profiles?.email || "")}</small>
+              </span>
+              <span class="pill">${roleLabel(member.role)}</span>
+              ${canManage && member.user_id !== store.user?.id ? `<button class="btn icon danger" title="Gỡ khỏi dự án" data-action="remove-project-access" data-project="${escapeAttr(project.id)}" data-user="${escapeAttr(member.user_id)}"><i data-lucide="user-minus"></i></button>` : ""}
+            </div>
+          `).join("") : emptyState("Chưa có thành viên nào ngoài tài khoản chủ.")}
+        </div>
+      </div>
+    </section>
+  `;
+}
+
+function metric(label, value, detail) {
+  return `
+    <div class="metric">
+      <label>${escapeHtml(label)}</label>
+      <strong>${value}</strong>
+      <span>${escapeHtml(detail)}</span>
+    </div>
+  `;
+}
+
+function progressRow(row) {
+  const percent = clamp(row.percent, 0, 100);
+  const pillClass = percent >= 80 ? "green" : percent >= 40 ? "amber" : "red";
+  return `
+    <div class="progress-row">
+      <div>
+        <strong>${escapeHtml(row.name)}</strong>
+        <div class="muted">${formatNumber(row.done.cases)} trường hợp / ${formatArea(row.done.area)} m2</div>
+      </div>
+      <div class="bar" aria-label="${percent.toFixed(0)}%">
+        <span style="width:${percent}%"></span>
+      </div>
+      <span class="pill ${pillClass}">${formatPercent(percent)}</span>
+    </div>
+  `;
+}
+
+function renderUpdateView() {
+  const commune = currentCommune();
+  const communes = projectCommunes();
+  const stageTabs = [
+    { id: "measurement", name: "Đo đạc và quy chủ" },
+    ...STAGES.map(stage => ({ id: stage.id, name: `${stage.no}. ${stage.shortName}` })),
+    { id: "recoveryDecision", name: "9. Quyết định thu hồi đất" },
+    { id: "handover", name: "10. Bàn giao mặt bằng" },
+    { id: "notHandover", name: "11. Chưa giao mặt bằng" },
+    { id: "remarks", name: "12. Ghi chú" }
+  ];
+  return `
+    <section class="panel no-print">
+      <div class="panel-header">
+        <div>
+          <h3>${escapeHtml(commune.name)}</h3>
+          <p>${formatNumber(commune.records.length)} hồ sơ đang quản lý</p>
+        </div>
+        <div class="toolbar">
+          <button class="btn" data-action="add-commune"><i data-lucide="map-plus"></i><span>Thêm xã/khu vực</span></button>
+          <button class="btn" data-action="rename-commune"><i data-lucide="pencil"></i><span>Đổi tên xã/khu vực</span></button>
+          <button class="btn danger" data-action="delete-commune"><i data-lucide="trash-2"></i><span>Xóa xã/khu vực</span></button>
+          <button class="btn primary" data-action="add-record" data-type="household"><i data-lucide="user-plus"></i><span>Thêm hộ</span></button>
+          <button class="btn" data-action="add-record" data-type="organization"><i data-lucide="building-2"></i><span>Thêm tổ chức</span></button>
+        </div>
+      </div>
+      <div class="panel-body">
+        <div class="grid-3">
+          <div class="field">
+            <label>Tìm kiếm</label>
+            <input value="${escapeAttr(ui.search)}" data-action="search" placeholder="Tên, thửa đất, địa chỉ">
+          </div>
+          <div class="field">
+            <label>Loại hồ sơ</label>
+            <select data-action="type-filter">
+              <option value="all" ${ui.type === "all" ? "selected" : ""}>Tất cả</option>
+              <option value="household" ${ui.type === "household" ? "selected" : ""}>Hộ gia đình, cá nhân</option>
+              <option value="organization" ${ui.type === "organization" ? "selected" : ""}>Tổ chức</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Xã/khu vực</label>
+            <select data-action="commune-select">
+              ${communes.map(c => `<option value="${c.id}" ${c.id === commune.id ? "selected" : ""}>${escapeHtml(c.name)}</option>`).join("")}
+            </select>
+          </div>
+        </div>
+        <div class="tabs" style="margin-top:14px">
+          ${stageTabs.map(tab => `
+            <button class="tab ${ui.stageId === tab.id ? "active" : ""}" data-stage-tab="${tab.id}">
+              ${escapeHtml(tab.name)}
+            </button>
+          `).join("")}
+        </div>
+      </div>
+    </section>
+    ${renderCurrentEntryTable(commune)}
+  `;
+}
+
+function renderCurrentEntryTable(commune) {
+  if (ui.stageId === "measurement") return renderMeasurementTable(commune);
+  if (ui.stageId === "recoveryDecision") return renderRecoveryDecisionTable(commune);
+  if (ui.stageId === "handover") return renderHandoverTable(commune);
+  if (ui.stageId === "notHandover") return renderNotHandoverTable(commune);
+  if (ui.stageId === "remarks") return renderRemarksTable(commune);
+  const stage = STAGES.find(item => item.id === ui.stageId) || STAGES[0];
+  return renderStageTable(commune, stage);
+}
+
+function visibleRecords(commune) {
+  const search = normalizeText(ui.search);
+  return commune.records.filter(record => {
+    if (ui.type !== "all" && record.type !== ui.type) return false;
+    if (!search) return true;
+    const haystack = normalizeText([
+      record.original.landUser,
+      record.adjusted.landUser,
+      record.original.address,
+      record.adjusted.address,
+      record.remarks,
+      ...record.parcels.flatMap(parcel => [
+        parcel.original.mapSheet,
+        parcel.original.parcelNo,
+        parcel.original.recoveryNotice,
+        parcel.original.landType,
+        parcel.adjusted.adjustedNotice,
+        parcel.adjusted.landType
+      ])
+    ].join(" "));
+    return haystack.includes(search);
+  });
+}
+
+function renderMeasurementTable(commune) {
+  const records = visibleRecords(commune);
+  return `
+    <section class="panel">
+      <div class="panel-header">
+        <div>
+          <h3>I. Số liệu đo đạc, quy chủ và điều chỉnh sau kiểm đếm</h3>
+        </div>
+      </div>
+      <div class="panel-body">
+        ${records.length ? `
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th class="sticky-col">Hồ sơ / trường hợp</th>
+                  <th>Loại</th>
+                  <th>Tên chủ sử dụng đất gốc</th>
+                  <th>Địa chỉ gốc</th>
+                  <th>Địa chỉ điều chỉnh</th>
+                  <th>Số thửa</th>
+                  <th>Tổng diện tích gốc</th>
+                  <th>Tổng diện tích sau kiểm đếm</th>
+                  <th>Ghi chú</th>
+                  <th class="small no-print"></th>
+                </tr>
+              </thead>
+              <tbody>
+                ${records.map(record => measurementRow(record)).join("")}
+              </tbody>
+            </table>
+          </div>
+        ` : emptyState("Chưa có hồ sơ phù hợp bộ lọc.")}
+      </div>
+    </section>
+  `;
+}
+
+function measurementRow(record) {
+  const originalArea = recordArea(record, "original");
+  const adjustedArea = recordArea(record, "adjusted");
+  return `
+    <tr class="case-row">
+      <td class="sticky-col">
+        <div class="case-editor">
+          <label>Chủ sau kiểm đếm</label>
+          ${input(record, "adjusted.landUser", record.adjusted.landUser, "Họ và tên")}
+          <div class="muted">Mã hồ sơ: ${escapeHtml(record.id)}</div>
+        </div>
+      </td>
+      <td>
+        <select data-record="${record.id}" data-path="type">
+          <option value="household" ${record.type === "household" ? "selected" : ""}>Hộ</option>
+          <option value="organization" ${record.type === "organization" ? "selected" : ""}>Tổ chức</option>
+        </select>
+      </td>
+      <td>${input(record, "original.landUser", record.original.landUser, "Tên người sử dụng")}</td>
+      <td>${input(record, "original.address", record.original.address)}</td>
+      <td>${input(record, "adjusted.address", record.adjusted.address)}</td>
+      <td><strong>${formatNumber(record.parcels.length)}</strong></td>
+      <td>${formatArea(originalArea)}</td>
+      <td>${formatArea(adjustedArea)}</td>
+      <td>${textarea(record, "remarks", record.remarks)}</td>
+      <td class="small no-print">
+        <div class="row-actions">
+          <button class="btn icon" title="Thêm thửa đất" data-action="add-parcel" data-record="${record.id}"><i data-lucide="copy-plus"></i></button>
+          <button class="btn icon danger" title="Xóa hồ sơ" data-action="delete-record" data-record="${record.id}"><i data-lucide="trash-2"></i></button>
+        </div>
+      </td>
+    </tr>
+    <tr class="parcel-detail-row">
+      <td colspan="10">
+        ${renderParcelTable(record)}
+      </td>
+    </tr>
+  `;
+}
+
+function renderParcelTable(record) {
+  return `
+    <div class="parcel-box">
+      <div class="parcel-box-head">
+        <strong>Danh sách thửa đất của trường hợp này</strong>
+        <button class="btn no-print" data-action="add-parcel" data-record="${record.id}">
+          <i data-lucide="plus"></i>
+          <span>Thêm thửa</span>
+        </button>
+      </div>
+      <div class="table-wrap parcel-table-wrap">
+        <table class="parcel-table">
+          <thead>
+            <tr>
+              <th>STT</th>
+              <th>Tờ bản đồ</th>
+              <th>Thửa đất</th>
+              <th>Thông báo thu hồi đất</th>
+              <th>Diện tích gốc</th>
+              <th>Loại đất gốc</th>
+              <th>Thông báo điều chỉnh</th>
+              <th>Diện tích sau kiểm đếm</th>
+              <th>Loại đất điều chỉnh</th>
+              <th class="small no-print"></th>
+            </tr>
+          </thead>
+          <tbody>
+            ${record.parcels.map((parcel, index) => parcelRow(record, parcel, index)).join("")}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  `;
+}
+
+function parcelRow(record, parcel, index) {
+  const canDelete = record.parcels.length > 1;
+  return `
+    <tr>
+      <td>${index + 1}</td>
+      <td>${input(record, `parcels.${index}.original.mapSheet`, parcel.original.mapSheet)}</td>
+      <td>${input(record, `parcels.${index}.original.parcelNo`, parcel.original.parcelNo)}</td>
+      <td>${input(record, `parcels.${index}.original.recoveryNotice`, parcel.original.recoveryNotice)}</td>
+      <td>${numberInput(record, `parcels.${index}.original.area`, parcel.original.area)}</td>
+      <td>${input(record, `parcels.${index}.original.landType`, parcel.original.landType)}</td>
+      <td>${input(record, `parcels.${index}.adjusted.adjustedNotice`, parcel.adjusted.adjustedNotice)}</td>
+      <td>${numberInput(record, `parcels.${index}.adjusted.area`, parcel.adjusted.area)}</td>
+      <td>${input(record, `parcels.${index}.adjusted.landType`, parcel.adjusted.landType)}</td>
+      <td class="small no-print">
+        ${canDelete ? `<button class="btn icon danger" title="Xóa thửa đất" data-action="delete-parcel" data-record="${record.id}" data-parcel-index="${index}"><i data-lucide="trash-2"></i></button>` : ""}
+      </td>
+    </tr>
+  `;
+}
+
+function renderStageTable(commune, stage) {
+  const records = visibleRecords(commune);
+  const stageMeta = ensureCommuneStage(commune, stage.id);
+  records.forEach(record => ensureRecordStageLength(record, stage.id, stageMeta.rounds.length));
+  const totals = stageRoundTotals(records, stage.id, stageMeta.rounds.length);
+  const roundColumnCount = stage.hasCost ? 3 : 2;
+  const tableColumnCount = 1 + (stageMeta.rounds.length * roundColumnCount) + 2 + (stage.hasCost ? 1 : 0) + 1;
+  return `
+    <section class="panel">
+      <div class="panel-header">
+        <div>
+          <h3>${stage.no}. ${escapeHtml(stage.name)}</h3>
+          <p>Tổng: ${formatNumber(totals.total.cases)} trường hợp, ${formatArea(totals.total.area)} m2${stage.hasCost ? `, ${formatMoney(totals.total.cost)} đồng` : ""}.</p>
+        </div>
+      </div>
+      <div class="panel-body">
+        <div class="toolbar no-print" style="margin-bottom:12px">
+          <button class="btn primary" data-action="add-stage-round" data-stage="${stage.id}">
+            <i data-lucide="plus"></i>
+            <span>Thêm ${stage.unit.toLowerCase()}</span>
+          </button>
+        </div>
+        <div class="table-wrap">
+          <table class="stage-grid">
+            <thead>
+              <tr>
+                <th class="sticky-col" rowspan="2">Hồ sơ</th>
+                ${stageMeta.rounds.map((round, index) => `
+                  <th class="group" colspan="${roundColumnCount}">
+                    <div class="round-head">
+                      <div class="round-title">
+                        <span>${stage.unit} ${index + 1}</span>
+                        ${stageMeta.rounds.length > 1 ? `<button class="btn icon danger no-print" title="Xóa ${stage.unit.toLowerCase()} này" data-action="delete-stage-round" data-stage="${stage.id}" data-round-index="${index}"><i data-lucide="trash-2"></i></button>` : ""}
+                      </div>
+                      <input value="${escapeAttr(round.document || "")}" placeholder="Văn bản, ngày tháng năm" data-stage-round-document="true" data-stage="${stage.id}" data-round-index="${index}">
+                    </div>
+                  </th>
+                `).join("")}
+                <th rowspan="2">Tổng trường hợp</th>
+                <th rowspan="2">Tổng diện tích</th>
+                ${stage.hasCost ? `<th rowspan="2">Tổng chi phí</th>` : ""}
+                <th rowspan="2">Ghi chú</th>
+              </tr>
+              <tr>
+                ${stageMeta.rounds.map(() => `
+                  <th class="small">Trường hợp (tên người)</th>
+                  <th class="small">Diện tích</th>
+                  ${stage.hasCost ? `<th class="small">Chi phí</th>` : ""}
+                `).join("")}
+              </tr>
+            </thead>
+            <tbody>
+              ${records.length ? records.map(record => stageRecordRow(record, stage, stageMeta.rounds.length)).join("") : `<tr><td class="empty" colspan="${tableColumnCount}">Chưa có hồ sơ phù hợp bộ lọc.</td></tr>`}
+            </tbody>
+            <tfoot>
+              <tr>
+                <th class="sticky-col">Tổng cộng</th>
+                ${totals.rounds.map(round => `
+                  <th>${formatNumber(round.cases)}</th>
+                  <th>${formatArea(round.area)}</th>
+                  ${stage.hasCost ? `<th>${formatMoney(round.cost)}</th>` : ""}
+                `).join("")}
+                <th>${formatNumber(totals.total.cases)}</th>
+                <th>${formatArea(totals.total.area)}</th>
+                ${stage.hasCost ? `<th>${formatMoney(totals.total.cost)}</th>` : ""}
+                <th></th>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+    </section>
+  `;
+}
+
+function stageRecordRow(record, stage, roundCount) {
+  ensureRecordStageLength(record, stage.id, roundCount);
+  const stageData = record.stages[stage.id];
+  const total = totalRounds(stageData.rounds);
+  return `
+    <tr>
+      <td class="sticky-col">
+        <strong>${escapeHtml(displayOwner(record))}</strong>
+        <div class="muted">${record.type === "organization" ? "Tổ chức" : "Hộ"} - ${escapeHtml(parcelSummary(record))}</div>
+      </td>
+      ${stageData.rounds.map((round, index) => `
+        <td>${input(record, `stages.${stage.id}.rounds.${index}.cases`, round.cases, "Tên người")}</td>
+        <td>${renderRoundParcelInputs(record, stage, index, round, "area")}</td>
+        ${stage.hasCost ? `<td>${renderRoundParcelInputs(record, stage, index, round, "cost")}</td>` : ""}
+      `).join("")}
+      <td>${formatNumber(total.cases)}</td>
+      <td>${formatArea(total.area)}</td>
+      ${stage.hasCost ? `<td>${formatMoney(total.cost)}</td>` : ""}
+      <td>${input(record, `stages.${stage.id}.note`, stageData.note)}</td>
+    </tr>
+  `;
+}
+
+function renderRoundParcelInputs(record, stage, roundIndex, round, field) {
+  const parcels = record.parcels || [];
+  const total = roundParcelTotal(round);
+  const value = field === "cost" ? total.cost : total.area;
+  const label = field === "cost" ? "Tổng chi phí" : "Tổng diện tích";
+  return `
+    <div class="round-parcel-list">
+      ${parcels.map((parcel, parcelIndex) => `
+        <label>
+          <span>${escapeHtml(parcelLabel(parcel, parcelIndex))}</span>
+          ${numberInput(record, `stages.${stage.id}.rounds.${roundIndex}.parcels.${parcelIndex}.${field}`, round.parcels?.[parcelIndex]?.[field] ?? "")}
+        </label>
+      `).join("")}
+      <div class="round-parcel-total">${label}: ${field === "cost" ? formatMoney(value) : formatArea(value)}</div>
+    </div>
+  `;
+}
+
+function parcelLabel(parcel, index) {
+  const map = parcel.original?.mapSheet || "";
+  const no = parcel.original?.parcelNo || "";
+  const suffix = [map, no].filter(Boolean).join("/");
+  return `Thửa ${index + 1}${suffix ? ` (${suffix})` : ""}`;
+}
+
+function renderAreaParcelInputs(record, sectionKey) {
+  const section = record[sectionKey] || {};
+  const total = areaParcelTotal(section);
+  return `
+    <div class="round-parcel-list">
+      ${(record.parcels || []).map((parcel, parcelIndex) => `
+        <label>
+          <span>${escapeHtml(parcelLabel(parcel, parcelIndex))}</span>
+          ${numberInput(record, `${sectionKey}.parcels.${parcelIndex}.area`, section.parcels?.[parcelIndex]?.area ?? "")}
+        </label>
+      `).join("")}
+      <div class="round-parcel-total">Tổng diện tích: ${formatArea(total.area)}</div>
+    </div>
+  `;
+}
+
+function renderRecoveryDecisionTable(commune) {
+  const records = visibleRecords(commune);
+  const totals = communeTotals(commune);
+  return `
+    <section class="panel">
+      <div class="panel-header">
+        <div>
+          <h3>9. Tổng quyết định thu hồi đất</h3>
+          <p>Tổng: ${formatNumber(totals.recoveryDecision.cases)} trường hợp, ${formatArea(totals.recoveryDecision.area)} m2.</p>
+        </div>
+      </div>
+      <div class="panel-body">
+        ${records.length ? `
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th class="sticky-col">Hồ sơ</th>
+                  <th>Quyết định thu hồi đất - trường hợp</th>
+                  <th>Số quyết định, ngày tháng năm</th>
+                  <th>Quyết định thu hồi đất - diện tích</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${records.map(record => recoveryDecisionRow(record)).join("")}
+              </tbody>
+              <tfoot>
+                <tr>
+                  <th class="sticky-col">Tổng cộng</th>
+                  <th>${formatNumber(totals.recoveryDecision.cases)}</th>
+                  <th></th>
+                  <th>${formatArea(totals.recoveryDecision.area)}</th>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        ` : emptyState("Chưa có hồ sơ phù hợp bộ lọc.")}
+      </div>
+    </section>
+  `;
+}
+
+function recoveryDecisionRow(record) {
+  return `
+    <tr>
+      <td class="sticky-col"><strong>${escapeHtml(displayOwner(record))}</strong><div class="muted">${record.type === "organization" ? "Tổ chức" : "Hộ"}</div></td>
+      <td>${input(record, "recoveryDecision.cases", record.recoveryDecision.cases, "Tên người/ký hiệu")}</td>
+      <td>${input(record, "recoveryDecision.document", record.recoveryDecision.document)}</td>
+      <td>${renderAreaParcelInputs(record, "recoveryDecision")}</td>
+    </tr>
+  `;
+}
+
+function renderHandoverTable(commune) {
+  const records = visibleRecords(commune);
+  const totals = communeTotals(commune);
+  return `
+    <section class="panel">
+      <div class="panel-header">
+        <div>
+          <h3>10. Bàn giao mặt bằng</h3>
+          <p>Đã bàn giao: ${formatNumber(totals.handover.total.cases)} trường hợp, ${formatArea(totals.handover.total.area)} m2.</p>
+        </div>
+      </div>
+      <div class="panel-body">
+        ${records.length ? `
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th class="sticky-col">Hồ sơ</th>
+                  <th>Đã nhận tiền - trường hợp</th>
+                  <th>Đã nhận tiền - diện tích</th>
+                  <th>Thời gian nhận tiền</th>
+                  <th>Giao mặt bằng trước - trường hợp</th>
+                  <th>Giao mặt bằng trước - diện tích</th>
+                  <th>Thời gian giao mặt bằng trước</th>
+                  <th>Tổng bàn giao mặt bằng - trường hợp</th>
+                  <th>Tổng bàn giao mặt bằng - diện tích</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${records.map(record => handoverRow(record)).join("")}
+              </tbody>
+              <tfoot>
+                <tr>
+                  <th class="sticky-col">Tổng cộng</th>
+                  <th>${formatNumber(totals.handover.paid.cases)}</th>
+                  <th>${formatArea(totals.handover.paid.area)}</th>
+                  <th></th>
+                  <th>${formatNumber(totals.handover.early.cases)}</th>
+                  <th>${formatArea(totals.handover.early.area)}</th>
+                  <th></th>
+                  <th>${formatNumber(totals.handover.total.cases)}</th>
+                  <th>${formatArea(totals.handover.total.area)}</th>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        ` : emptyState("Chưa có hồ sơ phù hợp bộ lọc.")}
+      </div>
+    </section>
+  `;
+}
+
+function handoverRow(record) {
+  const paid = record.handoverPaid;
+  const early = record.handoverEarly;
+  const total = addTotals(
+    { cases: caseCount(paid.cases), area: areaParcelTotal(paid).area, cost: 0 },
+    { cases: caseCount(early.cases), area: areaParcelTotal(early).area, cost: 0 }
+  );
+  return `
+    <tr>
+      <td class="sticky-col"><strong>${escapeHtml(displayOwner(record))}</strong><div class="muted">${record.type === "organization" ? "Tổ chức" : "Hộ"}</div></td>
+      <td>${input(record, "handoverPaid.cases", paid.cases, "Tên người/ký hiệu")}</td>
+      <td>${renderAreaParcelInputs(record, "handoverPaid")}</td>
+      <td>${input(record, "handoverPaid.time", paid.time)}</td>
+      <td>${input(record, "handoverEarly.cases", early.cases, "Tên người/ký hiệu")}</td>
+      <td>${renderAreaParcelInputs(record, "handoverEarly")}</td>
+      <td>${input(record, "handoverEarly.time", early.time)}</td>
+      <td>${formatNumber(total.cases)}</td>
+      <td>${formatArea(total.area)}</td>
+    </tr>
+  `;
+}
+
+function renderNotHandoverTable(commune) {
+  const records = visibleRecords(commune);
+  const totals = communeTotals(commune);
+  return `
+    <section class="panel">
+      <div class="panel-header">
+        <div>
+          <h3>11. Chưa giao mặt bằng</h3>
+          <p>Tổng chưa giao: ${formatNumber(totals.notHandover.total.cases)} trường hợp, ${formatArea(totals.notHandover.total.area)} m2.</p>
+        </div>
+      </div>
+      <div class="panel-body">
+        ${records.length ? `
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th class="sticky-col">Hồ sơ</th>
+                  <th>Đã phê duyệt phương án bồi thường, hỗ trợ, tái định cư nhưng chưa giao - trường hợp</th>
+                  <th>Đã phê duyệt phương án bồi thường, hỗ trợ, tái định cư nhưng chưa giao - diện tích</th>
+                  <th>Chưa phê duyệt phương án bồi thường, hỗ trợ, tái định cư và chưa giao - trường hợp</th>
+                  <th>Chưa phê duyệt phương án bồi thường, hỗ trợ, tái định cư và chưa giao - diện tích</th>
+                  <th>Tổng chưa giao mặt bằng - trường hợp</th>
+                  <th>Tổng chưa giao mặt bằng - diện tích</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${records.map(record => notHandoverRow(record)).join("")}
+              </tbody>
+              <tfoot>
+                <tr>
+                  <th class="sticky-col">Tổng cộng</th>
+                  <th>${formatNumber(totals.notHandover.approved.cases)}</th>
+                  <th>${formatArea(totals.notHandover.approved.area)}</th>
+                  <th>${formatNumber(totals.notHandover.unapproved.cases)}</th>
+                  <th>${formatArea(totals.notHandover.unapproved.area)}</th>
+                  <th>${formatNumber(totals.notHandover.total.cases)}</th>
+                  <th>${formatArea(totals.notHandover.total.area)}</th>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        ` : emptyState("Chưa có hồ sơ phù hợp bộ lọc.")}
+      </div>
+    </section>
+  `;
+}
+
+function notHandoverRow(record) {
+  const plan = totalRounds(record.stages.planDecision.rounds);
+  const paid = record.handoverPaid;
+  const approvedPending = {
+    cases: plan.cases - caseCount(paid.cases),
+    area: plan.area - safeNum(paid.area)
+  };
+  const unapprovedPending = {
+    cases: adjustedCase(record) - plan.cases,
+    area: recordArea(record, "adjusted") - plan.area
+  };
+  const total = addTotals(approvedPending, unapprovedPending);
+  return `
+    <tr>
+      <td class="sticky-col"><strong>${escapeHtml(displayOwner(record))}</strong><div class="muted">${record.type === "organization" ? "Tổ chức" : "Hộ"}</div></td>
+      <td>${formatNumber(approvedPending.cases)}</td>
+      <td>${formatArea(approvedPending.area)}</td>
+      <td>${formatNumber(unapprovedPending.cases)}</td>
+      <td>${formatArea(unapprovedPending.area)}</td>
+      <td>${formatNumber(total.cases)}</td>
+      <td>${formatArea(total.area)}</td>
+    </tr>
+  `;
+}
+
+function renderRemarksTable(commune) {
+  const records = visibleRecords(commune);
+  return `
+    <section class="panel">
+      <div class="panel-header">
+        <div>
+          <h3>12. Ghi chú</h3>
+          <p>Cập nhật ghi chú theo từng hồ sơ, tương ứng cột DQ trong file mẫu.</p>
+        </div>
+      </div>
+      <div class="panel-body">
+        ${records.length ? `
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th class="sticky-col">Hồ sơ</th>
+                  <th>Ghi chú</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${records.map(record => `
+                  <tr>
+                    <td class="sticky-col"><strong>${escapeHtml(displayOwner(record))}</strong><div class="muted">${record.type === "organization" ? "Tổ chức" : "Hộ"}</div></td>
+                    <td>${textarea(record, "remarks", record.remarks)}</td>
+                  </tr>
+                `).join("")}
+              </tbody>
+            </table>
+          </div>
+        ` : emptyState("Chưa có hồ sơ phù hợp bộ lọc.")}
+      </div>
+    </section>
+  `;
+}
+
+function renderReportView() {
+  const reportItems = reportDefinitions();
+  const activeScope = ui.reportScope === "summary" || findCommune(ui.reportScope) ? ui.reportScope : "summary";
+  ui.reportScope = activeScope;
+  const commune = activeScope === "summary" ? null : findCommune(activeScope);
+  return `
+    ${renderReportInfoPanel()}
+    ${renderReportSwitcher(activeScope)}
+    ${activeScope === "summary" ? renderAggregateReportPage(reportItems) : renderCommuneReportPage(commune, reportItems)}
+  `;
+}
+
+function renderReportInfoPanel() {
+  const meta = projectMeta();
+  return `
+    <section class="panel no-print">
+      <div class="panel-header">
+        <div>
+          <h3>Thông tin báo cáo</h3>
+        </div>
+      </div>
+      <div class="panel-body">
+        <div class="grid-2">
+          <div class="field">
+            <label>Tên dự án/báo cáo</label>
+            <input value="${escapeAttr(meta.projectName || "")}" data-meta-path="projectName">
+          </div>
+          <div class="field">
+            <label>Cơ quan</label>
+            <input value="${escapeAttr(meta.agency || "")}" data-meta-path="agency">
+          </div>
+          <div class="field">
+            <label>Từ ngày</label>
+            <input type="date" value="${escapeAttr(meta.reportPeriod?.from || "")}" data-meta-path="reportPeriod.from">
+          </div>
+          <div class="field">
+            <label>Đến ngày</label>
+            <input type="date" value="${escapeAttr(meta.reportPeriod?.to || "")}" data-meta-path="reportPeriod.to">
+          </div>
+        </div>
+      </div>
+    </section>
+  `;
+}
+
+function renderReportSwitcher(activeScope) {
+  const communes = projectCommunes();
+  const totalRecords = communes.reduce((sum, commune) => sum + commune.records.length, 0);
+  return `
+    <section class="panel no-print report-switcher-panel">
+      <div class="panel-header">
+        <div>
+          <h3>Chọn báo cáo</h3>
+        </div>
+        <div class="toolbar">
+          <button class="btn primary" data-action="add-commune"><i data-lucide="plus"></i><span>Thêm xã/khu vực</span></button>
+        </div>
+      </div>
+      <div class="panel-body">
+        <div class="report-switcher">
+          <button class="report-choice report-choice-summary ${activeScope === "summary" ? "active" : ""}" data-report-scope="summary">
+            <i data-lucide="layers-3"></i>
+            <span>
+              <strong>Báo cáo tổng hợp tất cả xã/khu vực</strong>
+              <small>${formatNumber(communes.length)} xã/khu vực, ${formatNumber(totalRecords)} hồ sơ</small>
+            </span>
+          </button>
+          <div class="report-commune-picker">
+            <div class="report-picker-label">Báo cáo riêng từng xã/khu vực</div>
+            <div class="report-commune-options">
+              ${communes.map(commune => `
+                <button class="report-choice ${activeScope === commune.id ? "active" : ""}" data-report-scope="${escapeAttr(commune.id)}">
+                  <i data-lucide="map-pin"></i>
+                  <span>
+                    <strong>${escapeHtml(commune.name)}</strong>
+                    <small>${formatNumber(commune.records.length)} hồ sơ</small>
+                  </span>
+                </button>
+              `).join("")}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  `;
+}
+
+function renderAggregateReportPage(reportItems) {
+  const totals = aggregateAll();
+  const communes = projectCommunes();
+  const meta = projectMeta();
+  return `
+    <section class="panel report-page">
+      <div class="panel-header report-page-header">
+        <div>
+          <h3>Báo cáo tổng hợp tất cả xã/khu vực</h3>
+          <p>${formatNumber(communes.length)} xã/khu vực, ${formatNumber(communes.reduce((sum, commune) => sum + commune.records.length, 0))} hồ sơ</p>
+        </div>
+      </div>
+      <div class="panel-body">
+        <h2 class="report-title">Báo cáo kết quả thực hiện dự án</h2>
+        <p><strong>${escapeHtml(meta.agency || "")}</strong></p>
+        <p>${escapeHtml(periodText())}</p>
+        <h3 class="report-section-title">I. Tổng diện tích đất thu hồi sau kiểm đếm</h3>
+        ${renderTotalReportTable(totals)}
+        <h3 class="report-section-title">II. Dashboard tiến độ tổng hợp tất cả xã/khu vực</h3>
+        ${renderReportScopeDashboard("Tổng hợp tất cả xã/khu vực", communes, reportItems)}
+        <h3 class="report-section-title">III. Lũy kế kết quả thực hiện từ đầu dự án đến nay - tổng hợp tất cả xã/khu vực</h3>
+        ${reportItems.map(item => renderDetailedReportBlock(item, communes, true)).join("")}
+        <h3 class="report-section-title">IV. Khó khăn, vướng mắc</h3>
+        ${noteBlock("difficulties")}
+        <h3 class="report-section-title">V. Kiến nghị</h3>
+        ${noteBlock("recommendations")}
+        <h3 class="report-section-title">VI. Kế hoạch thực hiện tiếp theo</h3>
+        ${noteBlock("nextPlan")}
+      </div>
+    </section>
+  `;
+}
+
+function renderCommuneReportPage(commune, reportItems) {
+  if (!commune) return `<section class="panel"><div class="panel-body">${emptyState("Chưa chọn xã/khu vực.")}</div></section>`;
+  const totals = aggregateCommuneList([commune]);
+  const meta = projectMeta();
+  return `
+    <section class="panel report-page">
+      <div class="panel-header report-page-header">
+        <div>
+          <h3>Báo cáo riêng: ${escapeHtml(commune.name)}</h3>
+          <p>${formatNumber(commune.records.length)} hồ sơ</p>
+        </div>
+        <div class="toolbar no-print">
+          <button class="btn" data-action="rename-commune"><i data-lucide="pencil"></i><span>Đổi tên xã/khu vực</span></button>
+          <button class="btn danger" data-action="delete-commune"><i data-lucide="trash-2"></i><span>Xóa xã/khu vực</span></button>
+        </div>
+      </div>
+      <div class="panel-body">
+        <h2 class="report-title">Báo cáo giải phóng mặt bằng - ${escapeHtml(commune.name)}</h2>
+        <p><strong>${escapeHtml(meta.agency || "")}</strong></p>
+        <p>${escapeHtml(periodText())}</p>
+        <h3 class="report-section-title">I. Tổng diện tích đất thu hồi sau kiểm đếm</h3>
+        ${renderTotalReportTable(totals)}
+        <h3 class="report-section-title">II. Dashboard tiến độ của ${escapeHtml(commune.name)}</h3>
+        ${renderReportScopeDashboard(commune.name, [commune], reportItems)}
+        <h3 class="report-section-title">III. Lũy kế kết quả thực hiện từ đầu dự án đến nay - ${escapeHtml(commune.name)}</h3>
+        ${reportItems.map(item => renderDetailedReportBlock(item, [commune], false)).join("")}
+      </div>
+    </section>
+  `;
+}
+
+function reportDefinitions() {
+  const stage = id => STAGES.find(item => item.id === id);
+  return [
+    {
+      kind: "stage",
+      no: "1",
+      title: "Điều tra, khảo sát, đo đạc, kiểm đếm",
+      stage: stage("inventory"),
+      baseRef: "adjusted",
+      doneRef: "stages.inventory",
+      doneLabel: "Đã kiểm đếm",
+      pendingLabel: "Chưa kiểm đếm",
+      ongoingLabel: "Đang thực hiện",
+      notStartedLabel: "Chưa thực hiện (chưa kiểm đếm)",
+      hasOngoing: false
+    },
+    {
+      kind: "position",
+      no: "2",
+      title: "Xác định vị trí thửa đất"
+    },
+    {
+      kind: "stage",
+      no: "3",
+      title: "Chuyển địa phương xét pháp lý, Hội đồng bồi thường",
+      stage: stage("transfer"),
+      baseRef: "stages.inventory",
+      doneRef: "stages.transfer",
+      doneLabel: "Đã chuyển địa phương",
+      pendingLabel: "Chưa chuyển địa phương"
+    },
+    {
+      kind: "stage",
+      no: "4",
+      title: "Kết quả xét pháp lý và Hội đồng bồi thường",
+      stage: stage("legal"),
+      baseRef: "stages.transfer",
+      doneRef: "stages.legal",
+      doneLabel: "Đã họp xét pháp lý và Hội đồng bồi thường",
+      pendingLabel: "Chưa họp xét pháp lý và Hội đồng bồi thường"
+    },
+    {
+      kind: "stage",
+      no: "5",
+      title: "Niêm yết công khai dự thảo phương án bồi thường, hỗ trợ, tái định cư",
+      stage: stage("draftPlan"),
+      baseRef: "stages.legal",
+      doneRef: "stages.draftPlan",
+      doneLabel: "Đã niêm yết dự thảo phương án",
+      pendingLabel: "Chưa niêm yết dự thảo phương án"
+    },
+    {
+      kind: "stage",
+      no: "6",
+      title: "Trình thẩm định phương án bồi thường, hỗ trợ, tái định cư",
+      stage: stage("appraisal"),
+      baseRef: "stages.draftPlan",
+      doneRef: "stages.appraisal",
+      doneLabel: "Đã trình thẩm định",
+      pendingLabel: "Chưa trình thẩm định"
+    },
+    {
+      kind: "stage",
+      no: "7",
+      title: "Quyết định phương án bồi thường, hỗ trợ, tái định cư",
+      stage: stage("planDecision"),
+      baseRef: "stages.appraisal",
+      doneRef: "stages.planDecision",
+      doneLabel: "Đã phê duyệt phương án",
+      pendingLabel: "Chưa phê duyệt phương án"
+    },
+    {
+      kind: "stage",
+      no: "8",
+      title: "Chi trả tiền bồi thường, hỗ trợ",
+      stage: stage("payment"),
+      baseRef: "stages.planDecision",
+      doneRef: "stages.payment",
+      doneLabel: "Đã chi trả",
+      pendingLabel: "Chưa chi trả"
+    },
+    {
+      kind: "recoveryDecision",
+      no: "9",
+      title: "Quyết định thu hồi đất",
+      baseRef: "stages.planDecision",
+      doneRef: "recoveryDecision",
+      doneLabel: "Đã ban hành quyết định thu hồi đất",
+      pendingLabel: "Chưa ban hành quyết định thu hồi đất"
+    },
+    {
+      kind: "handover",
+      no: "10",
+      title: "Bàn giao mặt bằng",
+      doneLabel: "Đã bàn giao mặt bằng",
+      pendingLabel: "Chưa bàn giao mặt bằng",
+      ongoingLabel: "Đang thực hiện (đã phê duyệt phương án nhưng chưa bàn giao mặt bằng)",
+      notStartedLabel: "Chưa thực hiện theo tổng dự án"
+    },
+    {
+      kind: "notHandover",
+      no: "11",
+      title: "Chưa bàn giao mặt bằng",
+      doneLabel: "Tổng chưa bàn giao mặt bằng",
+      pendingLabel: "Chưa bàn giao mặt bằng",
+      ongoingLabel: "Đang thực hiện (đã phê duyệt phương án nhưng chưa giao mặt bằng)",
+      notStartedLabel: "Chưa thực hiện (chưa phê duyệt phương án, chưa giao mặt bằng)"
+    },
+    {
+      kind: "remarks",
+      no: "12",
+      title: "Ghi chú"
+    }
+  ];
+}
+
+function renderReportScopeDashboard(title, communes, reportItems) {
+  const totals = aggregateCommuneList(communes);
+  const quantitativeItems = reportItems.filter(isQuantitativeReportItem);
+  return `
+    <div class="report-scope-dashboard">
+      <div class="report-scope-heading">
+        <h4>${escapeHtml(title)}</h4>
+        <span>${formatNumber(communes.reduce((sum, commune) => sum + commune.records.length, 0))} hồ sơ, ${formatNumber(communes.length)} xã/khu vực</span>
+      </div>
+      <div class="metrics report-metrics">
+        ${metric("Tổng dự án sau kiểm đếm", formatNumber(totals.adjusted.cases), `${formatArea(totals.adjusted.area)} m2`)}
+        ${metric("Đã phê duyệt phương án", formatNumber(totals.stages.planDecision.cases), `${formatArea(totals.stages.planDecision.area)} m2`)}
+        ${metric("Đã chi trả", formatNumber(totals.stages.payment.cases), `${formatMoney(totals.stages.payment.cost)} đồng`)}
+        ${metric("Đã bàn giao mặt bằng", formatNumber(totals.handover.total.cases), `${formatArea(totals.handover.total.area)} m2`)}
+      </div>
+      <div class="dashboard-grid">
+        ${quantitativeItems.map(item => renderDashboardCard(item, reportProgress(item, totals))).join("")}
+      </div>
+    </div>
+  `;
+}
+
+function renderDashboardCard(item, progress) {
+  const casePct = progress.casePercent;
+  const areaPct = progress.areaPercent;
+  const doneCost = safeNum(progress.done.cost);
+  return `
+    <article class="progress-card">
+      <div>
+        <strong>${escapeHtml(item.no)}. ${escapeHtml(item.title)}</strong>
+        <span>${escapeHtml(progress.doneLabel)}: ${formatNumber(progress.done.cases)} trường hợp, ${formatArea(progress.done.area)} m2</span>
+      </div>
+      <div class="progress-meter">
+        <label>Trường hợp ${formatPercent(casePct)}</label>
+        <div class="bar"><span style="width:${clamp(casePct, 0, 100)}%"></span></div>
+      </div>
+      <div class="progress-meter">
+        <label>Diện tích ${formatPercent(areaPct)}</label>
+        <div class="bar"><span style="width:${clamp(areaPct, 0, 100)}%"></span></div>
+      </div>
+      <div class="progress-card-foot">
+        <span>${escapeHtml(progress.ongoingLabel)}: ${formatNumber(progress.ongoing.cases)} trường hợp, ${formatArea(progress.ongoing.area)} m2</span>
+        <span>${escapeHtml(progress.notStartedLabel)}: ${formatNumber(progress.notStarted.cases)} trường hợp, ${formatArea(progress.notStarted.area)} m2</span>
+        ${doneCost ? `<span>Chi phí: ${formatMoney(doneCost)} đồng</span>` : ""}
+      </div>
+    </article>
+  `;
+}
+
+function renderCommuneDetailedReport(commune, reportItems) {
+  return `
+    <section class="commune-report">
+      <h4>${escapeHtml(commune.name)}</h4>
+      ${renderReportScopeDashboard(commune.name, [commune], reportItems)}
+      ${reportItems.map(item => renderDetailedReportBlock(item, [commune], false)).join("")}
+    </section>
+  `;
+}
+
+function renderDetailedReportBlock(item, communes, showCommuneColumn) {
+  const totals = aggregateCommuneList(communes);
+  const hasDashboard = isQuantitativeReportItem(item);
+  return `
+    <section class="report-block">
+      <div class="report-block-heading">
+        <h4>${escapeHtml(item.no)}. ${escapeHtml(item.title)}</h4>
+      </div>
+      ${hasDashboard ? renderBlockDashboard(item, reportProgress(item, totals)) : ""}
+      ${renderReportBlockTable(item, communes, showCommuneColumn)}
+    </section>
+  `;
+}
+
+function renderBlockDashboard(item, progress) {
+  return `
+    <div class="block-dashboard">
+      ${reportStat("Tổng dự án", `${formatNumber(progress.totalBase.cases)} trường hợp`, `${formatArea(progress.totalBase.area)} m2`)}
+      ${reportStat(progress.doneLabel, `${formatNumber(progress.done.cases)} trường hợp`, `${formatArea(progress.done.area)} m2${safeNum(progress.done.cost) ? `, ${formatMoney(progress.done.cost)} đồng` : ""}`)}
+      ${reportStat(progress.ongoingLabel, `${formatNumber(progress.ongoing.cases)} trường hợp`, `${formatArea(progress.ongoing.area)} m2`)}
+      ${reportStat(progress.notStartedLabel, `${formatNumber(progress.notStarted.cases)} trường hợp`, `${formatArea(progress.notStarted.area)} m2`)}
+      ${reportStat("Tỷ lệ đã thực hiện", formatPercent(progress.casePercent), `Tỷ lệ diện tích ${formatPercent(progress.areaPercent)}`)}
+    </div>
+  `;
+}
+
+function reportStat(label, value, subValue = "") {
+  return `
+    <div class="report-stat">
+      <span>${escapeHtml(label)}</span>
+      <strong>${escapeHtml(value)}</strong>
+      ${subValue ? `<em>${escapeHtml(subValue)}</em>` : ""}
+    </div>
+  `;
+}
+
+function renderReportBlockTable(item, communes, showCommuneColumn) {
+  if (item.kind === "stage") return renderStageReportTable(item, communes, showCommuneColumn);
+  if (item.kind === "position") return renderPositionReportTable(communes, showCommuneColumn);
+  if (item.kind === "recoveryDecision") return renderTwoPartReportTable(item, communes, showCommuneColumn, recoveryDecisionReportParts);
+  if (item.kind === "handover") return renderHandoverReportTable(item, communes, showCommuneColumn);
+  if (item.kind === "notHandover") return renderNotHandoverReportTable(item, communes, showCommuneColumn);
+  if (item.kind === "remarks") return renderRemarksReportTable(communes, showCommuneColumn);
+  return "";
+}
+
+function renderStageReportTable(item, communes, showCommuneColumn) {
+  const stage = item.stage;
+  const hasCost = Boolean(stage.hasCost);
+  return `
+    <div class="table-wrap report-table-wrap">
+      <table class="report-detail-table">
+        <thead>
+          <tr>
+            ${showCommuneColumn ? "<th>Xã/khu vực</th>" : ""}
+            <th>Đầu mục nhỏ</th>
+            <th>Văn bản, ngày tháng năm</th>
+            <th>Trường hợp</th>
+            <th>Diện tích</th>
+            ${hasCost ? "<th>Chi phí</th>" : ""}
+            <th>Tỷ lệ trường hợp</th>
+            <th>Tỷ lệ diện tích</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${communes.map(commune => stageReportRows(item, commune, showCommuneColumn)).join("")}
+        </tbody>
+      </table>
+    </div>
+  `;
+}
+
+function stageReportRows(item, commune, showCommuneColumn) {
+  const stage = item.stage;
+  const stageMeta = ensureCommuneStage(commune, stage.id);
+  const totals = communeTotals(commune);
+  const base = getTotalByRef(totals, item.baseRef);
+  const totalBase = totals.adjusted;
+  const roundTotals = stageRoundTotals(commune.records, stage.id, stageMeta.rounds.length);
+  const ongoing = item.hasOngoing === false ? zeroTotal() : subtractTotals(base, roundTotals.total);
+  const notStarted = subtractTotals(totalBase, roundTotals.total);
+  const communeCell = showCommuneColumn ? `<td class="report-commune" rowspan="${stageMeta.rounds.length + 3}">${escapeHtml(commune.name)}</td>` : "";
+  const rows = [
+    `
+      <tr class="summary-row">
+        ${communeCell}
+        <td><strong>${escapeHtml(item.doneLabel)}</strong></td>
+        <td></td>
+        <td>${formatNumber(roundTotals.total.cases)}</td>
+        <td>${formatArea(roundTotals.total.area)}</td>
+        ${stage.hasCost ? `<td>${formatMoney(roundTotals.total.cost)}</td>` : ""}
+        <td>${formatPercent(ratio(roundTotals.total.cases, base.cases) * 100)}</td>
+        <td>${formatPercent(ratio(roundTotals.total.area, base.area) * 100)}</td>
+      </tr>
+    `,
+    ...stageMeta.rounds.map((round, index) => {
+      const total = roundTotals.rounds[index] || zeroTotal();
+      return `
+        <tr class="sub-row">
+          <td>${escapeHtml(stage.unit)} ${index + 1}</td>
+          <td>${escapeHtml(round.document || "")}</td>
+          <td>${formatNumber(total.cases)}</td>
+          <td>${formatArea(total.area)}</td>
+          ${stage.hasCost ? `<td>${formatMoney(total.cost)}</td>` : ""}
+          <td>${formatPercent(ratio(total.cases, base.cases) * 100)}</td>
+          <td>${formatPercent(ratio(total.area, base.area) * 100)}</td>
+        </tr>
+      `;
+    }),
+    `
+      <tr class="ongoing-row">
+        <td><strong>Đang thực hiện${item.hasOngoing === false ? "" : ` (${escapeHtml(item.pendingLabel.toLowerCase())})`}</strong></td>
+        <td></td>
+        <td>${formatNumber(ongoing.cases)}</td>
+        <td>${formatArea(ongoing.area)}</td>
+        ${stage.hasCost ? "<td></td>" : ""}
+        <td>${formatPercent(ratio(ongoing.cases, totalBase.cases) * 100)}</td>
+        <td>${formatPercent(ratio(ongoing.area, totalBase.area) * 100)}</td>
+      </tr>
+    `,
+    `
+      <tr class="pending-row">
+        <td><strong>Chưa thực hiện${item.hasOngoing === false ? ` (${escapeHtml(item.pendingLabel.toLowerCase())})` : " theo tổng dự án"}</strong></td>
+        <td></td>
+        <td>${formatNumber(notStarted.cases)}</td>
+        <td>${formatArea(notStarted.area)}</td>
+        ${stage.hasCost ? "<td></td>" : ""}
+        <td>${formatPercent(ratio(notStarted.cases, totalBase.cases) * 100)}</td>
+        <td>${formatPercent(ratio(notStarted.area, totalBase.area) * 100)}</td>
+      </tr>
+    `
+  ];
+  return rows.join("");
+}
+
+function renderPositionReportTable(communes, showCommuneColumn) {
+  return `
+    <div class="table-wrap report-table-wrap">
+      <table class="report-detail-table">
+        <thead>
+          <tr>
+            ${showCommuneColumn ? "<th>Xã/khu vực</th>" : ""}
+            <th>Văn bản, ngày tháng năm hoặc nội dung xác định vị trí</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${communes.map(commune => `
+            <tr>
+              ${showCommuneColumn ? `<td class="report-commune">${escapeHtml(commune.name)}</td>` : ""}
+              <td>${communeTextarea(commune, "positionNote", commune.positionNote || "")}</td>
+            </tr>
+          `).join("")}
+        </tbody>
+      </table>
+    </div>
+  `;
+}
+
+function renderTwoPartReportTable(item, communes, showCommuneColumn, partsBuilder) {
+  return `
+    <div class="table-wrap report-table-wrap">
+      <table class="report-detail-table">
+        <thead>
+          <tr>
+            ${showCommuneColumn ? "<th>Xã/khu vực</th>" : ""}
+            <th>Đầu mục nhỏ</th>
+            <th>Trường hợp</th>
+            <th>Diện tích</th>
+            <th>Tỷ lệ trường hợp</th>
+            <th>Tỷ lệ diện tích</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${communes.map(commune => {
+            const totals = communeTotals(commune);
+            const parts = partsBuilder(totals);
+            const progress = reportProgressFromParts(item, parts);
+            const communeCell = showCommuneColumn ? `<td class="report-commune" rowspan="3">${escapeHtml(commune.name)}</td>` : "";
+            return `
+              <tr class="summary-row">
+                ${communeCell}
+                <td><strong>${escapeHtml(item.doneLabel)}</strong></td>
+                <td>${formatNumber(parts.done.cases)}</td>
+                <td>${formatArea(parts.done.area)}</td>
+                <td>${formatPercent(ratio(parts.done.cases, parts.base.cases) * 100)}</td>
+                <td>${formatPercent(ratio(parts.done.area, parts.base.area) * 100)}</td>
+              </tr>
+              <tr class="ongoing-row">
+                <td><strong>${escapeHtml(progress.ongoingLabel)}</strong></td>
+                <td>${formatNumber(progress.ongoing.cases)}</td>
+                <td>${formatArea(progress.ongoing.area)}</td>
+                <td>${formatPercent(ratio(progress.ongoing.cases, progress.totalBase.cases) * 100)}</td>
+                <td>${formatPercent(ratio(progress.ongoing.area, progress.totalBase.area) * 100)}</td>
+              </tr>
+              <tr class="pending-row">
+                <td><strong>${escapeHtml(progress.notStartedLabel)}</strong></td>
+                <td>${formatNumber(progress.notStarted.cases)}</td>
+                <td>${formatArea(progress.notStarted.area)}</td>
+                <td>${formatPercent(ratio(progress.notStarted.cases, progress.totalBase.cases) * 100)}</td>
+                <td>${formatPercent(ratio(progress.notStarted.area, progress.totalBase.area) * 100)}</td>
+              </tr>
+            `;
+          }).join("")}
+        </tbody>
+      </table>
+    </div>
+  `;
+}
+
+function renderHandoverReportTable(item, communes, showCommuneColumn) {
+  return `
+    <div class="table-wrap report-table-wrap">
+      <table class="report-detail-table">
+        <thead>
+          <tr>
+            ${showCommuneColumn ? "<th>Xã/khu vực</th>" : ""}
+            <th>Đầu mục nhỏ</th>
+            <th>Trường hợp</th>
+            <th>Diện tích</th>
+            <th>Tỷ lệ trường hợp</th>
+            <th>Tỷ lệ diện tích</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${communes.map(commune => {
+            const totals = communeTotals(commune);
+            const parts = handoverReportParts(totals);
+            const progress = reportProgressFromParts(item, parts);
+            const communeCell = showCommuneColumn ? `<td class="report-commune" rowspan="5">${escapeHtml(commune.name)}</td>` : "";
+            return [
+              ["Đã bàn giao mặt bằng đối với các trường hợp đã duyệt phương án và đã nhận tiền", parts.paid, "summary-row"],
+              ["Vận động bàn giao mặt bằng trước khi phê duyệt phương án", parts.early, "sub-row"],
+              [item.doneLabel, parts.done, "summary-row"],
+              [progress.ongoingLabel, progress.ongoing, "ongoing-row"],
+              [progress.notStartedLabel, progress.notStarted, "pending-row"]
+            ].map((row, index) => `
+              <tr class="${row[2]}">
+                ${index === 0 ? communeCell : ""}
+                <td><strong>${escapeHtml(row[0])}</strong></td>
+                <td>${formatNumber(row[1].cases)}</td>
+                <td>${formatArea(row[1].area)}</td>
+                <td>${formatPercent(ratio(row[1].cases, parts.base.cases) * 100)}</td>
+                <td>${formatPercent(ratio(row[1].area, parts.base.area) * 100)}</td>
+              </tr>
+            `).join("");
+          }).join("")}
+        </tbody>
+      </table>
+    </div>
+  `;
+}
+
+function renderNotHandoverReportTable(item, communes, showCommuneColumn) {
+  return `
+    <div class="table-wrap report-table-wrap">
+      <table class="report-detail-table">
+        <thead>
+          <tr>
+            ${showCommuneColumn ? "<th>Xã/khu vực</th>" : ""}
+            <th>Đầu mục nhỏ</th>
+            <th>Trường hợp</th>
+            <th>Diện tích</th>
+            <th>Tỷ lệ trường hợp</th>
+            <th>Tỷ lệ diện tích</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${communes.map(commune => {
+            const totals = communeTotals(commune);
+            const parts = notHandoverReportParts(totals);
+            const communeCell = showCommuneColumn ? `<td class="report-commune" rowspan="3">${escapeHtml(commune.name)}</td>` : "";
+            return [
+              ["Đang thực hiện (đã phê duyệt phương án bồi thường, hỗ trợ, tái định cư nhưng chưa giao mặt bằng)", parts.approved, "ongoing-row"],
+              ["Chưa thực hiện (chưa phê duyệt phương án bồi thường, hỗ trợ, tái định cư và chưa giao mặt bằng)", parts.unapproved, "pending-row"],
+              [item.doneLabel, parts.done, "summary-row"]
+            ].map((row, index) => `
+              <tr class="${row[2]}">
+                ${index === 0 ? communeCell : ""}
+                <td><strong>${escapeHtml(row[0])}</strong></td>
+                <td>${formatNumber(row[1].cases)}</td>
+                <td>${formatArea(row[1].area)}</td>
+                <td>${formatPercent(ratio(row[1].cases, parts.base.cases) * 100)}</td>
+                <td>${formatPercent(ratio(row[1].area, parts.base.area) * 100)}</td>
+              </tr>
+            `).join("");
+          }).join("")}
+        </tbody>
+      </table>
+    </div>
+  `;
+}
+
+function renderRemarksReportTable(communes, showCommuneColumn) {
+  return `
+    <div class="table-wrap report-table-wrap">
+      <table class="report-detail-table">
+        <thead>
+          <tr>
+            ${showCommuneColumn ? "<th>Xã/khu vực</th>" : ""}
+            <th>Hồ sơ</th>
+            <th>Ghi chú</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${communes.map(commune => {
+            if (!commune.records.length) {
+              return `
+                <tr>
+                  ${showCommuneColumn ? `<td class="report-commune">${escapeHtml(commune.name)}</td>` : ""}
+                  <td colspan="2">Chưa có hồ sơ</td>
+                </tr>
+              `;
+            }
+            return commune.records.map((record, index) => `
+              <tr>
+                ${showCommuneColumn && index === 0 ? `<td class="report-commune" rowspan="${commune.records.length}">${escapeHtml(commune.name)}</td>` : ""}
+                <td>${escapeHtml(displayOwner(record))}</td>
+                <td>${escapeHtml(record.remarks || "")}</td>
+              </tr>
+            `).join("");
+          }).join("")}
+        </tbody>
+      </table>
+    </div>
+  `;
+}
+
+function renderTotalReportTable(totals) {
+  const rows = [
+    ["Tổng số", totals.adjusted.cases, totals.adjusted.area, totals.original.cases, totals.original.area],
+    ["Hộ gia đình, cá nhân", totals.byType.household.adjusted.cases, totals.byType.household.adjusted.area, totals.byType.household.original.cases, totals.byType.household.original.area],
+    ["Tổ chức", totals.byType.organization.adjusted.cases, totals.byType.organization.adjusted.area, totals.byType.organization.original.cases, totals.byType.organization.original.area]
+  ];
+  return `
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Nội dung</th>
+            <th>Sau kiểm đếm - trường hợp</th>
+            <th>Sau kiểm đếm - m2</th>
+            <th>Bản đồ nghiệm thu và kế hoạch thu hồi đất - trường hợp</th>
+            <th>Bản đồ nghiệm thu và kế hoạch thu hồi đất - m2</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${rows.map(row => `
+            <tr>
+              <td><strong>${escapeHtml(row[0])}</strong></td>
+              <td>${formatNumber(row[1])}</td>
+              <td>${formatArea(row[2])}</td>
+              <td>${formatNumber(row[3])}</td>
+              <td>${formatArea(row[4])}</td>
+            </tr>
+          `).join("")}
+        </tbody>
+      </table>
+    </div>
+  `;
+}
+
+function renderProgressReportTable(progress) {
+  return `
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Đầu mục</th>
+            <th>Đã thực hiện - trường hợp</th>
+            <th>Đã thực hiện - diện tích</th>
+            <th>Chưa thực hiện - trường hợp</th>
+            <th>Chưa thực hiện - diện tích</th>
+            <th>Tỷ lệ trường hợp</th>
+            <th>Tỷ lệ diện tích</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${progress.map(row => `
+            <tr>
+              <td>${escapeHtml(row.name)}</td>
+              <td>${formatNumber(row.done.cases)}</td>
+              <td>${formatArea(row.done.area)}</td>
+              <td>${formatNumber(row.pending.cases)}</td>
+              <td>${formatArea(row.pending.area)}</td>
+              <td>${formatPercent(row.percent)}</td>
+              <td>${formatPercent(row.areaPercent)}</td>
+            </tr>
+          `).join("")}
+        </tbody>
+      </table>
+    </div>
+  `;
+}
+
+function renderCommuneReportTable() {
+  const communes = projectCommunes();
+  return `
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Xã/khu vực</th>
+            <th>Hộ gia đình, cá nhân - trường hợp</th>
+            <th>Hộ m2</th>
+            <th>Tổ chức - trường hợp</th>
+            <th>Tổ chức m2</th>
+            <th>Quyết định phương án bồi thường, hỗ trợ, tái định cư</th>
+            <th>Chi trả tiền bồi thường, hỗ trợ</th>
+            <th>Bàn giao mặt bằng</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${communes.map(commune => {
+            const t = communeTotals(commune);
+            return `
+              <tr>
+                <td><strong>${escapeHtml(commune.name)}</strong></td>
+                <td>${formatNumber(t.byType.household.adjusted.cases)}</td>
+                <td>${formatArea(t.byType.household.adjusted.area)}</td>
+                <td>${formatNumber(t.byType.organization.adjusted.cases)}</td>
+                <td>${formatArea(t.byType.organization.adjusted.area)}</td>
+                <td>${formatNumber(t.stages.planDecision.cases)} / ${formatArea(t.stages.planDecision.area)}</td>
+                <td>${formatNumber(t.stages.payment.cases)} / ${formatMoney(t.stages.payment.cost)}</td>
+                <td>${formatNumber(t.handover.total.cases)} / ${formatArea(t.handover.total.area)}</td>
+              </tr>
+            `;
+          }).join("")}
+        </tbody>
+      </table>
+    </div>
+  `;
+}
+
+function noteBlock(key) {
+  const notes = projectNotes();
+  return `
+    <div class="textarea-field no-print">
+      <textarea data-note="${key}">${escapeHtml(notes[key] || "")}</textarea>
+    </div>
+    <p class="print-note">${escapeHtml(notes[key] || "") || "&nbsp;"}</p>
+  `;
+}
+
+function renderFormulaView() {
+  const workItems = [
+    { no: "I", name: "Số liệu đo đạc, quy chủ theo bản đồ nghiệm thu và kế hoạch thu hồi đất", workbook: "B:H" },
+    { no: "1", name: "Kết quả kiểm tra đo đạc, quy chủ điều chỉnh sau kiểm đếm", workbook: "J:N" },
+    ...STAGES.map(stage => ({ no: stage.no, name: stage.name, workbook: stage.workbook })),
+    ...SPECIAL_ITEMS.map(item => ({ no: item.no, name: item.name, workbook: item.workbook }))
+  ];
+  return `
+    <section class="panel">
+      <div class="panel-header">
+        <div>
+          <h3>Đầu mục công việc từ file Google Sheets</h3>
+        </div>
+      </div>
+      <div class="panel-body">
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>STT</th>
+                <th>Đầu mục</th>
+                <th>Vùng/cột gốc</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${workItems.map(item => `
+                <tr>
+                  <td>${escapeHtml(item.no)}</td>
+                  <td>${escapeHtml(item.name)}</td>
+                  <td><code>${escapeHtml(item.workbook)}</code></td>
+                </tr>
+              `).join("")}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+    <section class="panel">
+      <div class="panel-header">
+        <div>
+          <h3>Công thức đã chuyển sang app</h3>
+        </div>
+      </div>
+      <div class="panel-body">
+        <div class="formula-list">
+          ${FORMULAS.map(item => `
+            <div class="formula-item">
+              <strong>${escapeHtml(item.title)}</strong>
+              <code>${escapeHtml(item.sheet)}</code>
+              <p>${escapeHtml(item.rule)}</p>
+            </div>
+          `).join("")}
+        </div>
+      </div>
+    </section>
+  `;
+}
+
+function input(record, path, value, placeholder = "") {
+  return `<input value="${escapeAttr(value || "")}" placeholder="${escapeAttr(placeholder)}" data-record="${record.id}" data-path="${escapeAttr(path)}">`;
+}
+
+function numberInput(record, path, value) {
+  return `<input type="number" step="0.01" min="0" value="${escapeAttr(value ?? "")}" data-number="true" data-record="${record.id}" data-path="${escapeAttr(path)}">`;
+}
+
+function textarea(record, path, value) {
+  return `<textarea rows="2" data-record="${record.id}" data-path="${escapeAttr(path)}">${escapeHtml(value || "")}</textarea>`;
+}
+
+function communeTextarea(commune, path, value) {
+  return `<textarea rows="2" data-commune="${escapeAttr(commune.id)}" data-commune-path="${escapeAttr(path)}">${escapeHtml(value || "")}</textarea>`;
+}
+
+function emptyState(text) {
+  return `<div class="empty">${escapeHtml(text)}</div>`;
+}
+
+app.addEventListener("click", event => {
+  const button = event.target.closest("button");
+  if (!button) return;
+
+  if (button.dataset.view) {
+    ui.view = button.dataset.view;
+    render();
+    return;
+  }
+
+  if (button.dataset.communeButton) {
+    ui.communeId = button.dataset.communeButton;
+    if (ui.view !== "update") ui.view = "update";
+    render();
+    return;
+  }
+
+  if (button.dataset.stageTab) {
+    ui.stageId = button.dataset.stageTab;
+    render();
+    return;
+  }
+
+  if (button.dataset.reportScope) {
+    ui.reportScope = button.dataset.reportScope;
+    if (ui.reportScope !== "summary") ui.communeId = ui.reportScope;
+    render();
+    return;
+  }
+
+  const action = button.dataset.action;
+  if (!action) return;
+
+  if (action === "auth-mode") {
+    ui.authMode = button.dataset.mode || "login";
+    store.authError = "";
+    store.authMessage = "";
+    renderAuthShell();
+    return;
+  }
+
+  if (action === "auth-login") {
+    signIn();
+    return;
+  }
+
+  if (action === "auth-signup") {
+    signUp();
+    return;
+  }
+
+  if (action === "auth-logout") {
+    signOut();
+    return;
+  }
+
+  if (action === "open-project") {
+    switchProject(button.dataset.project);
+    return;
+  }
+
+  if (action === "add-project") {
+    addProject();
+    return;
+  }
+
+  if (action === "rename-project") {
+    renameCurrentProject(button.dataset.project);
+    return;
+  }
+
+  if (action === "delete-project") {
+    deleteCurrentProject(button.dataset.project);
+    return;
+  }
+
+  if (action === "grant-project-access") {
+    grantProjectAccess();
+    return;
+  }
+
+  if (action === "remove-project-access") {
+    removeProjectAccess(button.dataset.project, button.dataset.user);
+    return;
+  }
+
+  if (action === "add-commune") {
+    if (!requireProjectEdit()) return;
+    addCommune();
+    return;
+  }
+
+  if (action === "rename-commune") {
+    if (!requireProjectEdit()) return;
+    renameCurrentCommune();
+    return;
+  }
+
+  if (action === "delete-commune") {
+    if (!requireProjectEdit()) return;
+    deleteCurrentCommune();
+    return;
+  }
+
+  if (action === "add-parcel") {
+    if (!requireProjectEdit()) return;
+    addParcel(button.dataset.record);
+    return;
+  }
+
+  if (action === "delete-parcel") {
+    if (!requireProjectEdit()) return;
+    deleteParcel(button.dataset.record, Number(button.dataset.parcelIndex));
+    return;
+  }
+
+  if (action === "add-record") {
+    if (!requireProjectEdit()) return;
+    const commune = currentCommune();
+    commune.records.push(newRecord(button.dataset.type, commune));
+    ui.search = "";
+    saveNow();
+    render();
+    return;
+  }
+
+  if (action === "add-stage-round") {
+    if (!requireProjectEdit()) return;
+    addStageRound(button.dataset.stage);
+    saveNow();
+    render();
+    return;
+  }
+
+  if (action === "delete-stage-round") {
+    if (!requireProjectEdit()) return;
+    deleteStageRound(button.dataset.stage, Number(button.dataset.roundIndex));
+    return;
+  }
+
+  if (action === "delete-record") {
+    if (!requireProjectEdit()) return;
+    deleteRecord(button.dataset.record);
+    return;
+  }
+
+  if (action === "save") {
+    saveNow();
+    return;
+  }
+
+  if (action === "import-json") {
+    importInput.click();
+    return;
+  }
+
+  if (action === "export-json") {
+    exportJson();
+    return;
+  }
+
+  if (action === "export-csv") {
+    exportCsv();
+    return;
+  }
+
+  if (action === "print") {
+    window.print();
+  }
+});
+
+app.addEventListener("input", event => {
+  handleInput(event.target, false);
+});
+
+app.addEventListener("change", event => {
+  handleInput(event.target, true);
+});
+
+importInput.addEventListener("change", async event => {
+  const file = event.target.files?.[0];
+  if (!file) return;
+  try {
+    const text = await file.text();
+    const imported = normalizeDb(JSON.parse(text));
+    if (store.mode === "supabase") {
+      await importProjectsToSupabase(imported);
+      return;
+    }
+    db = imported;
+    ui.projectId = db.activeProjectId;
+    ui.communeId = projectCommunes()[0]?.id || ui.communeId;
+    syncUiToProject();
+    await saveNow();
+    render();
+  } catch (error) {
+    alert(`Không nhập được JSON: ${error.message}`);
+  } finally {
+    importInput.value = "";
+  }
+});
+
+async function importProjectsToSupabase(imported) {
+  if (!canCreateProjects()) {
+    alert("Chỉ tài khoản chủ mới được nhập JSON để tạo dự án trên Supabase.");
+    return;
+  }
+  const ok = confirm(`Nhập ${imported.projects.length} dự án từ file JSON lên Supabase?`);
+  if (!ok) return;
+  for (const project of imported.projects) {
+    const { error } = await store.client
+      .from("projects")
+      .insert({
+        name: projectDisplayName(project),
+        created_by: store.user.id,
+        state: exportProjectState(project)
+      });
+    if (error) {
+      alert(`Dừng nhập ở dự án "${projectDisplayName(project)}": ${error.message}`);
+      return;
+    }
+  }
+  await loadSupabaseState();
+}
+
+function handleInput(target, shouldRender) {
+  if (!(target instanceof HTMLInputElement || target instanceof HTMLSelectElement || target instanceof HTMLTextAreaElement)) return;
+
+  if (target.dataset.action === "search") {
+    ui.search = target.value;
+    if (shouldRender) render();
+    return;
+  }
+
+  if (target.dataset.action === "type-filter") {
+    ui.type = target.value;
+    render();
+    return;
+  }
+
+  if (target.dataset.action === "commune-select") {
+    ui.communeId = target.value;
+    render();
+    return;
+  }
+
+  if (target.dataset.action === "project-select") {
+    switchProject(target.value);
+    return;
+  }
+
+  if (target.dataset.metaPath) {
+    if (!requireProjectEdit()) {
+      render();
+      return;
+    }
+    const project = currentProject();
+    setPath(project.meta, target.dataset.metaPath, target.value);
+    if (target.dataset.metaPath === "projectName" && target.value.trim()) {
+      project.name = target.value.trim();
+    }
+    scheduleSave();
+    if (shouldRender) render();
+    return;
+  }
+
+  if (target.dataset.note) {
+    if (!requireProjectEdit()) {
+      render();
+      return;
+    }
+    projectNotes()[target.dataset.note] = target.value;
+    scheduleSave();
+    return;
+  }
+
+  if (target.dataset.communePath) {
+    if (!requireProjectEdit()) {
+      render();
+      return;
+    }
+    const commune = findCommune(target.dataset.commune);
+    if (!commune) return;
+    setPath(commune, target.dataset.communePath, target.value);
+    scheduleSave();
+    if (shouldRender && target.tagName !== "TEXTAREA") render();
+    return;
+  }
+
+  if (target.dataset.stageRoundDocument) {
+    if (!requireProjectEdit()) {
+      render();
+      return;
+    }
+    const commune = currentCommune();
+    const stageMeta = ensureCommuneStage(commune, target.dataset.stage);
+    const round = stageMeta.rounds[Number(target.dataset.roundIndex)];
+    if (round) {
+      round.document = target.value;
+      scheduleSave();
+    }
+    return;
+  }
+
+  const recordId = target.dataset.record;
+  const path = target.dataset.path;
+  if (!recordId || !path) return;
+  if (!requireProjectEdit()) {
+    render();
+    return;
+  }
+  const record = findRecord(recordId);
+  if (!record) return;
+  setPath(record, path, target.value);
+  scheduleSave();
+  if (shouldRender && target.tagName !== "TEXTAREA") render();
+}
+
+async function addProject() {
+  if (!canCreateProjects()) {
+    alert("Chỉ tài khoản chủ mới được tạo dự án.");
+    return;
+  }
+  const name = prompt("Tên dự án mới");
+  if (!name || !name.trim()) return;
+  const project = normalizeProject({
+    id: nextProjectId(name),
+    name: name.trim(),
+    meta: { projectName: name.trim() },
+    notes: {},
+    communes: [createBlankCommune("Xã/Khu vực 1", "KV1")]
+  }, db.projects.length);
+
+  if (store.mode === "supabase") {
+    const { data, error } = await store.client
+      .from("projects")
+      .insert({
+        name: project.name,
+        created_by: store.user.id,
+        state: exportProjectState(project)
+      })
+      .select("id")
+      .single();
+    if (error) {
+      alert(`Không tạo được dự án: ${error.message}`);
+      return;
+    }
+    localStorage.setItem("gpmb.activeProjectId", data.id);
+    await loadSupabaseState();
+    return;
+  }
+
+  db.projects.push(project);
+  switchProject(project.id, false);
+  saveNow();
+  render();
+}
+
+async function renameCurrentProject(projectId = null) {
+  const project = projectId ? db.projects.find(item => item.id === projectId) : currentProject();
+  if (!project) return;
+  if (!canManageProject(project.id)) {
+    alert("Tài khoản này không có quyền đổi tên dự án.");
+    return;
+  }
+  const name = prompt("Tên dự án", projectDisplayName(project));
+  if (!name || !name.trim()) return;
+  project.name = name.trim();
+  project.meta.projectName = name.trim();
+  await saveProject(project);
+  render();
+}
+
+async function deleteCurrentProject(projectId = null) {
+  const project = projectId ? db.projects.find(item => item.id === projectId) : currentProject();
+  if (!project) return;
+  if (!canManageProject(project.id)) {
+    alert("Tài khoản này không có quyền xóa dự án.");
+    return;
+  }
+  if (db.projects.length <= 1) {
+    alert("Phải giữ lại ít nhất 1 dự án để app tiếp tục hoạt động.");
+    return;
+  }
+  const recordCount = project.communes.reduce((sum, commune) => sum + commune.records.length, 0);
+  const ok = confirm(`Xóa dự án "${projectDisplayName(project)}" cùng ${project.communes.length} xã/khu vực và ${recordCount} hồ sơ bên trong?`);
+  if (!ok) return;
+
+  if (store.mode === "supabase") {
+    const { error } = await store.client.from("projects").delete().eq("id", project.id);
+    if (error) {
+      alert(`Không xóa được dự án: ${error.message}`);
+      return;
+    }
+    localStorage.removeItem("gpmb.activeProjectId");
+    await loadSupabaseState();
+    return;
+  }
+
+  db.projects = db.projects.filter(item => item.id !== project.id);
+  switchProject(db.projects[0]?.id, false);
+  saveNow();
+  render();
+}
+
+async function grantProjectAccess() {
+  if (store.mode !== "supabase") {
+    alert("Phân quyền tài khoản hoạt động khi app dùng Supabase.");
+    return;
+  }
+  const project = currentProject();
+  if (!project || !canManageProject(project.id)) {
+    alert("Tài khoản này không có quyền phân quyền dự án.");
+    return;
+  }
+  const email = document.querySelector("[data-access-email]")?.value.trim();
+  const role = document.querySelector("[data-access-role]")?.value || "editor";
+  if (!email) {
+    alert("Nhập email tài khoản cần thêm vào dự án.");
+    return;
+  }
+  const { data: profile, error: profileError } = await store.client
+    .from("profiles")
+    .select("id,email,display_name")
+    .eq("email", email)
+    .maybeSingle();
+  if (profileError) {
+    alert(`Không tìm được tài khoản: ${profileError.message}`);
+    return;
+  }
+  if (!profile) {
+    alert("Email này chưa có tài khoản nội bộ. Hãy tạo tài khoản trước rồi phân quyền.");
+    return;
+  }
+  const { error } = await store.client
+    .from("project_members")
+    .upsert({ project_id: project.id, user_id: profile.id, role }, { onConflict: "project_id,user_id" });
+  if (error) {
+    alert(`Không cấp quyền được: ${error.message}`);
+    return;
+  }
+  await loadSupabaseState();
+}
+
+async function removeProjectAccess(projectId, userId) {
+  if (store.mode !== "supabase") return;
+  if (!canManageProject(projectId)) {
+    alert("Tài khoản này không có quyền gỡ thành viên.");
+    return;
+  }
+  const ok = confirm("Gỡ tài khoản này khỏi dự án?");
+  if (!ok) return;
+  const { error } = await store.client
+    .from("project_members")
+    .delete()
+    .eq("project_id", projectId)
+    .eq("user_id", userId);
+  if (error) {
+    alert(`Không gỡ quyền được: ${error.message}`);
+    return;
+  }
+  await loadSupabaseState();
+}
+
+function switchProject(projectId, persist = true) {
+  if (!db.projects.some(project => project.id === projectId)) return;
+  db.activeProjectId = projectId;
+  ui.projectId = projectId;
+  localStorage.setItem("gpmb.activeProjectId", projectId);
+  const communes = projectCommunes();
+  ui.communeId = communes[0]?.id || "";
+  ui.reportScope = "summary";
+  ui.search = "";
+  if (persist && store.mode === "local") saveNow();
+  render();
+}
+
+function addCommune() {
+  const name = prompt("Tên xã/khu vực mới");
+  if (!name || !name.trim()) return;
+  const commune = normalizeCommune({
+    id: nextCommuneId(name),
+    name: name.trim(),
+    positionNote: "",
+    records: []
+  });
+  projectCommunes().push(commune);
+  ui.communeId = commune.id;
+  ui.reportScope = commune.id;
+  saveNow();
+  render();
+}
+
+function renameCurrentCommune() {
+  const commune = currentCommune();
+  if (!commune) return;
+  const name = prompt("Tên xã/khu vực", commune.name || "");
+  if (!name || !name.trim()) return;
+  commune.name = name.trim();
+  saveNow();
+  render();
+}
+
+function deleteCurrentCommune() {
+  const commune = currentCommune();
+  if (!commune) return;
+  const communes = projectCommunes();
+  if (communes.length <= 1) {
+    alert("Phải giữ lại ít nhất 1 xã/khu vực để app tiếp tục hoạt động.");
+    return;
+  }
+  const ok = confirm(`Xóa xã/khu vực "${commune.name}" và toàn bộ ${commune.records.length} hồ sơ bên trong?`);
+  if (!ok) return;
+  currentProject().communes = communes.filter(item => item.id !== commune.id);
+  const nextCommune = projectCommunes()[0];
+  ui.communeId = nextCommune?.id || "";
+  ui.reportScope = ui.view === "report" ? "summary" : ui.communeId;
+  saveNow();
+  render();
+}
+
+function addParcel(recordId) {
+  const record = findRecord(recordId);
+  if (!record) return;
+  record.parcels.push(blankParcel());
+  STAGES.forEach(stage => ensureRecordStageLength(record, stage.id, record.stages?.[stage.id]?.rounds?.length || stage.defaultRounds));
+  ensureRecordSpecialParcelLength(record);
+  saveNow();
+  render();
+}
+
+function deleteParcel(recordId, parcelIndex) {
+  const record = findRecord(recordId);
+  if (!record) return;
+  if (record.parcels.length <= 1) {
+    alert("Phải giữ lại ít nhất 1 thửa đất trong hồ sơ.");
+    return;
+  }
+  const ok = confirm(`Xóa thửa đất số ${parcelIndex + 1} của hồ sơ "${displayOwner(record)}"?`);
+  if (!ok) return;
+  record.parcels.splice(parcelIndex, 1);
+  STAGES.forEach(stage => {
+    const rounds = record.stages?.[stage.id]?.rounds || [];
+    rounds.forEach(round => {
+      if (Array.isArray(round.parcels)) round.parcels.splice(parcelIndex, 1);
+    });
+    ensureRecordStageLength(record, stage.id, rounds.length || stage.defaultRounds);
+  });
+  ["recoveryDecision", "handoverPaid", "handoverEarly"].forEach(key => {
+    if (Array.isArray(record[key]?.parcels)) record[key].parcels.splice(parcelIndex, 1);
+  });
+  ensureRecordSpecialParcelLength(record);
+  saveNow();
+  render();
+}
+
+function ensureRecordSpecialParcelLength(record) {
+  ["recoveryDecision", "handoverPaid", "handoverEarly"].forEach(key => {
+    record[key] ||= {};
+    record[key].parcels = normalizeAreaParcelList(record[key], record.parcels || []);
+  });
+}
+
+function nextCommuneId(name) {
+  const base = (name || "KV")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/đ/g, "d")
+    .replace(/Đ/g, "D")
+    .toUpperCase()
+    .replace(/[^A-Z0-9]+/g, "")
+    .slice(0, 10) || "KV";
+  let id = base;
+  let index = 1;
+  const used = new Set(projectCommunes().map(commune => commune.id));
+  while (used.has(id)) {
+    index += 1;
+    id = `${base}${index}`;
+  }
+  return id;
+}
+
+function deleteRecord(recordId) {
+  const commune = currentCommune();
+  const record = commune.records.find(item => item.id === recordId);
+  if (!record) return;
+  const owner = displayOwner(record);
+  const ok = confirm(`Xóa hồ sơ "${owner}"?`);
+  if (!ok) return;
+  commune.records = commune.records.filter(item => item.id !== recordId);
+  saveNow();
+  render();
+}
+
+function currentCommune() {
+  const communes = projectCommunes();
+  return communes.find(commune => commune.id === ui.communeId) || communes[0];
+}
+
+function findRecord(recordId) {
+  for (const commune of projectCommunes()) {
+    const found = commune.records.find(record => record.id === recordId);
+    if (found) return found;
+  }
+  return null;
+}
+
+function findCommune(communeId) {
+  return projectCommunes().find(commune => commune.id === communeId);
+}
+
+function ensureCommuneStage(commune, stageId) {
+  commune.stageRounds ||= {};
+  const stage = STAGES.find(item => item.id === stageId);
+  const defaultRounds = stage?.defaultRounds || 1;
+  if (!commune.stageRounds[stageId]) {
+    commune.stageRounds[stageId] = { rounds: Array.from({ length: defaultRounds }, () => ({ document: "" })) };
+  }
+  const stageMeta = commune.stageRounds[stageId];
+  if (!Array.isArray(stageMeta.rounds)) stageMeta.rounds = [];
+  if (!stageMeta.rounds.length) stageMeta.rounds.push({ document: "" });
+  stageMeta.rounds = stageMeta.rounds.map(round => ({ document: round?.document || "" }));
+  commune.records.forEach(record => ensureRecordStageLength(record, stageId, stageMeta.rounds.length));
+  return stageMeta;
+}
+
+function ensureRecordStageLength(record, stageId, roundCount) {
+  record.stages ||= {};
+  record.stages[stageId] ||= { rounds: [], note: "" };
+  const stageData = record.stages[stageId];
+  if (!Array.isArray(stageData.rounds)) stageData.rounds = [];
+  while (stageData.rounds.length < roundCount) {
+    stageData.rounds.push(blankRound(record.parcels || []));
+  }
+  if (stageData.rounds.length > roundCount) {
+    stageData.rounds = stageData.rounds.slice(0, roundCount);
+  }
+  stageData.rounds = stageData.rounds.map(round => normalizeStageRound(round, record.parcels || []));
+}
+
+function blankRound(recordParcels = []) {
+  return normalizeStageRound({}, recordParcels);
+}
+
+function addStageRound(stageId) {
+  const commune = currentCommune();
+  const stageMeta = ensureCommuneStage(commune, stageId);
+  stageMeta.rounds.push({ document: "" });
+  commune.records.forEach(record => ensureRecordStageLength(record, stageId, stageMeta.rounds.length));
+}
+
+function deleteStageRound(stageId, roundIndex) {
+  const commune = currentCommune();
+  const stageMeta = ensureCommuneStage(commune, stageId);
+  const stage = STAGES.find(item => item.id === stageId);
+  if (stageMeta.rounds.length <= 1) {
+    alert(`Phải giữ lại ít nhất 1 ${stage?.unit?.toLowerCase() || "đợt/lần"}.`);
+    return;
+  }
+  const ok = confirm(`Xóa ${stage?.unit || "Đợt/Lần"} ${roundIndex + 1}? Dữ liệu ở cột này của tất cả hồ sơ trong xã hiện tại cũng sẽ bị xóa.`);
+  if (!ok) return;
+  stageMeta.rounds.splice(roundIndex, 1);
+  commune.records.forEach(record => {
+    ensureRecordStageLength(record, stageId, stageMeta.rounds.length + 1);
+    record.stages[stageId].rounds.splice(roundIndex, 1);
+    ensureRecordStageLength(record, stageId, stageMeta.rounds.length);
+  });
+  saveNow();
+  render();
+}
+
+function setPath(target, path, value) {
+  const parts = path.split(".");
+  let cursor = target;
+  for (let index = 0; index < parts.length - 1; index += 1) {
+    const key = numericKey(parts[index]);
+    if (cursor[key] == null) cursor[key] = {};
+    cursor = cursor[key];
+  }
+  cursor[numericKey(parts.at(-1))] = value;
+}
+
+function numericKey(value) {
+  return /^\d+$/.test(value) ? Number(value) : value;
+}
+
+function scheduleSave() {
+  ui.saveText = "Đang nhập...";
+  updateSaveStatus();
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(saveNow, 650);
+}
+
+async function saveNow() {
+  clearTimeout(saveTimer);
+  ui.saveText = "Đang lưu...";
+  updateSaveStatus();
+  try {
+    if (store.mode === "supabase") {
+      if (!canEditCurrentProject()) throw new Error("Tài khoản chưa có quyền chỉnh sửa dự án");
+      await saveProject(currentProject(), false);
+      ui.saveText = `Đã lưu ${new Date().toLocaleTimeString("vi-VN")}`;
+      updateSaveStatus();
+      return;
+    }
+    const response = await fetch("/api/state", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(db)
+    });
+    if (!response.ok) throw new Error("Lưu thất bại");
+    db = normalizeDb(await response.json());
+    ui.saveText = `Đã lưu ${new Date().toLocaleTimeString("vi-VN")}`;
+  } catch (error) {
+    ui.saveText = error.message;
+  }
+  updateSaveStatus();
+}
+
+async function saveProject(project, updateStatus = true) {
+  if (!project) return;
+  if (store.mode !== "supabase") {
+    await saveNow();
+    return;
+  }
+  const { data, error } = await store.client
+    .from("projects")
+    .update({
+      name: projectDisplayName(project),
+      state: exportProjectState(project),
+      updated_at: new Date().toISOString()
+    })
+    .eq("id", project.id)
+    .select("updated_at")
+    .single();
+  if (error) throw error;
+  project.updatedAt = data?.updated_at || new Date().toISOString();
+  if (updateStatus) {
+    ui.saveText = `Đã lưu ${new Date().toLocaleTimeString("vi-VN")}`;
+    updateSaveStatus();
+  }
+}
+
+function updateSaveStatus() {
+  const node = document.querySelector(".save-status span");
+  if (node) node.textContent = ui.saveText;
+}
+
+function communeTotals(commune) {
+  const records = commune.records;
+  const byType = {
+    household: {
+      original: countArea(records.filter(record => record.type === "household"), "original"),
+      adjusted: countArea(records.filter(record => record.type === "household"), "adjusted")
+    },
+    organization: {
+      original: countArea(records.filter(record => record.type === "organization"), "original"),
+      adjusted: countArea(records.filter(record => record.type === "organization"), "adjusted")
+    }
+  };
+
+  const stages = {};
+  STAGES.forEach(stage => {
+    stages[stage.id] = stageTotal(records, stage.id);
+  });
+
+  const recoveryDecision = records.reduce((acc, record) => addTotals(acc, {
+    cases: caseCount(record.recoveryDecision.cases),
+    area: areaParcelTotal(record.recoveryDecision).area,
+    cost: 0
+  }), zeroTotal());
+
+  const paid = records.reduce((acc, record) => addTotals(acc, {
+    cases: caseCount(record.handoverPaid.cases),
+    area: areaParcelTotal(record.handoverPaid).area,
+    cost: 0
+  }), zeroTotal());
+
+  const early = records.reduce((acc, record) => addTotals(acc, {
+    cases: caseCount(record.handoverEarly.cases),
+    area: areaParcelTotal(record.handoverEarly).area,
+    cost: 0
+  }), zeroTotal());
+
+  const approvedPending = {
+    cases: stages.planDecision.cases - paid.cases,
+    area: stages.planDecision.area - paid.area,
+    cost: 0
+  };
+
+  const adjusted = addTotals(byType.household.adjusted, byType.organization.adjusted);
+  const original = addTotals(byType.household.original, byType.organization.original);
+  const unapprovedPending = {
+    cases: adjusted.cases - stages.planDecision.cases,
+    area: adjusted.area - stages.planDecision.area,
+    cost: 0
+  };
+
+  return {
+    original,
+    adjusted,
+    byType,
+    stages,
+    recoveryDecision,
+    handover: {
+      paid,
+      early,
+      total: addTotals(paid, early)
+    },
+    notHandover: {
+      approved: approvedPending,
+      unapproved: unapprovedPending,
+      total: addTotals(approvedPending, unapprovedPending)
+    }
+  };
+}
+
+function aggregateAll() {
+  const seed = {
+    original: zeroTotal(),
+    adjusted: zeroTotal(),
+    byType: {
+      household: { original: zeroTotal(), adjusted: zeroTotal() },
+      organization: { original: zeroTotal(), adjusted: zeroTotal() }
+    },
+    stages: Object.fromEntries(STAGES.map(stage => [stage.id, zeroTotal()])),
+    recoveryDecision: zeroTotal(),
+    handover: { paid: zeroTotal(), early: zeroTotal(), total: zeroTotal() },
+    notHandover: { approved: zeroTotal(), unapproved: zeroTotal(), total: zeroTotal() }
+  };
+
+  return projectCommunes().reduce((acc, commune) => {
+    const totals = communeTotals(commune);
+    acc.original = addTotals(acc.original, totals.original);
+    acc.adjusted = addTotals(acc.adjusted, totals.adjusted);
+    acc.byType.household.original = addTotals(acc.byType.household.original, totals.byType.household.original);
+    acc.byType.household.adjusted = addTotals(acc.byType.household.adjusted, totals.byType.household.adjusted);
+    acc.byType.organization.original = addTotals(acc.byType.organization.original, totals.byType.organization.original);
+    acc.byType.organization.adjusted = addTotals(acc.byType.organization.adjusted, totals.byType.organization.adjusted);
+    STAGES.forEach(stage => {
+      acc.stages[stage.id] = addTotals(acc.stages[stage.id], totals.stages[stage.id]);
+    });
+    acc.recoveryDecision = addTotals(acc.recoveryDecision, totals.recoveryDecision);
+    acc.handover.paid = addTotals(acc.handover.paid, totals.handover.paid);
+    acc.handover.early = addTotals(acc.handover.early, totals.handover.early);
+    acc.handover.total = addTotals(acc.handover.total, totals.handover.total);
+    acc.notHandover.approved = addTotals(acc.notHandover.approved, totals.notHandover.approved);
+    acc.notHandover.unapproved = addTotals(acc.notHandover.unapproved, totals.notHandover.unapproved);
+    acc.notHandover.total = addTotals(acc.notHandover.total, totals.notHandover.total);
+    return acc;
+  }, seed);
+}
+
+function aggregateCommuneList(communes) {
+  const seed = {
+    original: zeroTotal(),
+    adjusted: zeroTotal(),
+    byType: {
+      household: { original: zeroTotal(), adjusted: zeroTotal() },
+      organization: { original: zeroTotal(), adjusted: zeroTotal() }
+    },
+    stages: Object.fromEntries(STAGES.map(stage => [stage.id, zeroTotal()])),
+    recoveryDecision: zeroTotal(),
+    handover: { paid: zeroTotal(), early: zeroTotal(), total: zeroTotal() },
+    notHandover: { approved: zeroTotal(), unapproved: zeroTotal(), total: zeroTotal() }
+  };
+
+  return communes.reduce((acc, commune) => {
+    const totals = communeTotals(commune);
+    acc.original = addTotals(acc.original, totals.original);
+    acc.adjusted = addTotals(acc.adjusted, totals.adjusted);
+    acc.byType.household.original = addTotals(acc.byType.household.original, totals.byType.household.original);
+    acc.byType.household.adjusted = addTotals(acc.byType.household.adjusted, totals.byType.household.adjusted);
+    acc.byType.organization.original = addTotals(acc.byType.organization.original, totals.byType.organization.original);
+    acc.byType.organization.adjusted = addTotals(acc.byType.organization.adjusted, totals.byType.organization.adjusted);
+    STAGES.forEach(stage => {
+      acc.stages[stage.id] = addTotals(acc.stages[stage.id], totals.stages[stage.id]);
+    });
+    acc.recoveryDecision = addTotals(acc.recoveryDecision, totals.recoveryDecision);
+    acc.handover.paid = addTotals(acc.handover.paid, totals.handover.paid);
+    acc.handover.early = addTotals(acc.handover.early, totals.handover.early);
+    acc.handover.total = addTotals(acc.handover.total, totals.handover.total);
+    acc.notHandover.approved = addTotals(acc.notHandover.approved, totals.notHandover.approved);
+    acc.notHandover.unapproved = addTotals(acc.notHandover.unapproved, totals.notHandover.unapproved);
+    acc.notHandover.total = addTotals(acc.notHandover.total, totals.notHandover.total);
+    return acc;
+  }, seed);
+}
+
+function isQuantitativeReportItem(item) {
+  return item.kind !== "position" && item.kind !== "remarks";
+}
+
+function reportProgress(item, totals) {
+  if (item.kind === "handover") {
+    const parts = handoverReportParts(totals);
+    return reportProgressFromParts(item, parts);
+  }
+  if (item.kind === "notHandover") {
+    const parts = notHandoverReportParts(totals);
+    return reportProgressFromParts(item, parts);
+  }
+  if (item.kind === "recoveryDecision") {
+    return reportProgressFromParts(item, recoveryDecisionReportParts(totals));
+  }
+
+  const base = getTotalByRef(totals, item.baseRef);
+  const done = getTotalByRef(totals, item.doneRef);
+  return reportProgressFromParts(item, {
+    totalBase: totals.adjusted,
+    base,
+    done,
+    ongoing: item.hasOngoing === false ? zeroTotal() : subtractTotals(base, done),
+    notStarted: subtractTotals(totals.adjusted, done)
+  });
+}
+
+function reportProgressFromParts(item, parts) {
+  const totalBase = parts.totalBase || parts.projectBase || parts.base || zeroTotal();
+  const ongoing = parts.ongoing || parts.pending || zeroTotal();
+  const notStarted = parts.notStarted || subtractTotals(totalBase, parts.done || zeroTotal());
+  return {
+    totalBase,
+    base: parts.base || totalBase,
+    done: parts.done || zeroTotal(),
+    ongoing,
+    notStarted,
+    doneLabel: item.doneLabel,
+    ongoingLabel: item.ongoingLabel || (item.pendingLabel ? `Đang thực hiện (${item.pendingLabel.toLowerCase()})` : "Đang thực hiện"),
+    notStartedLabel: item.notStartedLabel || "Chưa thực hiện theo tổng dự án",
+    casePercent: ratio((parts.done || zeroTotal()).cases, totalBase.cases) * 100,
+    areaPercent: ratio((parts.done || zeroTotal()).area, totalBase.area) * 100
+  };
+}
+
+function getTotalByRef(totals, ref) {
+  if (ref === "original") return totals.original;
+  if (ref === "adjusted") return totals.adjusted;
+  if (ref === "recoveryDecision") return totals.recoveryDecision;
+  if (ref === "handover.total") return totals.handover.total;
+  if (ref?.startsWith("stages.")) {
+    return totals.stages[ref.split(".")[1]] || zeroTotal();
+  }
+  return zeroTotal();
+}
+
+function recoveryDecisionReportParts(totals) {
+  const base = totals.stages.planDecision;
+  const done = totals.recoveryDecision;
+  return {
+    totalBase: totals.adjusted,
+    base,
+    done,
+    ongoing: subtractTotals(base, done),
+    notStarted: subtractTotals(totals.adjusted, done)
+  };
+}
+
+function handoverReportParts(totals) {
+  const base = totals.adjusted;
+  const ongoingBase = totals.stages.planDecision;
+  const paid = totals.handover.paid;
+  const early = totals.handover.early;
+  const done = addTotals(paid, early);
+  return {
+    totalBase: base,
+    base,
+    paid,
+    early,
+    done,
+    ongoing: subtractTotals(ongoingBase, paid),
+    notStarted: subtractTotals(base, done)
+  };
+}
+
+function notHandoverReportParts(totals) {
+  const base = totals.adjusted;
+  const approved = subtractTotals(totals.stages.planDecision, totals.handover.paid);
+  const unapproved = subtractTotals(totals.adjusted, totals.stages.planDecision);
+  const done = addTotals(approved, unapproved);
+  return {
+    totalBase: base,
+    base,
+    approved,
+    unapproved,
+    done,
+    ongoing: approved,
+    notStarted: unapproved
+  };
+}
+
+function buildProgressRows(totals) {
+  const rows = [];
+  const getBase = base => {
+    if (base === "adjusted") return totals.adjusted;
+    return totals.stages[base] || totals.adjusted;
+  };
+
+  STAGES.forEach(stage => {
+    const done = totals.stages[stage.id];
+    const base = getBase(stage.base);
+    rows.push(progressData(stage.name, done, base));
+  });
+
+  rows.push(progressData("Tổng quyết định thu hồi đất", totals.recoveryDecision, totals.stages.planDecision));
+  rows.push(progressData("Bàn giao mặt bằng", totals.handover.total, totals.adjusted));
+  rows.push({
+    name: "Chưa giao mặt bằng",
+    done: totals.notHandover.total,
+    base: totals.adjusted,
+    pending: subtractTotals(totals.adjusted, totals.notHandover.total),
+    percent: ratio(totals.notHandover.total.cases, totals.adjusted.cases) * 100,
+    areaPercent: ratio(totals.notHandover.total.area, totals.adjusted.area) * 100
+  });
+  return rows;
+}
+
+function progressData(name, done, base) {
+  return {
+    name,
+    done,
+    base,
+    pending: subtractTotals(base, done),
+    percent: ratio(done.cases, base.cases) * 100,
+    areaPercent: ratio(done.area, base.area) * 100
+  };
+}
+
+function countArea(records, source) {
+  return records.reduce((acc, record) => {
+    const hasCase = source === "original" ? originalCase(record) : adjustedCase(record);
+    return {
+      cases: acc.cases + hasCase,
+      area: acc.area + recordArea(record, source),
+      cost: 0
+    };
+  }, zeroTotal());
+}
+
+function originalCase(record) {
+  return hasText(record.original.landUser) || recordArea(record, "original") > 0 ? 1 : 0;
+}
+
+function adjustedCase(record) {
+  return hasText(record.adjusted.landUser) || recordArea(record, "adjusted") > 0 ? 1 : 0;
+}
+
+function recordArea(record, source) {
+  const key = source === "original" ? "original" : "adjusted";
+  const parcelArea = (record.parcels || []).reduce((sum, parcel) => sum + safeNum(parcel[key]?.area), 0);
+  if (parcelArea > 0) return parcelArea;
+  return safeNum(record[key]?.area);
+}
+
+function parcelSummary(record) {
+  const parcels = record.parcels || [];
+  if (!parcels.length) return "Chưa có thửa đất";
+  const first = parcels[0];
+  const firstText = [first.original.mapSheet, first.original.parcelNo].filter(Boolean).join(" / ");
+  return `${parcels.length} thửa${firstText ? `, thửa đầu: ${firstText}` : ""}`;
+}
+
+function stageTotal(records, stageId) {
+  return records.reduce((acc, record) => addTotals(acc, totalRounds(record.stages[stageId]?.rounds || [])), zeroTotal());
+}
+
+function stageRoundTotals(records, stageId, roundCount = 0) {
+  const maxRecordRounds = records.reduce((max, record) => {
+    const rounds = record.stages?.[stageId]?.rounds;
+    return Math.max(max, Array.isArray(rounds) ? rounds.length : 0);
+  }, 0);
+  const rounds = Array.from({ length: Math.max(roundCount, maxRecordRounds, 1) }, () => zeroTotal());
+  records.forEach(record => {
+    (record.stages[stageId]?.rounds || []).forEach((round, index) => {
+      const parcelTotal = roundParcelTotal(round);
+      rounds[index] = addTotals(rounds[index], {
+        cases: caseCount(round.cases),
+        area: parcelTotal.area,
+        cost: parcelTotal.cost
+      });
+    });
+  });
+  return {
+    rounds,
+    total: rounds.reduce((acc, round) => addTotals(acc, round), zeroTotal())
+  };
+}
+
+function totalRounds(rounds) {
+  return rounds.reduce((acc, round) => {
+    const parcelTotal = roundParcelTotal(round);
+    return addTotals(acc, {
+      cases: caseCount(round.cases),
+      area: parcelTotal.area,
+      cost: parcelTotal.cost
+    });
+  }, zeroTotal());
+}
+
+function stageParcelTotal(record, stageId, parcelIndex) {
+  return (record.stages?.[stageId]?.rounds || []).reduce((acc, round) => addTotals(acc, {
+    cases: 0,
+    area: safeNum(round.parcels?.[parcelIndex]?.area),
+    cost: safeNum(round.parcels?.[parcelIndex]?.cost)
+  }), zeroTotal());
+}
+
+function roundParcelTotal(round) {
+  const parcels = Array.isArray(round?.parcels) ? round.parcels : [];
+  if (parcels.length) {
+    return parcels.reduce((acc, parcel) => addTotals(acc, {
+      cases: 0,
+      area: safeNum(parcel.area),
+      cost: safeNum(parcel.cost)
+    }), zeroTotal());
+  }
+  return {
+    cases: 0,
+    area: safeNum(round?.area),
+    cost: safeNum(round?.cost)
+  };
+}
+
+function areaParcelTotal(section) {
+  const parcels = Array.isArray(section?.parcels) ? section.parcels : [];
+  if (parcels.length) {
+    return parcels.reduce((acc, parcel) => addTotals(acc, {
+      cases: 0,
+      area: safeNum(parcel.area),
+      cost: 0
+    }), zeroTotal());
+  }
+  return { cases: 0, area: safeNum(section?.area), cost: 0 };
+}
+
+function zeroTotal() {
+  return { cases: 0, area: 0, cost: 0 };
+}
+
+function addTotals(a, b) {
+  return {
+    cases: safeNum(a.cases) + safeNum(b.cases),
+    area: safeNum(a.area) + safeNum(b.area),
+    cost: safeNum(a.cost) + safeNum(b.cost)
+  };
+}
+
+function subtractTotals(a, b) {
+  return {
+    cases: safeNum(a.cases) - safeNum(b.cases),
+    area: safeNum(a.area) - safeNum(b.area),
+    cost: safeNum(a.cost) - safeNum(b.cost)
+  };
+}
+
+function caseCount(value) {
+  return hasText(value) ? 1 : 0;
+}
+
+function exportJson() {
+  const name = slugify(projectDisplayName(currentProject()) || "gpmb");
+  downloadBlob(JSON.stringify(db, null, 2), `gpmb-${name}.json`, "application/json;charset=utf-8");
+}
+
+function exportCsv() {
+  const commune = currentCommune();
+  const rows = [];
+  const headers = [
+    "Xã/khu vực",
+    "Mã hồ sơ",
+    "Loại hồ sơ",
+    "STT thửa",
+    "Tờ bản đồ",
+    "Thửa đất",
+    "Tên chủ sử dụng đất gốc",
+    "Địa chỉ gốc",
+    "Thông báo thu hồi đất",
+    "Diện tích gốc",
+    "Loại đất gốc",
+    "Tên sau kiểm đếm",
+    "Địa chỉ điều chỉnh",
+    "Thông báo điều chỉnh",
+    "Diện tích sau kiểm đếm",
+    "Loại đất điều chỉnh",
+    ...STAGES.flatMap(stage => [`${stage.shortName} - trường hợp`, `${stage.shortName} - diện tích`, `${stage.shortName} - chi phí`]),
+    "Quyết định thu hồi đất - trường hợp",
+    "Quyết định thu hồi đất - diện tích",
+    "Đã nhận tiền - trường hợp",
+    "Đã nhận tiền - diện tích",
+    "Giao mặt bằng trước - trường hợp",
+    "Giao mặt bằng trước - diện tích",
+    "Ghi chú"
+  ];
+  rows.push(headers);
+  commune.records.forEach(record => {
+    record.parcels.forEach((parcel, index) => {
+      rows.push([
+        commune.name,
+        record.id,
+        record.type === "organization" ? "To chuc" : "Ho",
+        index + 1,
+        parcel.original.mapSheet,
+        parcel.original.parcelNo,
+        record.original.landUser,
+        record.original.address,
+        parcel.original.recoveryNotice,
+        parcel.original.area,
+        parcel.original.landType,
+        record.adjusted.landUser,
+        record.adjusted.address,
+        parcel.adjusted.adjustedNotice,
+        parcel.adjusted.area,
+        parcel.adjusted.landType,
+        ...STAGES.flatMap(stage => {
+          const total = stageParcelTotal(record, stage.id, index);
+          return [index === 0 ? totalRounds(record.stages[stage.id].rounds).cases : "", total.area, total.cost];
+        }),
+        index === 0 ? caseCount(record.recoveryDecision.cases) : "",
+        record.recoveryDecision.parcels?.[index]?.area || "",
+        index === 0 ? caseCount(record.handoverPaid.cases) : "",
+        record.handoverPaid.parcels?.[index]?.area || "",
+        index === 0 ? caseCount(record.handoverEarly.cases) : "",
+        record.handoverEarly.parcels?.[index]?.area || "",
+        record.remarks
+      ]);
+    });
+  });
+  const csv = rows.map(row => row.map(csvCell).join(",")).join("\r\n");
+  const projectName = slugify(projectDisplayName(currentProject()));
+  downloadBlob(csv, `gpmb-${projectName}-${commune.id.toLowerCase()}.csv`, "text/csv;charset=utf-8");
+}
+
+function csvCell(value) {
+  const text = String(value ?? "");
+  return `"${text.replace(/"/g, '""')}"`;
+}
+
+function downloadBlob(content, filename, type) {
+  const blob = new Blob([content], { type });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = filename;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  URL.revokeObjectURL(url);
+}
+
+function slugify(value) {
+  return String(value || "du-an")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/đ/g, "d")
+    .replace(/Đ/g, "D")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .slice(0, 60) || "du-an";
+}
+
+function displayOwner(record) {
+  return record.adjusted.landUser || record.original.landUser || "Hồ sơ chưa đặt tên";
+}
+
+function safeNum(value) {
+  const num = Number(String(value ?? "").replace(",", "."));
+  return Number.isFinite(num) ? num : 0;
+}
+
+function ratio(value, base) {
+  const numerator = safeNum(value);
+  const denominator = safeNum(base);
+  if (!denominator) return numerator ? 1 : 0;
+  return numerator / denominator;
+}
+
+function clamp(value, min, max) {
+  return Math.min(max, Math.max(min, value));
+}
+
+function hasText(value) {
+  return String(value ?? "").trim().length > 0;
+}
+
+function normalizeText(value) {
+  return String(value ?? "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/đ/g, "d")
+    .replace(/Đ/g, "D")
+    .toLowerCase();
+}
+
+function formatNumber(value) {
+  return new Intl.NumberFormat("vi-VN", { maximumFractionDigits: 0 }).format(safeNum(value));
+}
+
+function formatArea(value) {
+  return new Intl.NumberFormat("vi-VN", { minimumFractionDigits: 0, maximumFractionDigits: 2 }).format(safeNum(value));
+}
+
+function formatMoney(value) {
+  return new Intl.NumberFormat("vi-VN", { maximumFractionDigits: 0 }).format(safeNum(value));
+}
+
+function formatPercent(value) {
+  return `${new Intl.NumberFormat("vi-VN", { minimumFractionDigits: 0, maximumFractionDigits: 1 }).format(safeNum(value))}%`;
+}
+
+function formatDate(value) {
+  if (!value) return "";
+  const date = new Date(`${value}T00:00:00`);
+  if (Number.isNaN(date.getTime())) return value;
+  return date.toLocaleDateString("vi-VN");
+}
+
+function escapeHtml(value) {
+  return String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+function escapeAttr(value) {
+  return escapeHtml(value).replace(/`/g, "&#096;");
+}
+
+function refreshIcons() {
+  if (window.lucide?.createIcons) {
+    window.lucide.createIcons({
+      attrs: {
+        width: 17,
+        height: 17,
+        "stroke-width": 2
+      }
+    });
+  }
+}
+
+    </script>
+  </body>
+</html>
