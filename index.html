@@ -502,6 +502,26 @@ button {
   background: var(--panel-2);
 }
 
+.member-row > span:first-child {
+  min-width: 0;
+}
+
+.member-row strong,
+.member-row small {
+  overflow-wrap: anywhere;
+}
+
+.member-meta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 6px;
+}
+
+.account-row {
+  grid-template-columns: minmax(0, 1fr) auto;
+}
+
 .metrics {
   display: grid;
   grid-template-columns: repeat(4, minmax(160px, 1fr));
@@ -718,15 +738,49 @@ td textarea {
   min-width: 88px;
 }
 
+.record-grid {
+  border-collapse: separate;
+  border-spacing: 0 10px;
+  background: transparent;
+}
+
+.record-grid tbody td {
+  border-top: 1px solid #d6e0ea;
+  border-bottom: 1px solid #d6e0ea;
+  background: #ffffff;
+}
+
+.record-grid tbody td:first-child {
+  border-left: 3px solid #8fb7aa;
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
+  background: #f8fafc;
+}
+
+.record-grid tbody td:last-child {
+  border-right: 1px solid #d6e0ea;
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+
 .round-parcel-list {
   display: grid;
-  gap: 6px;
+  gap: 8px;
   min-width: 190px;
+  padding: 8px;
+  border: 1px solid #dbe5ee;
+  border-radius: 6px;
+  background: #fbfdff;
 }
 
 .round-parcel-list label {
   display: grid;
   gap: 3px;
+}
+
+.round-parcel-list label + label {
+  padding-top: 7px;
+  border-top: 1px dashed var(--line);
 }
 
 .round-parcel-list label span {
@@ -745,6 +799,27 @@ td textarea {
 
 .case-row td {
   background: #f8fafc;
+}
+
+.case-table {
+  border-collapse: separate;
+  border-spacing: 0;
+  background: transparent;
+}
+
+.case-table .case-row td {
+  border-top: 1px solid #d6e0ea;
+  border-bottom: 0;
+}
+
+.case-table .case-row td:first-child {
+  border-left: 3px solid #8fb7aa;
+  border-top-left-radius: 8px;
+}
+
+.case-table .case-row td:last-child {
+  border-right: 1px solid #d6e0ea;
+  border-top-right-radius: 8px;
 }
 
 .case-editor {
@@ -766,7 +841,19 @@ td textarea {
 
 .parcel-detail-row td {
   padding: 0;
+  border: 1px solid #d6e0ea;
+  border-top: 0;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
   background: #ffffff;
+}
+
+.case-spacer-row td {
+  height: 14px;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
 }
 
 .parcel-box {
@@ -774,6 +861,8 @@ td textarea {
   gap: 10px;
   padding: 12px;
   border-left: 4px solid #c7d7e8;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
   background: #ffffff;
 }
 
@@ -1201,6 +1290,16 @@ td textarea {
   .progress-row {
     grid-template-columns: 1fr;
   }
+
+  .member-row,
+  .account-row {
+    grid-template-columns: 1fr;
+    align-items: start;
+  }
+
+  .member-meta {
+    justify-content: flex-start;
+  }
 }
 
 @media print {
@@ -1414,6 +1513,9 @@ let store = {
   session: null,
   user: null,
   profile: null,
+  appAdmins: [],
+  profiles: [],
+  presenceTimer: null,
   authSubscribed: false,
   projectRoles: {},
   projectMembers: {},
@@ -1480,17 +1582,34 @@ async function loadLocalState() {
 
 function initSupabaseClient() {
   const config = window.GPMB_SUPABASE_CONFIG || {};
-  const url = String(config.url || "").trim();
+  const url = normalizeSupabaseUrl(config.url);
   const anonKey = String(config.anonKey || config.publishableKey || "").trim();
   if (!url || !anonKey || !window.supabase?.createClient) return false;
   if (!store.client) {
     store.client = window.supabase.createClient(url, anonKey);
   }
+  store.supabaseUrl = url;
+  store.supabaseKey = anonKey;
   return true;
+}
+
+function normalizeSupabaseUrl(value) {
+  const raw = String(value || "").trim();
+  if (!raw) return "";
+  try {
+    const parsed = new URL(raw);
+    return `${parsed.protocol}//${parsed.host}`.replace(/\/+$/, "");
+  } catch (_error) {
+    return raw.replace(/\/(rest|auth|storage|functions)\/v\d.*$/i, "").replace(/\/+$/, "");
+  }
 }
 
 async function loadSupabaseState() {
   await loadCurrentProfile();
+  await updateOnlinePresence();
+  await loadProfiles();
+  await loadAppAdmins();
+  startOnlineHeartbeat();
   const { data: projectRows, error } = await store.client
     .from("projects")
     .select("id,name,state,created_by,updated_at")
@@ -1537,13 +1656,36 @@ async function signIn() {
     renderAuthShell();
     return;
   }
-  const { error } = await store.client.auth.signInWithPassword({ email, password });
+  const { data, error } = await signInWithPasswordDirect(email, password);
   if (error) {
-    store.authError = error.message;
+    store.authError = error;
     renderAuthShell();
     return;
   }
+  await store.client.auth.setSession({
+    access_token: data.access_token,
+    refresh_token: data.refresh_token
+  });
   await init();
+}
+
+async function signInWithPasswordDirect(email, password) {
+  const url = normalizeSupabaseUrl(store.supabaseUrl || window.GPMB_SUPABASE_CONFIG?.url);
+  const key = String(store.supabaseKey || window.GPMB_SUPABASE_CONFIG?.anonKey || window.GPMB_SUPABASE_CONFIG?.publishableKey || "").trim();
+  const response = await fetch(`${url}/auth/v1/token?grant_type=password`, {
+    method: "POST",
+    headers: {
+      apikey: key,
+      Authorization: `Bearer ${key}`,
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ email, password })
+  });
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok) {
+    return { data: null, error: data.msg || data.error_description || data.error || `Đăng nhập thất bại (${response.status})` };
+  }
+  return { data, error: null };
 }
 
 async function signUp() {
@@ -1573,10 +1715,13 @@ async function signUp() {
 }
 
 async function signOut() {
+  stopOnlineHeartbeat();
   if (store.client) await store.client.auth.signOut();
   store.session = null;
   store.user = null;
   store.profile = null;
+  store.profiles = [];
+  store.appAdmins = [];
   store.projectRoles = {};
   store.projectMembers = {};
   db = null;
@@ -1586,7 +1731,7 @@ async function signOut() {
 async function loadCurrentProfile() {
   const { data, error } = await store.client
     .from("profiles")
-    .select("id,email,display_name,is_app_admin")
+    .select("id,email,display_name,is_app_admin,last_seen_at")
     .eq("id", store.user.id)
     .maybeSingle();
   if (error) throw error;
@@ -1594,8 +1739,70 @@ async function loadCurrentProfile() {
     id: store.user.id,
     email: store.user.email,
     display_name: "",
-    is_app_admin: false
+    is_app_admin: false,
+    last_seen_at: ""
   };
+}
+
+async function updateOnlinePresence() {
+  if (store.mode !== "supabase" || !store.client || !store.user) return;
+  const now = new Date().toISOString();
+  const { error } = await store.client
+    .from("profiles")
+    .update({ last_seen_at: now })
+    .eq("id", store.user.id);
+  if (error) {
+    console.warn("Không cập nhật được trạng thái online:", error.message);
+    return;
+  }
+  if (store.profile) store.profile.last_seen_at = now;
+  const profile = store.profiles.find(item => item.id === store.user.id);
+  if (profile) profile.last_seen_at = now;
+}
+
+async function refreshOnlinePresence({ renderAfter = false } = {}) {
+  await updateOnlinePresence();
+  await loadProfiles();
+  if (renderAfter && db && ui.view === "dashboard") render();
+}
+
+function startOnlineHeartbeat() {
+  stopOnlineHeartbeat();
+  store.presenceTimer = window.setInterval(() => {
+    refreshOnlinePresence({ renderAfter: true }).catch(error => {
+      console.warn("Không làm mới được trạng thái online:", error.message);
+    });
+  }, 30000);
+}
+
+function stopOnlineHeartbeat() {
+  if (!store.presenceTimer) return;
+  window.clearInterval(store.presenceTimer);
+  store.presenceTimer = null;
+}
+
+async function loadProfiles() {
+  store.profiles = [];
+  if (store.mode !== "supabase") return;
+  const { data, error } = await store.client
+    .from("profiles")
+    .select("id,email,display_name,is_app_admin,last_seen_at,created_at")
+    .order("display_name", { ascending: true, nullsFirst: false })
+    .order("email", { ascending: true });
+  if (error) throw error;
+  store.profiles = data || [];
+}
+
+async function loadAppAdmins() {
+  store.appAdmins = [];
+  if (store.mode !== "supabase") return;
+  const { data, error } = await store.client
+    .from("profiles")
+    .select("id,email,display_name,is_app_admin,last_seen_at,created_at")
+    .eq("is_app_admin", true)
+    .order("created_at", { ascending: true });
+  if (error) throw error;
+  store.appAdmins = data || [];
 }
 
 async function loadProjectMembers(projectIds = []) {
@@ -1603,7 +1810,7 @@ async function loadProjectMembers(projectIds = []) {
   if (!projectIds.length) return;
   const { data, error } = await store.client
     .from("project_members")
-    .select("project_id,user_id,role,profiles(email,display_name)")
+    .select("project_id,user_id,role,profiles(id,email,display_name,is_app_admin,last_seen_at)")
     .in("project_id", projectIds);
   if (error) throw error;
   (data || []).forEach(member => {
@@ -2236,6 +2443,64 @@ function roleLabel(role) {
   return "Chưa phân quyền";
 }
 
+function profileDisplayName(profile) {
+  return profile?.display_name || profile?.email || profile?.id || "Tài khoản chưa rõ";
+}
+
+function profileById(userId) {
+  return (store.profiles || []).find(profile => profile.id === userId) || null;
+}
+
+function projectMemberProfile(member) {
+  return profileById(member.user_id) || member.profiles || { id: member.user_id };
+}
+
+function isProfileOnline(profile) {
+  if (!profile?.last_seen_at) return false;
+  const lastSeen = new Date(profile.last_seen_at).getTime();
+  if (Number.isNaN(lastSeen)) return false;
+  return Date.now() - lastSeen <= 2 * 60 * 1000;
+}
+
+function onlineStatusText(profile) {
+  return isProfileOnline(profile) ? "Đang online" : "Offline";
+}
+
+function onlinePill(profile) {
+  return `<span class="pill ${isProfileOnline(profile) ? "green" : ""}">${onlineStatusText(profile)}</span>`;
+}
+
+function lastSeenText(profile) {
+  if (!profile?.last_seen_at) return "Chưa ghi nhận hoạt động";
+  const lastSeen = new Date(profile.last_seen_at);
+  const diffMs = Date.now() - lastSeen.getTime();
+  if (Number.isNaN(lastSeen.getTime())) return "Chưa ghi nhận hoạt động";
+  if (diffMs < 60000) return "Vừa hoạt động";
+  if (diffMs < 3600000) return `${Math.max(1, Math.floor(diffMs / 60000))} phút trước`;
+  return lastSeen.toLocaleString("vi-VN");
+}
+
+function profileOptionText(profile) {
+  return `${onlineStatusText(profile)} - ${profileDisplayName(profile)}${profile?.email ? ` (${profile.email})` : ""}`;
+}
+
+function sortedProfiles() {
+  return [...(store.profiles || [])].sort((a, b) => {
+    const onlineDiff = Number(isProfileOnline(b)) - Number(isProfileOnline(a));
+    if (onlineDiff) return onlineDiff;
+    return profileDisplayName(a).localeCompare(profileDisplayName(b), "vi");
+  });
+}
+
+function projectSelectableProfiles(project) {
+  const memberIds = new Set((store.projectMembers[project.id] || []).map(member => member.user_id));
+  return sortedProfiles().filter(profile => !memberIds.has(profile.id));
+}
+
+function appAdminSelectableProfiles() {
+  return sortedProfiles().filter(profile => !profile.is_app_admin);
+}
+
 function requireProjectEdit() {
   if (canEditCurrentProject()) return true;
   alert("Tài khoản này chưa có quyền nhập liệu/chỉnh sửa dự án hiện tại.");
@@ -2371,7 +2636,90 @@ function renderProjectOverview() {
         </div>
       </div>
     </section>
+    ${renderAppAdminPanel()}
+    ${renderOnlineAccountsPanel()}
     ${renderProjectAccessPanel()}
+  `;
+}
+
+function renderAppAdminPanel() {
+  if (store.mode !== "supabase" || !store.profile?.is_app_admin) return "";
+  const admins = store.appAdmins || [];
+  const selectableAdmins = appAdminSelectableProfiles();
+  const canGrantMore = admins.length < 2 && selectableAdmins.length > 0;
+  return `
+    <section class="panel app-admin-panel no-print">
+      <div class="panel-header">
+        <div>
+          <h3>Tài khoản chủ hệ thống</h3>
+          <p>${formatNumber(admins.length)} / 2 tài khoản chủ đang được cấp quyền</p>
+        </div>
+      </div>
+      <div class="panel-body">
+        <div class="access-form">
+          <div class="field">
+            <label>Chọn tài khoản cần cấp quyền chủ</label>
+            <select data-app-admin-user ${canGrantMore ? "" : "disabled"}>
+              <option value="">${canGrantMore ? "Chọn tài khoản đã tạo" : "Đã đủ 2 tài khoản chủ hoặc không còn tài khoản để cấp"}</option>
+              ${selectableAdmins.map(profile => `
+                <option value="${escapeAttr(profile.id)}">${escapeHtml(profileOptionText(profile))}</option>
+              `).join("")}
+            </select>
+          </div>
+          <button class="btn primary" data-action="grant-app-admin" ${canGrantMore ? "" : "disabled"}>
+            <i data-lucide="shield-plus"></i>
+            <span>Cấp quyền chủ</span>
+          </button>
+        </div>
+        <div class="member-list">
+          ${admins.length ? admins.map(admin => `
+            <div class="member-row">
+              <span>
+                <strong>${escapeHtml(admin.display_name || admin.email || admin.id)}</strong>
+                <small>${escapeHtml(admin.email || "")} - ${escapeHtml(lastSeenText(admin))}</small>
+              </span>
+              <span class="member-meta">
+                ${onlinePill(admin)}
+                <span class="pill green">Tài khoản chủ</span>
+              </span>
+              ${admin.id !== store.user?.id ? `<button class="btn icon danger" title="Thu hồi quyền chủ" data-action="revoke-app-admin" data-email="${escapeAttr(admin.email)}"><i data-lucide="shield-minus"></i></button>` : ""}
+            </div>
+          `).join("") : emptyState("Chưa có tài khoản chủ.")}
+        </div>
+      </div>
+    </section>
+  `;
+}
+
+function renderOnlineAccountsPanel() {
+  if (store.mode !== "supabase" || !store.profile?.is_app_admin) return "";
+  const profiles = sortedProfiles();
+  const onlineCount = profiles.filter(isProfileOnline).length;
+  return `
+    <section class="panel online-accounts-panel no-print">
+      <div class="panel-header">
+        <div>
+          <h3>Tài khoản nội bộ đang online</h3>
+          <p>${formatNumber(onlineCount)} online / ${formatNumber(profiles.length)} tài khoản đã tạo trên web</p>
+        </div>
+      </div>
+      <div class="panel-body">
+        <div class="member-list">
+          ${profiles.length ? profiles.map(profile => `
+            <div class="member-row account-row">
+              <span>
+                <strong>${escapeHtml(profileDisplayName(profile))}</strong>
+                <small>${escapeHtml(profile.email || "")} - ${escapeHtml(lastSeenText(profile))}</small>
+              </span>
+              <span class="member-meta">
+                ${onlinePill(profile)}
+                ${profile.is_app_admin ? `<span class="pill green">Tài khoản chủ</span>` : `<span class="pill">Thành viên</span>`}
+              </span>
+            </div>
+          `).join("") : emptyState("Chưa có tài khoản nội bộ nào.")}
+        </div>
+      </div>
+    </section>
   `;
 }
 
@@ -2409,20 +2757,26 @@ function renderProjectAccessPanel() {
   if (!project) return "";
   const canManage = canManageProject(project.id);
   const members = store.projectMembers[project.id] || [];
+  const selectableProfiles = projectSelectableProfiles(project);
   return `
     <section class="panel project-access-panel no-print">
       <div class="panel-header">
         <div>
           <h3>Phân quyền dự án hiện tại</h3>
-          <p>${canManage ? "Thêm tài khoản nội bộ vào dự án để cùng nhập liệu." : "Chỉ chủ dự án mới phân quyền tài khoản khác."}</p>
+          <p>${canManage ? "Chọn tài khoản đã tạo trên web để giao việc trong dự án này." : "Chỉ chủ dự án mới phân quyền tài khoản khác."}</p>
         </div>
       </div>
       <div class="panel-body">
         ${canManage ? `
           <div class="access-form">
             <div class="field">
-              <label>Email tài khoản nội bộ</label>
-              <input data-access-email placeholder="email@coquan.gov.vn">
+              <label>Chọn tài khoản thành viên</label>
+              <select data-access-user ${selectableProfiles.length ? "" : "disabled"}>
+                <option value="">${selectableProfiles.length ? "Chọn tài khoản đã tạo" : "Tất cả tài khoản đã được thêm vào dự án"}</option>
+                ${selectableProfiles.map(profile => `
+                  <option value="${escapeAttr(profile.id)}">${escapeHtml(profileOptionText(profile))}</option>
+                `).join("")}
+              </select>
             </div>
             <div class="field">
               <label>Quyền</label>
@@ -2438,10 +2792,13 @@ function renderProjectAccessPanel() {
           ${members.length ? members.map(member => `
             <div class="member-row">
               <span>
-                <strong>${escapeHtml(member.profiles?.display_name || member.profiles?.email || member.user_id)}</strong>
-                <small>${escapeHtml(member.profiles?.email || "")}</small>
+                <strong>${escapeHtml(profileDisplayName(projectMemberProfile(member)))}</strong>
+                <small>${escapeHtml(projectMemberProfile(member).email || "")} - ${escapeHtml(lastSeenText(projectMemberProfile(member)))}</small>
               </span>
-              <span class="pill">${roleLabel(member.role)}</span>
+              <span class="member-meta">
+                ${onlinePill(projectMemberProfile(member))}
+                <span class="pill">${roleLabel(member.role)}</span>
+              </span>
               ${canManage && member.user_id !== store.user?.id ? `<button class="btn icon danger" title="Gỡ khỏi dự án" data-action="remove-project-access" data-project="${escapeAttr(project.id)}" data-user="${escapeAttr(member.user_id)}"><i data-lucide="user-minus"></i></button>` : ""}
             </div>
           `).join("") : emptyState("Chưa có thành viên nào ngoài tài khoản chủ.")}
@@ -2584,7 +2941,7 @@ function renderMeasurementTable(commune) {
       <div class="panel-body">
         ${records.length ? `
           <div class="table-wrap">
-            <table>
+            <table class="case-table">
               <thead>
                 <tr>
                   <th class="sticky-col">Hồ sơ / trường hợp</th>
@@ -2647,6 +3004,7 @@ function measurementRow(record) {
         ${renderParcelTable(record)}
       </td>
     </tr>
+    <tr class="case-spacer-row"><td colspan="10"></td></tr>
   `;
 }
 
@@ -2728,7 +3086,7 @@ function renderStageTable(commune, stage) {
           </button>
         </div>
         <div class="table-wrap">
-          <table class="stage-grid">
+          <table class="stage-grid record-grid">
             <thead>
               <tr>
                 <th class="sticky-col" rowspan="2">Hồ sơ</th>
@@ -2858,7 +3216,7 @@ function renderRecoveryDecisionTable(commune) {
       <div class="panel-body">
         ${records.length ? `
           <div class="table-wrap">
-            <table>
+            <table class="record-grid">
               <thead>
                 <tr>
                   <th class="sticky-col">Hồ sơ</th>
@@ -2911,7 +3269,7 @@ function renderHandoverTable(commune) {
       <div class="panel-body">
         ${records.length ? `
           <div class="table-wrap">
-            <table>
+            <table class="record-grid">
               <thead>
                 <tr>
                   <th class="sticky-col">Hồ sơ</th>
@@ -2985,7 +3343,7 @@ function renderNotHandoverTable(commune) {
       <div class="panel-body">
         ${records.length ? `
           <div class="table-wrap">
-            <table>
+            <table class="record-grid">
               <thead>
                 <tr>
                   <th class="sticky-col">Hồ sơ</th>
@@ -3057,7 +3415,7 @@ function renderRemarksTable(commune) {
       <div class="panel-body">
         ${records.length ? `
           <div class="table-wrap">
-            <table>
+            <table class="record-grid">
               <thead>
                 <tr>
                   <th class="sticky-col">Hồ sơ</th>
@@ -4013,6 +4371,16 @@ app.addEventListener("click", event => {
     return;
   }
 
+  if (action === "grant-app-admin") {
+    grantAppAdmin();
+    return;
+  }
+
+  if (action === "revoke-app-admin") {
+    revokeAppAdmin(button.dataset.email);
+    return;
+  }
+
   if (action === "add-commune") {
     if (!requireProjectEdit()) return;
     addCommune();
@@ -4111,9 +4479,10 @@ importInput.addEventListener("change", async event => {
   if (!file) return;
   try {
     const text = await file.text();
-    const imported = normalizeDb(JSON.parse(text));
+    const parsed = JSON.parse(text);
+    const imported = normalizeDb(parsed);
     if (store.mode === "supabase") {
-      await importProjectsToSupabase(imported);
+      await importProjectsToSupabase(compactImportForSupabase(parsed, imported));
       return;
     }
     db = imported;
@@ -4128,6 +4497,29 @@ importInput.addEventListener("change", async event => {
     importInput.value = "";
   }
 });
+
+function compactImportForSupabase(parsed, normalized) {
+  const rawProjects = Array.isArray(parsed?.projects) && parsed.projects.length ? parsed.projects : [];
+  if (!rawProjects.length) return normalized;
+  const projects = rawProjects.map((project, index) => {
+    const fallback = normalized.projects[index] || {};
+    const name = project.name || project.meta?.projectName || fallback.name || `Dự án ${index + 1}`;
+    return {
+      id: project.id || fallback.id || projectIdFromName(name, index),
+      name,
+      meta: project.meta || fallback.meta || defaultMeta({ projectName: name }),
+      notes: project.notes || fallback.notes || defaultNotes({}),
+      communes: Array.isArray(project.communes) ? project.communes : fallback.communes || [],
+      audit: Array.isArray(project.audit) ? project.audit : fallback.audit || [],
+      updatedAt: project.updatedAt || project.updated_at || fallback.updatedAt || "",
+      createdBy: project.createdBy || project.created_by || fallback.createdBy || ""
+    };
+  });
+  const activeProjectId = projects.some(project => project.id === parsed.activeProjectId)
+    ? parsed.activeProjectId
+    : projects[0]?.id || normalized.activeProjectId;
+  return { schemaVersion: 2, activeProjectId, projects };
+}
 
 async function importProjectsToSupabase(imported) {
   if (!canCreateProjects()) {
@@ -4342,30 +4734,59 @@ async function grantProjectAccess() {
     alert("Tài khoản này không có quyền phân quyền dự án.");
     return;
   }
-  const email = document.querySelector("[data-access-email]")?.value.trim();
+  const userId = document.querySelector("[data-access-user]")?.value;
   const role = document.querySelector("[data-access-role]")?.value || "editor";
-  if (!email) {
-    alert("Nhập email tài khoản cần thêm vào dự án.");
-    return;
-  }
-  const { data: profile, error: profileError } = await store.client
-    .from("profiles")
-    .select("id,email,display_name")
-    .eq("email", email)
-    .maybeSingle();
-  if (profileError) {
-    alert(`Không tìm được tài khoản: ${profileError.message}`);
-    return;
-  }
+  const profile = profileById(userId);
   if (!profile) {
-    alert("Email này chưa có tài khoản nội bộ. Hãy tạo tài khoản trước rồi phân quyền.");
+    alert("Chọn tài khoản thành viên đã được tạo trên web.");
     return;
   }
   const { error } = await store.client
     .from("project_members")
-    .upsert({ project_id: project.id, user_id: profile.id, role }, { onConflict: "project_id,user_id" });
+    .upsert({ project_id: project.id, user_id: userId, role }, { onConflict: "project_id,user_id" });
   if (error) {
     alert(`Không cấp quyền được: ${error.message}`);
+    return;
+  }
+  await loadSupabaseState();
+}
+
+async function grantAppAdmin() {
+  if (store.mode !== "supabase" || !store.profile?.is_app_admin) {
+    alert("Chỉ tài khoản chủ mới được cấp quyền chủ.");
+    return;
+  }
+  const userId = document.querySelector("[data-app-admin-user]")?.value;
+  const profile = profileById(userId);
+  if (!profile?.email) {
+    alert("Chọn tài khoản đã tạo trên web để cấp quyền chủ.");
+    return;
+  }
+  const { error } = await store.client.rpc("set_app_admin_by_email", {
+    target_email: profile.email,
+    make_admin: true
+  });
+  if (error) {
+    alert(`Không cấp quyền chủ được: ${error.message}`);
+    return;
+  }
+  await loadSupabaseState();
+}
+
+async function revokeAppAdmin(email) {
+  if (store.mode !== "supabase" || !store.profile?.is_app_admin) {
+    alert("Chỉ tài khoản chủ mới được thu hồi quyền chủ.");
+    return;
+  }
+  if (!email) return;
+  const ok = confirm(`Thu hồi quyền chủ của tài khoản "${email}"?`);
+  if (!ok) return;
+  const { error } = await store.client.rpc("set_app_admin_by_email", {
+    target_email: email,
+    make_admin: false
+  });
+  if (error) {
+    alert(`Không thu hồi quyền chủ được: ${error.message}`);
     return;
   }
   await loadSupabaseState();
