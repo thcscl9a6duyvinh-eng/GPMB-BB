@@ -266,7 +266,7 @@ button {
 .topbar {
   position: sticky;
   top: 0;
-  z-index: 50;
+  z-index: 70;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -274,7 +274,7 @@ button {
   min-height: 76px;
   padding: 12px 24px;
   border-bottom: 1px solid rgba(148,163,184,0.22);
-  background: rgba(255,255,255,0.78);
+  background: #ffffff;
   box-shadow: 0 10px 26px rgba(44,62,84,0.06);
   backdrop-filter: blur(22px) saturate(1.16);
 }
@@ -297,6 +297,8 @@ button {
   flex-wrap: wrap;
   gap: 8px;
   justify-content: flex-end;
+  align-items: center;
+  min-width: 0;
 }
 
 .btn {
@@ -353,8 +355,92 @@ button {
   display: inline-flex;
   align-items: center;
   gap: 6px;
+  min-width: 0;
   color: var(--muted);
   font-size: 13px;
+}
+
+.auth-status span,
+.save-status span {
+  display: inline-block;
+  max-width: 260px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  vertical-align: bottom;
+}
+
+.save-status span {
+  max-width: 190px;
+}
+
+.online-widget {
+  position: relative;
+  flex: 0 0 auto;
+}
+
+.online-trigger {
+  min-height: 34px;
+  color: #087f8c;
+  background: rgba(236,253,245,0.92);
+}
+
+.online-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 90;
+  display: none;
+  width: min(330px, calc(100vw - 32px));
+  max-height: 360px;
+  overflow: auto;
+  padding: 8px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #ffffff;
+  box-shadow: 0 18px 48px rgba(44,62,84,0.18);
+}
+
+.online-widget:hover .online-menu,
+.online-widget:focus-within .online-menu {
+  display: grid;
+  gap: 6px;
+}
+
+.online-menu-row {
+  display: grid;
+  grid-template-columns: 8px minmax(0, 1fr);
+  gap: 9px;
+  align-items: center;
+  padding: 8px;
+  border-radius: 8px;
+  background: rgba(248,250,252,0.88);
+}
+
+.online-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: #94a3b8;
+}
+
+.online-dot.active {
+  background: var(--accent-2);
+  box-shadow: 0 0 0 4px rgba(20,184,166,0.12);
+}
+
+.online-menu-row strong,
+.online-menu-row small {
+  display: block;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.online-menu-row small {
+  color: var(--muted);
+  font-size: 12px;
 }
 
 .content {
@@ -364,16 +450,27 @@ button {
   min-width: 0;
 }
 
+.content > *,
+.panel,
+.panel-body {
+  min-width: 0;
+}
+
 .update-sticky {
   position: sticky;
   top: var(--topbar-height);
-  z-index: 45;
+  z-index: 65;
+  background: #ffffff;
   box-shadow: 0 18px 36px rgba(44,62,84,0.12);
   backdrop-filter: blur(18px) saturate(1.12);
 }
 
+.update-sticky .panel-header {
+  background: #ffffff;
+}
+
 .update-sticky .panel-body {
-  background: rgba(255,255,255,0.86);
+  background: #ffffff;
 }
 
 .update-sticky .tabs {
@@ -742,8 +839,12 @@ td textarea:focus {
 .tabs {
   display: flex;
   gap: 6px;
-  overflow: auto;
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior-x: contain;
   padding-bottom: 2px;
+  scrollbar-gutter: stable;
 }
 
 .tab {
@@ -774,11 +875,18 @@ td textarea:focus {
 
 .table-wrap {
   width: 100%;
+  max-width: 100%;
   overflow: auto;
+  overscroll-behavior: contain;
   border: 1px solid var(--line);
   border-radius: 8px;
   background: rgba(255,255,255,0.72);
   box-shadow: var(--shadow-soft);
+}
+
+.table-wrap > table {
+  min-width: 100%;
+  width: max-content;
 }
 
 table {
@@ -1687,11 +1795,13 @@ let ui = {
   stageId: "measurement",
   search: "",
   type: "all",
-  saveText: "Chưa lưu thay đổi",
-  authMode: "login"
+  saveText: "Tự lưu đang bật",
+  authMode: "login",
+  stageTabScrollLeft: 0
 };
 
 let saveTimer = null;
+let postRenderState = null;
 
 init();
 
@@ -1919,7 +2029,11 @@ async function updateOnlinePresence() {
 async function refreshOnlinePresence({ renderAfter = false } = {}) {
   await updateOnlinePresence();
   await loadProfiles();
-  if (renderAfter && db && ui.view === "dashboard") render();
+  if (renderAfter && db && ui.view === "dashboard") {
+    render();
+  } else if (renderAfter && db) {
+    updateOnlineWidget();
+  }
 }
 
 function startOnlineHeartbeat() {
@@ -2482,11 +2596,7 @@ function render() {
           <div class="actions no-print">
             ${authStatus()}
             <span class="status save-status"><i data-lucide="cloud"></i><span>${escapeHtml(ui.saveText)}</span></span>
-            <button class="btn" data-action="save"><i data-lucide="save"></i><span>Lưu</span></button>
-            <button class="btn" data-action="import-json"><i data-lucide="upload"></i><span>Nhập JSON</span></button>
-            <button class="btn" data-action="export-json"><i data-lucide="download"></i><span>Xuất JSON</span></button>
-            <button class="btn" data-action="export-csv"><i data-lucide="table"></i><span>Xuất CSV</span></button>
-            <button class="btn" data-action="print"><i data-lucide="printer"></i><span>In báo cáo</span></button>
+            ${canPrintReports() ? `<button class="btn" data-action="print"><i data-lucide="printer"></i><span>In báo cáo</span></button>` : ""}
           </div>
         </header>
         <div class="content">
@@ -2496,7 +2606,45 @@ function render() {
     </div>
   `;
   refreshIcons();
+  applyPostRenderLayout();
 }
+
+function renderPreservingScroll({ stageTabScrollLeft = null } = {}) {
+  postRenderState = {
+    x: window.scrollX,
+    y: window.scrollY,
+    stageTabScrollLeft
+  };
+  render();
+}
+
+function applyPostRenderLayout() {
+  window.requestAnimationFrame(() => {
+    const state = postRenderState;
+    postRenderState = null;
+    const restore = () => {
+      updateStickyOffset();
+      if (!state) return;
+      if (state.stageTabScrollLeft !== null) {
+        const tabs = document.querySelector(".update-sticky .tabs");
+        if (tabs) tabs.scrollLeft = state.stageTabScrollLeft;
+      }
+      window.scrollTo(state.x, state.y);
+    };
+    restore();
+    window.setTimeout(restore, 0);
+    window.setTimeout(restore, 120);
+  });
+}
+
+function updateStickyOffset() {
+  const topbar = document.querySelector(".topbar");
+  if (!topbar) return;
+  const height = Math.ceil(topbar.getBoundingClientRect().height);
+  document.documentElement.style.setProperty("--topbar-height", `${height}px`);
+}
+
+window.addEventListener("resize", updateStickyOffset);
 
 function renderAuthShell() {
   const isSignup = ui.authMode === "signup";
@@ -2564,11 +2712,49 @@ function authStatus() {
   const role = currentProjectRole();
   return `
     <span class="status auth-status"><i data-lucide="user-round"></i><span>${escapeHtml(store.user?.email || "")}${role ? ` - ${roleLabel(role)}` : ""}</span></span>
+    ${onlineTopbar()}
     <button class="btn" data-action="auth-logout"><i data-lucide="log-out"></i><span>Đăng xuất</span></button>
   `;
 }
 
+function onlineTopbar() {
+  if (store.mode !== "supabase" || !store.profile?.is_app_admin) return "";
+  const profiles = sortedProfiles();
+  const onlineCount = profiles.filter(isProfileOnline).length;
+  const rows = profiles.slice(0, 18);
+  return `
+    <div class="online-widget" data-online-widget>
+      <button class="btn online-trigger" type="button">
+        <i data-lucide="users-round"></i>
+        <span>${formatNumber(onlineCount)} online</span>
+      </button>
+      <div class="online-menu">
+        ${rows.length ? rows.map(profile => `
+          <div class="online-menu-row">
+            <span class="online-dot ${isProfileOnline(profile) ? "active" : ""}"></span>
+            <span>
+              <strong>${escapeHtml(profileDisplayName(profile))}</strong>
+              <small>${escapeHtml(profile.email || "")} - ${escapeHtml(onlineStatusText(profile))}</small>
+            </span>
+          </div>
+        `).join("") : `<div class="empty">Chưa có tài khoản nội bộ.</div>`}
+      </div>
+    </div>
+  `;
+}
+
+function updateOnlineWidget() {
+  const widget = document.querySelector("[data-online-widget]");
+  if (!widget) return;
+  widget.outerHTML = onlineTopbar();
+  refreshIcons();
+}
+
 function canCreateProjects() {
+  return store.mode !== "supabase" || Boolean(store.profile?.is_app_admin);
+}
+
+function canPrintReports() {
   return store.mode !== "supabase" || Boolean(store.profile?.is_app_admin);
 }
 
@@ -4461,8 +4647,12 @@ app.addEventListener("click", event => {
   }
 
   if (button.dataset.stageTab) {
+    event.preventDefault();
+    const tabs = button.closest(".tabs");
+    ui.stageTabScrollLeft = tabs?.scrollLeft || 0;
     ui.stageId = button.dataset.stageTab;
-    render();
+    button.blur();
+    renderPreservingScroll({ stageTabScrollLeft: ui.stageTabScrollLeft });
     return;
   }
 
@@ -4599,27 +4789,8 @@ app.addEventListener("click", event => {
     return;
   }
 
-  if (action === "save") {
-    saveNow();
-    return;
-  }
-
-  if (action === "import-json") {
-    importInput.click();
-    return;
-  }
-
-  if (action === "export-json") {
-    exportJson();
-    return;
-  }
-
-  if (action === "export-csv") {
-    exportCsv();
-    return;
-  }
-
   if (action === "print") {
+    if (!canPrintReports()) return;
     window.print();
   }
 });
@@ -5193,7 +5364,7 @@ function numericKey(value) {
 }
 
 function scheduleSave() {
-  ui.saveText = "Đang nhập...";
+  ui.saveText = "Đang tự lưu...";
   updateSaveStatus();
   clearTimeout(saveTimer);
   saveTimer = setTimeout(saveNow, 650);
@@ -5201,7 +5372,7 @@ function scheduleSave() {
 
 async function saveNow() {
   clearTimeout(saveTimer);
-  ui.saveText = "Đang lưu...";
+  ui.saveText = "Đang tự lưu...";
   updateSaveStatus();
   try {
     if (store.mode === "supabase") {
@@ -5252,6 +5423,7 @@ async function saveProject(project, updateStatus = true) {
 function updateSaveStatus() {
   const node = document.querySelector(".save-status span");
   if (node) node.textContent = ui.saveText;
+  updateStickyOffset();
 }
 
 function communeTotals(commune) {
